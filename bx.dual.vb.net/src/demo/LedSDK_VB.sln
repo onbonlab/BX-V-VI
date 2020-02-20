@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LedSDK_VB", "LedSDK_VB.vbproj", "{A9C07DD4-059F-4804-A350-2F2B6BBAD649}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A9C07DD4-059F-4804-A350-2F2B6BBAD649}.Debug|x86.ActiveCfg = Debug|x86
+		{A9C07DD4-059F-4804-A350-2F2B6BBAD649}.Debug|x86.Build.0 = Debug|x86
+		{A9C07DD4-059F-4804-A350-2F2B6BBAD649}.Release|x86.ActiveCfg = Release|x86
+		{A9C07DD4-059F-4804-A350-2F2B6BBAD649}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

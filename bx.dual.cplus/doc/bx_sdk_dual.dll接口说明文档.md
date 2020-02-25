@@ -20,11 +20,11 @@
 
 ## 接⼝说明
 
-### １.通用API
+### 1.通用API
 
-#### １.1非节目相关
+#### 1.1非节目相关
 
-##### １.1.1 bxDual_InitSdk
+##### 1.1.1 bxDual_InitSdk
 
 **返回值：**成功返回0；失败返回错误号 
 
@@ -34,7 +34,7 @@
 
 **函数：**LEDEQSDK_API int _CALL_STD bxDual_InitSdk(void);
 
-##### １.1.2 bxDual_ReleaseSdk
+##### 1.1.2 bxDual_ReleaseSdk
 
 **返回值：**成功返回0；失败返回错误号 
 
@@ -44,7 +44,7 @@
 
 **函数：**LEDEQSDK_API void _CALL_STD bxDual_ReleaseSdk(void);
 
-##### １.1.3 bxDual_cmd_searchController
+##### 1.1.3 bxDual_cmd_searchController
 
 **返回值：**成功返回0；失败返回错误号 
 
@@ -58,7 +58,7 @@
 
 **函数：** LEDEQSDK_API int _CALL_STD bxDual_cmd_searchController(Ping_data *retData);
 
-##### １.1.4 bxDual_cmd_udpPing
+##### 1.1.4 bxDual_cmd_udpPing
 
 **返回值：**成功返回0；失败返回错误号 
 
@@ -72,7 +72,7 @@
 
 **函数：** LEDEQSDK_API int _CALL_STD bxDual_cmd_udpPing(Ping_data *retData);
 
-##### １.1.5 bxDual_cmd_uart_searchController
+##### 1.1.5 bxDual_cmd_uart_searchController
 
 **返回值：**成功返回0；失败返回错误号 
 
@@ -87,7 +87,7 @@
 
 **函数：** LEDEQSDK_API int _CALL_STD bxDual_cmd_uart_searchController(Ping_data *retData, Oint8* uartPort);
 
-##### １.1.6 bxDual_cmd_tcpPing
+##### 1.1.6 bxDual_cmd_tcpPing
 
 **返回值：**成功返回0；失败返回错误号 
 
@@ -118,6 +118,105 @@
 **说明：** 设置亮度和相关模式
 
 **函数：** LEDEQSDK_API int _CALL_STD bxDual_cmd_setBrightness(Ouint8* ip, Ouint16 port, Brightness *brightness);
+
+##### 1.1.8 bxDual_cmd_sysReset
+
+**返回值：**成功返回0；失败返回错误号 
+
+**参数：**
+
+| 参数 | 说明       |
+| ---- | ---------- |
+| ip   | 控制器IP   |
+| port | 控制器端口 |
+
+**说明：** 让系统复位
+
+**函数：** BXDUAL_API int _CALL_STD bxDual_cmd_sysReset(Ouint8* ip, Ouint16 port);
+
+##### 1.1.9 bxDual_cmd_coerceOnOff
+
+**返回值：**成功返回0；失败返回错误号 
+
+**参数：**
+
+| 参数  | 说明                              |
+| ----- | --------------------------------- |
+| ip    | 控制器IP                          |
+| port  | 控制器端口                        |
+| onOff | 控制器状态：0x01 –开机 0x00 –关机 |
+
+**说明：** 强制开关机
+
+**函数：** BXDUAL_API int _CALL_STD bxDual_cmd_coerceOnOff(Ouint8* ip, Ouint16 port, Ouint8 onOff);
+
+##### 1.1.10 bxDual_cmd_timingOnOff
+
+**返回值：**成功返回0；失败返回错误号 
+
+**参数：**
+
+| 参数     | 说明                                    |
+| -------- | --------------------------------------- |
+| ip       | 控制器IP                                |
+| port     | 控制器端口                              |
+| groupNum | 有几组定时开关机                        |
+| data     | [TimingOnOff](#TimingOnOff)结构体的地址 |
+
+**说明：** 定时开关机命令
+
+**函数：** BXDUAL_API int _CALL_STD bxDual_cmd_timingOnOff(Ouint8* ip, Ouint16 port, Ouint8 groupNum, Ouint8 *data);
+
+##### 1.1.11 bxDual_cmd_cancelTimingOnOff
+
+**返回值：**成功返回0；失败返回错误号 
+
+**参数：**
+
+| 参数 | 说明       |
+| ---- | ---------- |
+| ip   | 控制器IP   |
+| port | 控制器端口 |
+
+**说明：**取消定时开关机
+
+**函数：** BXDUAL_API int _CALL_STD bxDual_cmd_cancelTimingOnOff(Ouint8* ip, Ouint16 port);
+
+##### 1.1.12 bxDual_cmd_screenLock
+
+**返回值：**成功返回0；失败返回错误号 
+
+**参数：**
+
+| 参数        | 说明                                             |
+| ----------- | ------------------------------------------------ |
+| ip          | 控制器IP                                         |
+| port        | 控制器端口                                       |
+| nonvolatile | 状态是否掉电保存 0x00 –掉电不保存 0x01 –掉电保存 |
+| locked      | 0x00 –解锁  0x01 –锁定                           |
+
+**说明：** 屏幕锁定
+
+**函数：** BXDUAL_API int _CALL_STD bxDual_cmd_screenLock(Ouint8* ip, Ouint16 port, Ouint8 nonvolatile, Ouint8 lock);
+
+##### 1.1.13 bxDual_cmd_programLock
+
+**返回值：**成功返回0；失败返回错误号 
+
+**参数：**
+
+| 参数         | 说明                                                         |
+| ------------ | ------------------------------------------------------------ |
+| ip           | 控制器IP                                                     |
+| port         | 控制器端口                                                   |
+| nonvolatile  | 状态是否掉电保存 0x00 –掉电不保存 0x01 –掉电保存             |
+| locked       | 0x00 –解锁  0x01 –锁定                                       |
+| name         | 节目名称4（byte）个字节                                      |
+| lockDuration | 节目锁定时间长度， 单位为 10 毫秒， 例 如当该值为 100 时表示锁定节目 1 秒.注意： 当该值为 0xffffffff 时表示节目锁定无时间长度限制 |
+
+**说明：** 节目锁定
+
+**函数：**BXDUAL_API int _CALL_STD bxDual_cmd_programLock(Ouint8* ip, Ouint16 port, Ouint8 nonvolatile, Ouint8 lock, Ouint8 *name, Ouint32 lockDuration);
 
 #### 1.2节目相关
 
@@ -1302,6 +1401,21 @@ typedef struct{
 		//end.
 	
 	}DynamicAreaBaseInfo_5G, DynamicAreaTxtInfo_5G, DynamicAreaPicInfo_5G;
+### <span id="TimingOnOff">TimingOnOff</span>
+
+```
+typedef struct {
+Ouint8 onHour;   // 开机小时
+Ouint8 onMinute; // 开机分钟
+Ouint8 offHour;  // 关机小时
+Ouint8 offMinute; // 关机分钟
+}TimingOnOff;
+```
+
+
+
+
+
 ### 枚举类型
 
 #### 日期格式

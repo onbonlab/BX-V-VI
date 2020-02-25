@@ -893,6 +893,173 @@ namespace LedSDKDemo_CSharp
         [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_ofsEndFileTransf(byte[] uartPort, byte baudRate);
 
+        /*! ***************************************************************
+        * 函数名：       cmd_sysReset（）
+        * 参数名：ip， 控制器IP， port 控制器端口
+        * 返回值：0 成功， 其他值为错误号
+        * 功 能：让系统复位
+        * 注：
+        * 此命令调用后所有参数全部会丢失
+        ******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_sysReset(byte[] ip, ushort port);
+
+        /*! ***************************************************************
+        * 函数名：       cmd_coerceOnOff（）
+        * 参数名：ip：控制器IP， port：控制器端口，onOff：控制器状态：0x01 –开机 0x00 –关机
+        * 返回值：0 成功， 其他值为错误号
+        * 功 能：强制开挂机命令
+        * 注：
+        *
+        ******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_coerceOnOff(byte[] ip, ushort port, byte onOff);
+
+        /*! ***************************************************************
+        * 函数名：       cmd_timingOnOff（）
+        * 参数名：ip：控制器IP， port：控制器端口，groupNum：有几组定时开关机 data：TimingOnOff结构体的地址
+        * 返回值：0 成功， 其他值为错误号
+        * 功 能：定时开关机命令
+        * 注：
+        * groupNum值是n组情况,data大小 = n * TimingOnOff
+        ******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_timingOnOff(byte[] ip, ushort port, byte groupNum, TimingOnOff[] data);
+
+        /*! ***************************************************************
+        * 函数名：       cmd_cancelTimingOnOff（）
+        * 参数名：ip：控制器IP， port：控制器端口
+        * 返回值：0 成功， 其他值为错误号
+        * 功 能：取消定时开关机
+        * 注：
+        *
+        ******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_cancelTimingOnOff(byte[] ip, ushort port);
+
+        /*! ***************************************************************
+        * 函数名：       cmd_readControllerID（）
+        * 参数名：ip：控制器IP， port：控制器端口， ControllerID：传回控制器ID
+        * 返回值：0 成功， 其他值为错误号
+        * 功 能：读控制器ID
+        * 注：
+        * ControllerID是8个字节 请定义char data[8];
+        ******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_readControllerID(byte[] ip, ushort port, byte[] ControllerID);
+
+
+        /*! ***************************************************************
+        * 函数名：       cmd_screenLock（）
+        * 参数名：ip：控制器IP， port：控制器端口
+        *         nonvolatile：状态是否掉电保存 0x00 –掉电不保存 0x01 –掉电保存
+        *         lock： 0x00 –解锁  0x01 –锁定
+        * 返回值：0 成功， 其他值为错误号
+        * 功 能：屏幕锁定
+        * 注：
+        *
+        ******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_screenLock(byte[] ip, ushort port, byte nonvolatile, byte locked);
+
+
+        /*! ***************************************************************
+        * 函数名：       cmd_programLock（）
+        * 参数名：ip：控制器IP， port：控制器端口
+        *         nonvolatile： 状态是否掉电保存 0x00 –掉电不保存  0x01 –掉电保存
+        *         lock：0x00 –解锁  0x01 –锁定
+        *         name： 节目名称4（byte）个字节
+        *         lockDuration: 节目锁定时间长度， 单位为 10 毫秒， 例
+        *         如当该值为 100 时表示锁定节目 1 秒.注意： 当该值为 0xffffffff 时表示节目锁定无时间长度限制
+        * 返回值：0 成功， 其他值为错误号
+        * 功 能：节目锁定
+        * 注：
+        * 具体使用方法参考协议
+        ******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_programLock(byte[] ip, ushort port, byte nonvolatile, byte locked, byte[] name, uint lockDuration);
+
+
+        /*! ***************************************************************
+        * 函数名：       cmd_check_controllerStatus（）
+        * 参数名：ip：控制器IP， port：控制器端口， controllerStatus：请参考结构体ControllerStatus_G56
+        * 返回值：0 成功， 其他值为错误号
+        * 功 能：读控制器状态
+        * 注：
+        * ControllerStatus_G56和协议时对应的可以参考协议的具体用法
+        ******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_check_controllerStatus(byte[] ip, ushort port, ref ControllerStatus_G56 controllerStatus);
+
+        /*! ***************************************************************
+        * 函数名：       cmd_setPassword（）
+        * 参数名：ip：控制器IP， port：控制器端口， oldPassword：老密码， newPassword新密码
+        * 返回值：0 成功， 其他值为错误号
+        * 功 能：设置控制器密码
+        * 注：
+        * 设置后一定要记住，设置后就不在能明码通讯
+        ******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_setPassword(byte[] ip, ushort port, byte[] oldPassword, byte[] newPassword);
+
+        /*! ***************************************************************
+        * 函数名：       cmd_deletePassword（）
+        * 参数名：ip：控制器IP， port：控制器端口， password：输出当前控制密码
+        * 返回值：0 成功， 其他值为错误号
+        * 功 能：删除当前控制器密码
+        * 注：
+        *
+        ******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_deletePassword(byte[] ip, ushort port, byte[] password);
+
+        /*! ***************************************************************
+        * 函数名：       cmd_setDelayTime（）
+        * 参数名：ip：控制器IP， port：控制器端口， delayTime：开机延时单位秒
+        * 返回值：0 成功， 其他值为错误号
+        * 功 能：设置控制开机延时时间
+        * 注：
+        *
+        ******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_setDelayTime(byte[] ip, ushort port, short delayTime);
+
+        /*! ***************************************************************
+        * 函数名：       cmd_setBtnFunc（）
+        * 参数名：ip：控制器IP， port：控制器端口， btnMode：按钮模式 0x00–测试按钮 0x01 –沿触发切换节目 0x02 –电平触发切换节目
+        * 返回值：0 成功， 其他值为错误号
+        * 功 能：设置控制测试按钮功能
+        * 注：
+        * 具体细节参考协议
+        ******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_setBtnFunc(byte[] ip, ushort port, byte btnMode);
+
+        /*! ***************************************************************
+        * 函数名：       cmd_setTimingReset（）
+        * 参数名：ip：控制器IP， port：控制器端口， cmdData：参考结构体TimingReset
+        * 返回值：0 成功， 其他值为错误号
+        * 功 能：设置控制重启重启时间
+        * 注：
+        * 具体细节参考协议
+        ******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_setTimingReset(byte[] ip, ushort port,ref TimingReset cmdData);
+
+        /*! ***************************************************************
+        * 函数名：       cmd_setDispMode（）
+        * 参数名：ip：控制器IP， port：控制器端口
+        *		dispMode：控制器的显示模式（目前只针对 BX-5E系列控制器）
+        *		Bit0 –串/并行， 0 表示并行， 1 表示并行
+        *		Bit1–同步使能， 1 使能同步， 0 禁止同步
+        * 返回值：0 成功， 其他值为错误号
+        * 功 能：设置控制重启重启时间
+        * 注：
+        * 具体细节参考协议
+        ******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_setDispMode(byte[] ip, ushort port, byte dispMode);
+
     /**************************************************************************************
     ***5代控制卡接口
     **************************************************************************************/
@@ -1466,34 +1633,6 @@ strAreaTxtContent - 动态区域内要显示的文本内容
 ******************************************************************/
         [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_pictureAreaEnableSound_G6(ushort areaID, EQPicAreaSoundHeader_G6 sheader, byte[] soundData);
-
-/*! ***************************************************************
-* 函数名：       cmd_screenLock（）
-* 参数名：ip：控制器IP， port：控制器端口
-*         nonvolatile：状态是否掉电保存 0x00 –掉电不保存 0x01 –掉电保存
-*         lock： 0x00 –解锁  0x01 –锁定
-* 返回值：0 成功， 其他值为错误号
-* 功 能：屏幕锁定
-* 注：
-*
-******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
-        public static extern int bxDual_cmd_screenLock(byte[] ip, ushort port, byte nonvolatile, byte locker);
-/*! ***************************************************************
-	* 函数名：       cmd_programLock（）
-	* 参数名：ip：控制器IP， port：控制器端口
-	*         nonvolatile： 状态是否掉电保存 0x00 –掉电不保存  0x01 –掉电保存
-	*         lock：0x00 –解锁  0x01 –锁定
-	*         name： 节目名称4（byte）个字节
-	*         lockDuration: 节目锁定时间长度， 单位为 10 毫秒， 例
-	*         如当该值为 100 时表示锁定节目 1 秒.注意： 当该值为 0xffffffff 时表示节目锁定无时间长度限制       
-	* 返回值：0 成功， 其他值为错误号
-	* 功 能：节目锁定
-	* 注：
-	* 具体使用方法参考协议
-******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
-        public static extern int bxDual_cmd_programLock(byte[] ip, ushort port, byte nonvolatile, byte locker, byte[] name, int lockDuration);
 /*! ***************************************************************
 * 函数名：       cmd_check_time（）
 * 参数名：ip：控制器IP， port：控制器端口

@@ -1,3 +1,5 @@
+
+
 # bx_sdk_dual.dll接口说明文档
 
 ##  发送流程
@@ -186,6 +188,105 @@
 **说明：** 写文件结束
 
 **函数：** public static extern int bxDual_cmd_ofsEndFileTransf(byte[] ip, ushort port);
+
+##### 1.2.5 bxDual_cmd_sysReset
+
+**返回值：**成功返回0；失败返回错误号 
+
+**参数：**
+
+| 参数 | 说明       |
+| ---- | ---------- |
+| ip   | 控制器IP   |
+| port | 控制器端口 |
+
+**说明：** 让系统复位
+
+**函数：** public static extern int bxDual_cmd_sysReset(byte[] ip, ushort port);
+
+##### 1.2.6 bxDual_cmd_coerceOnOff
+
+**返回值：**成功返回0；失败返回错误号 
+
+**参数：**
+
+| 参数  | 说明                              |
+| ----- | --------------------------------- |
+| ip    | 控制器IP                          |
+| port  | 控制器端口                        |
+| onOff | 控制器状态：0x01 –开机 0x00 –关机 |
+
+**说明：** 强制开关机
+
+**函数：** public static extern int bxDual_cmd_coerceOnOff(byte[] ip, ushort port, byte onOff);
+
+##### 1.2.7 bxDual_cmd_timingOnOff
+
+**返回值：**成功返回0；失败返回错误号 
+
+**参数：**
+
+| 参数     | 说明                                    |
+| -------- | --------------------------------------- |
+| ip       | 控制器IP                                |
+| port     | 控制器端口                              |
+| groupNum | 有几组定时开关机                        |
+| data     | [TimingOnOff](#TimingOnOff)结构体的地址 |
+
+**说明：** 定时开关机命令
+
+**函数：** public static extern int bxDual_cmd_timingOnOff(byte[] ip, ushort port, byte groupNum, TimingOnOff[] data);
+
+##### 1.2.8 bxDual_cmd_cancelTimingOnOff
+
+**返回值：**成功返回0；失败返回错误号 
+
+**参数：**
+
+| 参数 | 说明       |
+| ---- | ---------- |
+| ip   | 控制器IP   |
+| port | 控制器端口 |
+
+**说明：**取消定时开关机
+
+**函数：** public static extern int bxDual_cmd_cancelTimingOnOff(byte[] ip, ushort port);
+
+##### 1.2.9 bxDual_cmd_screenLock
+
+**返回值：**成功返回0；失败返回错误号 
+
+**参数：**
+
+| 参数        | 说明                                             |
+| ----------- | ------------------------------------------------ |
+| ip          | 控制器IP                                         |
+| port        | 控制器端口                                       |
+| nonvolatile | 状态是否掉电保存 0x00 –掉电不保存 0x01 –掉电保存 |
+| locked      | 0x00 –解锁  0x01 –锁定                           |
+
+**说明：** 屏幕锁定
+
+**函数：** public static extern int bxDual_cmd_screenLock(byte[] ip, ushort port, byte nonvolatile, byte locked);;
+
+##### 1.2.10 bxDual_cmd_programLock
+
+**返回值：**成功返回0；失败返回错误号 
+
+**参数：**
+
+| 参数         | 说明                                                         |
+| ------------ | ------------------------------------------------------------ |
+| ip           | 控制器IP                                                     |
+| port         | 控制器端口                                                   |
+| nonvolatile  | 状态是否掉电保存 0x00 –掉电不保存 0x01 –掉电保存             |
+| locked       | 0x00 –解锁  0x01 –锁定                                       |
+| name         | 节目名称4（byte）个字节                                      |
+| lockDuration | 节目锁定时间长度， 单位为 10 毫秒， 例 如当该值为 100 时表示锁定节目 1 秒.注意： 当该值为 0xffffffff 时表示节目锁定无时间长度限制 |
+
+**说明：** 节目锁定
+
+**函数：** public static extern int bxDual_cmd_programLock(byte[] ip, ushort port, byte nonvolatile, byte locked, byte[] name, uint lockDuration);
 
 ### 2.BX-5(5代)控制卡API
 
@@ -475,8 +576,6 @@
 **说明：** 删除动态区
 
 **函数：**public static extern int bxDual_dynamicArea_DelAreaS_5G(byte[] ip, int nPort, byte uAreaCount, byte[] pAreaID);
-
-#### 2.3 其它API
 
 ### 3.BX-6(6代)控制卡API
 
@@ -803,8 +902,6 @@
 **说明：** 同时更新多个动态区:并与节目关联，即与节目一起显示
 
 **函数：**public static extern int bxDual_dynamicAreaS_AddTxtDetails_WithProgram_6G(byte[] ip, int nPort, E_ScreenColor_G56 color, byte uAreaCount, [In] DynamicAreaParams[] pParams, ushort RelateProNum, ushort[] RelateProSerial);
-
-#### 3.3 其它API
 
 ## 附录
 
@@ -1321,6 +1418,21 @@
 	            //end.
 	
 	        }
+### <span id="TimingOnOff">TimingOnOff</span>
+
+```
+[StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+        public struct TimingOnOff
+        {
+            public byte onHour;   // 开机小时
+            public byte onMinute; // 开机分钟
+            public byte offHour;  // 关机小时
+            public byte offMinute; // 关机分钟
+        }
+```
+
+
+
 ### 枚举类型
 
 #### 日期格式

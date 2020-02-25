@@ -1366,6 +1366,158 @@ typedef int(__stdcall *PbxDual_dynamicArea_AddAreaWithPic_5G)(Ouint8* pIP, Ouint
 	PbxDual_dynamicArea_AddAreaWithPic_5G bxDual_dynamicArea_AddAreaWithPic_5G;
 
 
+	
+/*! ***************************************************************
+* 函数名：       cmd_coerceOnOff（）
+* 参数名：ip：控制器IP， port：控制器端口，onOff：控制器状态：0x01 –开机 0x00 –关机
+* 返回值：0 成功， 其他值为错误号
+* 功 能：强制开挂机命令
+* 注：
+*
+******************************************************************/
+typedef int(__stdcall *PbxDual_cmd_coerceOnOff)(Ouint8* ip, Ouint16 port, Ouint8 onOff);
+	PbxDual_cmd_coerceOnOff bxDual_cmd_coerceOnOff;
+
+/*! ***************************************************************
+* 函数名：       cmd_timingOnOff（）
+* 参数名：ip：控制器IP， port：控制器端口，groupNum：有几组定时开关机 data：TimingOnOff结构体的地址
+* 返回值：0 成功， 其他值为错误号
+* 功 能：定时开关机命令
+* 注：
+* groupNum值是n组情况,data大小 = n * TimingOnOff
+******************************************************************/
+typedef int(__stdcall *PbxDual_cmd_timingOnOff)(Ouint8* ip, Ouint16 port, Ouint8 groupNum, Ouint8 *data);
+	PbxDual_cmd_timingOnOff bxDual_cmd_timingOnOff;
+
+/*! ***************************************************************
+* 函数名：       cmd_cancelTimingOnOff（）
+* 参数名：ip：控制器IP， port：控制器端口
+* 返回值：0 成功， 其他值为错误号
+* 功 能：取消定时开关机
+* 注：
+*
+******************************************************************/
+typedef int(__stdcall *PbxDual_cmd_cancelTimingOnOff)(Ouint8* ip, Ouint16 port);
+	PbxDual_cmd_cancelTimingOnOff bxDual_cmd_cancelTimingOnOff;
+
+/*! ***************************************************************
+* 函数名：       cmd_setBrightness（）
+* 参数名：ip：控制器IP， port：控制器端口， brightness：亮度度表
+* 返回值：0 成功， 其他值为错误号
+* 功 能：设置亮度和相关模式
+* 注：
+* 参考协议对应每一个表格，注意第一个字节模式的配置
+******************************************************************/
+typedef int(__stdcall *PbxDual_cmd_setBrightness)(Ouint8* ip, Ouint16 port, Brightness *brightness);
+	PbxDual_cmd_setBrightness bxDual_cmd_setBrightness;
+
+/*! ***************************************************************
+* 函数名：       cmd_readControllerID（）
+* 参数名：ip：控制器IP， port：控制器端口， ControllerID：传回控制器ID
+* 返回值：0 成功， 其他值为错误号
+* 功 能：读控制器ID
+* 注：
+* ControllerID是8个字节 请定义char data[8];
+******************************************************************/
+typedef int(__stdcall *PbxDual_cmd_readControllerID)(Ouint8* ip, Ouint16 port, Ouint8 *ControllerID);
+	PbxDual_cmd_readControllerID bxDual_cmd_readControllerID;
+
+/*! ***************************************************************
+* 函数名：       cmd_screenLock（）
+* 参数名：ip：控制器IP， port：控制器端口
+*         nonvolatile：状态是否掉电保存 0x00 –掉电不保存 0x01 –掉电保存
+*         lock： 0x00 –解锁  0x01 –锁定
+* 返回值：0 成功， 其他值为错误号
+* 功 能：屏幕锁定
+* 注：
+*
+******************************************************************/
+typedef int(__stdcall *PbxDual_cmd_screenLock)(Ouint8* ip, Ouint16 port, Ouint8 nonvolatile, Ouint8 lock);
+	PbxDual_cmd_screenLock bxDual_cmd_screenLock;
+
+/*! ***************************************************************
+* 函数名：       cmd_programLock（）
+* 参数名：ip：控制器IP， port：控制器端口
+*         nonvolatile： 状态是否掉电保存 0x00 –掉电不保存  0x01 –掉电保存
+*         lock：0x00 –解锁  0x01 –锁定
+*         name： 节目名称4（byte）个字节
+*         lockDuration: 节目锁定时间长度， 单位为 10 毫秒， 例
+*         如当该值为 100 时表示锁定节目 1 秒.注意： 当该值为 0xffffffff 时表示节目锁定无时间长度限制
+* 返回值：0 成功， 其他值为错误号
+* 功 能：节目锁定
+* 注：
+* 具体使用方法参考协议
+******************************************************************/
+typedef int(__stdcall *PbxDual_cmd_programLock)(Ouint8* ip, Ouint16 port, Ouint8 nonvolatile, Ouint8 lock, Ouint8 *name, Ouint32 lockDuration);
+	PbxDual_cmd_programLock bxDual_cmd_programLock;
+
+/*! ***************************************************************
+* 函数名：       cmd_check_controllerStatus（）
+* 参数名：ip：控制器IP， port：控制器端口， controllerStatus：请参考结构体ControllerStatus_G56
+* 返回值：0 成功， 其他值为错误号
+* 功 能：读控制器状态
+* 注：
+* ControllerStatus_G56和协议时对应的可以参考协议的具体用法
+******************************************************************/
+typedef int(__stdcall *PbxDual_cmd_check_controllerStatus)(Ouint8* ip, Ouint16 port, ControllerStatus_G56 *controllerStatus);
+	PbxDual_cmd_check_controllerStatus bxDual_cmd_check_controllerStatus;
+
+/*! ***************************************************************
+* 函数名：       cmd_setPassword（）
+* 参数名：ip：控制器IP， port：控制器端口， oldPassword：老密码， newPassword新密码
+* 返回值：0 成功， 其他值为错误号
+* 功 能：设置控制器密码
+* 注：
+* 设置后一定要记住，设置后就不在能明码通讯
+******************************************************************/
+typedef int(__stdcall *PbxDual_cmd_setPassword)(Ouint8* ip, Ouint16 port, Ouint8 *oldPassword, Ouint8 *newPassword);
+	PbxDual_cmd_setPassword bxDual_cmd_setPassword;
+
+/*! ***************************************************************
+* 函数名：       cmd_deletePassword（）
+* 参数名：ip：控制器IP， port：控制器端口， password：输出当前控制密码
+* 返回值：0 成功， 其他值为错误号
+* 功 能：删除当前控制器密码
+* 注：
+*
+******************************************************************/
+typedef int(__stdcall *PbxDual_cmd_deletePassword)(Ouint8* ip, Ouint16 port, Ouint8 *password);
+	PbxDual_cmd_deletePassword bxDual_cmd_deletePassword;
+
+/*! ***************************************************************
+* 函数名：       cmd_setDelayTime（）
+* 参数名：ip：控制器IP， port：控制器端口， delayTime：开机延时单位秒
+* 返回值：0 成功， 其他值为错误号
+* 功 能：设置控制开机延时时间
+* 注：
+*
+******************************************************************/
+typedef int(__stdcall *PbxDual_cmd_setDelayTime)(Ouint8* ip, Ouint16 port, short delayTime);
+	PbxDual_cmd_setDelayTime bxDual_cmd_setDelayTime;
+
+/*! ***************************************************************
+* 函数名：       cmd_setBtnFunc（）
+* 参数名：ip：控制器IP， port：控制器端口， btnMode：按钮模式 0x00–测试按钮 0x01 –沿触发切换节目 0x02 –电平触发切换节目
+* 返回值：0 成功， 其他值为错误号
+* 功 能：设置控制测试按钮功能
+* 注：
+* 具体细节参考协议
+******************************************************************/
+typedef int(__stdcall *PbxDual_cmd_setBtnFunc)(Ouint8* ip, Ouint16 port, Ouint8 btnMode);
+	PbxDual_cmd_setBtnFunc bxDual_cmd_setBtnFunc;
+
+/*! ***************************************************************
+* 函数名：       cmd_setTimingReset（）
+* 参数名：ip：控制器IP， port：控制器端口， cmdData：参考结构体TimingReset
+* 返回值：0 成功， 其他值为错误号
+* 功 能：设置控制重启重启时间
+* 注：
+* 具体细节参考协议
+******************************************************************/
+typedef int(__stdcall *PbxDual_cmd_setTimingReset)(Ouint8* ip, Ouint16 port, TimingReset *cmdData);
+	PbxDual_cmd_setTimingReset bxDual_cmd_setTimingReset;
+
+
 void addProgram_G5();
 void addArea_G5(Ouint16 AreaID,Ouint8 AreaType,Ouint8 AreaX,Ouint8 AreaY,Ouint8 AreaWidth,Ouint8 AreaHeight);
 void addAreaTime_G5(Ouint16 AreaID);
@@ -1382,6 +1534,14 @@ static void Creat_sound_6(Ouint16 areaID);
 void addAreaPicturePic_G6(Ouint16 areaID);
 void dynamicArea_test_6(Ouint8* ip);
 void onbonTest_DynamicArea_6G(void);
+void Net_Bright(Ouint8* ipAdder,byte num);
+void Creat_sound_6(Ouint16 areaID);
+void Reset(Ouint8* ipAdder);
+void coerceOnOff(Ouint8* ipAdder);
+void timingOnOff(Ouint8* ipAdder);
+void screenLock(Ouint8* ipAdder);
+void programLock(Ouint8* ipAdder);
+
 int main(int argc, char* argv[])
 {
 	HINSTANCE hdll = LoadLibrary(L"bx_sdk_dual.dll");
@@ -1423,6 +1583,23 @@ int main(int argc, char* argv[])
 	bxDual_dynamicArea_AddAreaWithTxt_5G = (PbxDual_dynamicArea_AddAreaWithTxt_5G)GetProcAddress(hdll,"bxDual_dynamicArea_AddAreaWithTxt_5G");
 	bxDual_dynamicArea_AddAreaWithPic_5G = (PbxDual_dynamicArea_AddAreaWithPic_5G)GetProcAddress(hdll,"bxDual_dynamicArea_AddAreaWithPic_5G");
 	bxDual_program_IntegrateProgramFile = (PbxDual_program_IntegrateProgramFile)GetProcAddress(hdll,"bxDual_program_IntegrateProgramFile");
+	
+	bxDual_cmd_coerceOnOff = (PbxDual_cmd_coerceOnOff)GetProcAddress(hdll,"bxDual_cmd_coerceOnOff");
+	bxDual_cmd_timingOnOff = (PbxDual_cmd_timingOnOff)GetProcAddress(hdll,"bxDual_cmd_timingOnOff");
+	bxDual_cmd_coerceOnOff = (PbxDual_cmd_coerceOnOff)GetProcAddress(hdll,"bxDual_cmd_coerceOnOff");
+	bxDual_cmd_cancelTimingOnOff = (PbxDual_cmd_cancelTimingOnOff)GetProcAddress(hdll,"bxDual_cmd_cancelTimingOnOff")
+	bxDual_cmd_setBrightness = (PbxDual_cmd_setBrightness)GetProcAddress(hdll,"bxDual_cmd_setBrightness")
+	bxDual_cmd_readControllerID = (PbxDual_cmd_readControllerID)GetProcAddress(hdll,"bxDual_cmd_readControllerID")
+	bxDual_cmd_screenLock = (PbxDual_cmd_screenLock)GetProcAddress(hdll,"bxDual_cmd_screenLock")
+	bxDual_cmd_programLock = (PbxDual_cmd_programLock)GetProcAddress(hdll,"bxDual_cmd_programLock")
+	bxDual_cmd_check_controllerStatus = (PbxDual_cmd_check_controllerStatus)GetProcAddress(hdll,"bxDual_cmd_check_controllerStatus")
+	bxDual_cmd_setPassword = (PbxDual_cmd_setPassword)GetProcAddress(hdll,"bxDual_cmd_setPassword")
+	bxDual_cmd_deletePassword = (PbxDual_cmd_deletePassword)GetProcAddress(hdll,"bxDual_cmd_deletePassword")
+	bxDual_cmd_setBtnFunc = (PbxDual_cmd_setBtnFunc)GetProcAddress(hdll,"bxDual_cmd_setBtnFunc")
+	bxDual_cmd_setDelayTime = (PbxDual_cmd_setDelayTime)GetProcAddress(hdll,"bxDual_cmd_setDelayTime")
+	bxDual_cmd_setTimingReset = (PbxDual_cmd_setTimingReset)GetProcAddress(hdll,"bxDual_cmd_setTimingReset")
+
+
 
 	
 	unsigned char ip[] = "192.168.89.182";
@@ -1814,4 +1991,111 @@ void dynamicArea_test_6(Ouint8* ip)
 		arrParams[0] = oAreaParams_1;
 	err = bxDual_dynamicAreaS_AddTxtDetails_6G(ip, 5005, eSCREEN_COLOR_FULLCOLOR, 1, arrParams);
 	printf("err =====dynamicArea_AddAreaTxtDetails_WithProgram_6G===== %d \n", err);
+}
+        //调整亮度
+void Net_Bright(Ouint8* ipAdder,byte num)
+{
+    Brightness brightness;
+    brightness.BrightnessMode=0;
+    brightness.HalfHourValue0 = num;
+    brightness.HalfHourValue1 = num;
+    brightness.HalfHourValue2 = num;
+    brightness.HalfHourValue3 = num;
+    brightness.HalfHourValue4 = num;
+    brightness.HalfHourValue5 = num;
+    brightness.HalfHourValue6 = num;
+    brightness.HalfHourValue7 = num;
+    brightness.HalfHourValue8 = num;
+    brightness.HalfHourValue9 = num;
+    brightness.HalfHourValue10 = num;
+    brightness.HalfHourValue11 = num;
+    brightness.HalfHourValue12 = num;
+    brightness.HalfHourValue13 = num;
+    brightness.HalfHourValue14 = num;
+    brightness.HalfHourValue15 = num;
+    brightness.HalfHourValue16 = num;
+    brightness.HalfHourValue17 = num;
+    brightness.HalfHourValue18 = num;
+    brightness.HalfHourValue19 = num;
+    brightness.HalfHourValue20 = num;
+    brightness.HalfHourValue21 = num;
+    brightness.HalfHourValue22 = num;
+    brightness.HalfHourValue23 = num;
+    brightness.HalfHourValue24 = num;
+    brightness.HalfHourValue25 = num;
+    brightness.HalfHourValue26 = num;
+    brightness.HalfHourValue27 = num;
+    brightness.HalfHourValue28 = num;
+    brightness.HalfHourValue29 = num;
+    brightness.HalfHourValue30 = num;
+    brightness.HalfHourValue31 = num;
+    brightness.HalfHourValue32 = num;
+    brightness.HalfHourValue33 = num;
+    brightness.HalfHourValue34 = num;
+    brightness.HalfHourValue35 = num;
+    brightness.HalfHourValue36 = num;
+    brightness.HalfHourValue37 = num;
+    brightness.HalfHourValue38 = num;
+    brightness.HalfHourValue39 = num;
+    brightness.HalfHourValue40 = num;
+    brightness.HalfHourValue41 = num;
+    brightness.HalfHourValue42 = num;
+    brightness.HalfHourValue43 = num;
+    brightness.HalfHourValue44 = num;
+    brightness.HalfHourValue45 = num;
+    brightness.HalfHourValue46 = num;
+    brightness.HalfHourValue47 = num;
+
+    int err = bxDual_cmd_setBrightness(ipAdder, 5005, brightness);
+}
+        //添加语音
+void Creat_sound_6(Ouint16 areaID)
+{
+	EQPicAreaSoundHeader_G6 pheader;
+	pheader.SoundPerson=3;
+	pheader.SoundVolum=5;
+	pheader.SoundSpeed=5;
+	pheader.SoundDataMode=0;
+	pheader.SoundReplayTimes=0;
+	pheader.SoundReplayDelay=1000;
+	pheader.SoundReservedParaLen=3;
+	pheader.Soundnumdeal = 1;
+	pheader.Soundlanguages = 1;
+	pheader.Soundwordstyle = 1;
+	int err = bxDual_program_pictureAreaEnableSound_G6(areaID, pheader, (Ouint8*)"请张三到1号窗口取药");
+}
+//系统复位
+void Reset(Ouint8* ipAdder)
+{
+int err = bxDual_cmd_sysReset(ipAdder, 5005);
+}
+//强制开关机
+void coerceOnOff(Ouint8* ipAdder)
+{
+	int err = bxDual_cmd_coerceOnOff(ipAdder, 5005, 0);//关机
+	//int err = bxDual_cmd_coerceOnOff(ipAdder, 5005, 1);//开机
+}
+//定时开关机
+void timingOnOff(Ouint8* ipAdder) 
+{
+	TimingOnOff[] time;
+	time[0].onHour=0x06;   // 开机小时
+	time[0].onMinute = 0x10; // 开机分钟
+	time[0].offHour = 0x10;  // 关机小时
+	time[0].offMinute = 0x10; // 关机分钟
+	int err = bxDual_cmd_timingOnOff(ipAdder, 5005, 1,time);
+	//取消定时开关机
+	err = bx_sdk_dual.bxDual_cmd_cancelTimingOnOff(ipAdder, 5005);
+}
+//屏幕锁定
+void screenLock(Ouint8* ipAdder)
+{
+	int err = bx_sdk_dual.bxDual_cmd_screenLock(ipAdder, 5005, 1, 1);//屏幕锁定
+	//int err = bx_sdk_dual.bxDual_cmd_screenLock(ipAdder, 5005, 1,0);//屏幕解锁
+}
+//节目锁定
+void programLock(Ouint8* ipAdder)
+{
+	int err = bx_sdk_dual.bxDual_cmd_programLock(ipAdder, 5005, 1, 1, (Ouint8*)"P000", 0xffffffff);//锁定
+	//int err = bx_sdk_dual.bxDual_cmd_programLock(ipAdder, 5005, 1,0, (Ouint8*)"P000", 0xffffffff);//解
 }

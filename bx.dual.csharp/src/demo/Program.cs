@@ -1067,9 +1067,6 @@ namespace LedSDKDemo_CSharp
             Console.WriteLine("cmd_setBrightness:" + err);
         }
         //添加语音
-        public static void Creat_sound_5(ushort areaID)
-        {
-        }
         public static void Creat_sound_6(ushort areaID)
         {
             byte[] str = Encoding.GetEncoding("gb2312").GetBytes("请张三到1号窗口取药");
@@ -1087,5 +1084,46 @@ namespace LedSDKDemo_CSharp
             int err = bx_sdk_dual.bxDual_program_pictureAreaEnableSound_G6(areaID, pheader, str);
             Console.WriteLine("program_pictureAreaEnableSound_G6:" + err);
         }
+        //系统复位
+        public static void Reset(byte[] ipAdder)
+        {
+            int err = bx_sdk_dual.bxDual_cmd_sysReset(ipAdder, 5005);
+            Console.WriteLine("bxDual_cmd_sysReset:" + err);
+        }
+        //强制开关机
+        public static void coerceOnOff(byte[] ipAdder)
+        {
+            int err = bx_sdk_dual.bxDual_cmd_coerceOnOff(ipAdder, 5005, 0);//关机
+            //int err = bx_sdk_dual.bxDual_cmd_coerceOnOff(ipAdder, 5005, 1);//开机
+            Console.WriteLine("bxDual_cmd_coerceOnOff:" + err);
+        }
+        //定时开关机
+        public static void timingOnOff(byte[] ipAdder) 
+        {
+            bx_sdk_dual.TimingOnOff[] time = new bx_sdk_dual.TimingOnOff[1];
+            time[0].onHour=0x06;   // 开机小时
+            time[0].onMinute = 0x10; // 开机分钟
+            time[0].offHour = 0x10;  // 关机小时
+            time[0].offMinute = 0x10; // 关机分钟
+            int err = bx_sdk_dual.bxDual_cmd_timingOnOff(ipAdder, 5005, 1,time);
+            //取消定时开关机
+            err = bx_sdk_dual.bxDual_cmd_cancelTimingOnOff(ipAdder, 5005);
+        }
+        //屏幕锁定
+        public static void screenLock(byte[] ipAdder)
+        {
+            int err = bx_sdk_dual.bxDual_cmd_screenLock(ipAdder, 5005, 1, 1);//屏幕锁定
+            //int err = bx_sdk_dual.bxDual_cmd_screenLock(ipAdder, 5005, 1,0);//屏幕解锁
+            Console.WriteLine("bxDual_cmd_screenLock:" + err);
+        }
+        //节目锁定
+        public static void programLock(byte[] ipAdder)
+        {
+            byte[] name = Encoding.GetEncoding("GBK").GetBytes("P000");
+            int err = bx_sdk_dual.bxDual_cmd_programLock(ipAdder, 5005, 1, 1, name, 0xffffffff);//锁定
+            //int err = bx_sdk_dual.bxDual_cmd_programLock(ipAdder, 5005, 1,0, name, 0xffffffff);//解锁
+            Console.WriteLine("bxDual_cmd_programLock:" + err);
+        }
+
     }
 }

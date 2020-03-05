@@ -1587,17 +1587,17 @@ int main(int argc, char* argv[])
 	bxDual_cmd_coerceOnOff = (PbxDual_cmd_coerceOnOff)GetProcAddress(hdll,"bxDual_cmd_coerceOnOff");
 	bxDual_cmd_timingOnOff = (PbxDual_cmd_timingOnOff)GetProcAddress(hdll,"bxDual_cmd_timingOnOff");
 	bxDual_cmd_coerceOnOff = (PbxDual_cmd_coerceOnOff)GetProcAddress(hdll,"bxDual_cmd_coerceOnOff");
-	bxDual_cmd_cancelTimingOnOff = (PbxDual_cmd_cancelTimingOnOff)GetProcAddress(hdll,"bxDual_cmd_cancelTimingOnOff")
-	bxDual_cmd_setBrightness = (PbxDual_cmd_setBrightness)GetProcAddress(hdll,"bxDual_cmd_setBrightness")
-	bxDual_cmd_readControllerID = (PbxDual_cmd_readControllerID)GetProcAddress(hdll,"bxDual_cmd_readControllerID")
-	bxDual_cmd_screenLock = (PbxDual_cmd_screenLock)GetProcAddress(hdll,"bxDual_cmd_screenLock")
-	bxDual_cmd_programLock = (PbxDual_cmd_programLock)GetProcAddress(hdll,"bxDual_cmd_programLock")
-	bxDual_cmd_check_controllerStatus = (PbxDual_cmd_check_controllerStatus)GetProcAddress(hdll,"bxDual_cmd_check_controllerStatus")
-	bxDual_cmd_setPassword = (PbxDual_cmd_setPassword)GetProcAddress(hdll,"bxDual_cmd_setPassword")
-	bxDual_cmd_deletePassword = (PbxDual_cmd_deletePassword)GetProcAddress(hdll,"bxDual_cmd_deletePassword")
-	bxDual_cmd_setBtnFunc = (PbxDual_cmd_setBtnFunc)GetProcAddress(hdll,"bxDual_cmd_setBtnFunc")
-	bxDual_cmd_setDelayTime = (PbxDual_cmd_setDelayTime)GetProcAddress(hdll,"bxDual_cmd_setDelayTime")
-	bxDual_cmd_setTimingReset = (PbxDual_cmd_setTimingReset)GetProcAddress(hdll,"bxDual_cmd_setTimingReset")
+	bxDual_cmd_cancelTimingOnOff = (PbxDual_cmd_cancelTimingOnOff)GetProcAddress(hdll,"bxDual_cmd_cancelTimingOnOff");
+	bxDual_cmd_setBrightness = (PbxDual_cmd_setBrightness)GetProcAddress(hdll,"bxDual_cmd_setBrightness");
+	bxDual_cmd_readControllerID = (PbxDual_cmd_readControllerID)GetProcAddress(hdll,"bxDual_cmd_readControllerID");
+	bxDual_cmd_screenLock = (PbxDual_cmd_screenLock)GetProcAddress(hdll,"bxDual_cmd_screenLock");
+	bxDual_cmd_programLock = (PbxDual_cmd_programLock)GetProcAddress(hdll,"bxDual_cmd_programLock");
+	bxDual_cmd_check_controllerStatus = (PbxDual_cmd_check_controllerStatus)GetProcAddress(hdll,"bxDual_cmd_check_controllerStatus");
+	bxDual_cmd_setPassword = (PbxDual_cmd_setPassword)GetProcAddress(hdll,"bxDual_cmd_setPassword");
+	bxDual_cmd_deletePassword = (PbxDual_cmd_deletePassword)GetProcAddress(hdll,"bxDual_cmd_deletePassword");
+	bxDual_cmd_setBtnFunc = (PbxDual_cmd_setBtnFunc)GetProcAddress(hdll,"bxDual_cmd_setBtnFunc");
+	bxDual_cmd_setDelayTime = (PbxDual_cmd_setDelayTime)GetProcAddress(hdll,"bxDual_cmd_setDelayTime");
+	bxDual_cmd_setTimingReset = (PbxDual_cmd_setTimingReset)GetProcAddress(hdll,"bxDual_cmd_setTimingReset");
 
 
 
@@ -1917,7 +1917,109 @@ void tcp_send_program_G6(Ouint8* ip, Ouint16 port)
 	bxDual_program_deleteProgram_G6();
 
 }
+void tcp_com_program_G5(Ouint8* com)
+{
+	Oint8 ret;
+	ret = bxDual_cmd_uart_ofsStartFileTransf(com, 2);
+	printf("tcp_send_program_G5L:cmd_ofsStartFileTransf===== %d \n", ret);
+	if(ret != 0){
+		printf("cmd_ofsStartFileTransf run error...");
+	}else{
+		printf("cmd_ofsStartFileTransf run succeed...");
+	}
 
+	EQprogram program;
+	memset((void*)&program, 0, sizeof(program));
+	bxDual_program_IntegrateProgramFile(&program);
+
+	ret = bxDual_cmd_uart_ofsWriteFile(com, 2, program.fileName, program.fileType, program.fileLen, 1, program.fileAddre);
+	if(ret != 0){
+		printf("cmd_ofsWriteFile run error...");
+	}else{
+		printf("cmd_ofsWriteFile run succeed...");
+	}
+	printf("tcp_send_program_G5:cmd_ofsWriteFile===== %d \n", ret);
+	printf("fileName_G5 == %s \n", program.fileName);
+	printf("fileType_G5 == %d \n", program.fileType);
+	printf("fileLen_G5 == %d \n", program.fileLen);
+	printf("fileCRC32_G5 == %d \n",program.fileCRC32);
+	ret = bxDual_cmd_uart_ofsEndFileTransf(com, 2);
+	if(ret != 0){
+		printf("cmd_ofsEndFileTransf run error...");
+	}else{
+		printf("cmd_ofsEndFileTransf run succeed...");
+	}
+	printf("tcp_send_program_G5:md_ofsWriteFile===== %d \n", ret);
+	
+}
+void tcp_com_program_G6(Ouint8* com)
+{
+	Oint8 ret;
+	EQprogram_G6 program;
+	memset((void*)&program, 0, sizeof(program));
+	bxDual_program_IntegrateProgramFile_G6(&program);
+	
+	ret = bxDual_cmd_uart_ofsStartFileTransf(com, 2);
+	printf("ret =====cmd_ofsStartFileTransf===== %d \n", ret);
+	if(ret != 0){
+		printf("cmd_ofsStartFileTransf run error...");
+	}else{
+		printf("cmd_ofsStartFileTransf run succeed...");
+	}
+
+	ret = bxDual_cmd_uart_ofsWriteFile(com, 2, program.dfileName, program.dfileType, program.dfileLen, 1, program.dfileAddre);
+	if(ret != 0){
+		printf("cmd_ofsWriteFile run error...");
+	}else{
+		printf("cmd_ofsWriteFile run succeed...");
+	}
+	printf("ret =====cmd_ofsWriteFile===== %d \n", ret);
+
+	ret = bxDual_cmd_uart_ofsWriteFile(com, 2, program.fileName, program.fileType, program.fileLen, 1, program.fileAddre);
+	if(ret != 0){
+		printf("cmd_ofsWriteFile run error...");
+	}else{
+		printf("cmd_ofsWriteFile run succeed...");
+	}
+	printf("ret =====cmd_ofsWriteFile===== %d \n", ret);
+
+	ret = bxDual_cmd_uart_ofsEndFileTransf(com, 2);
+	if(ret != 0){
+		printf("cmd_ofsEndFileTransf run error...");
+	}else{
+		printf("cmd_ofsEndFileTransf run succeed...");
+	}
+	printf("ret =====cmd_ofsEndFileTransf===== %d \n", ret);
+
+	//删除本地内存中的节目
+	bxDual_program_deleteProgram_G6();
+
+}
+//BX-5动态区文本
+void dynamicArea_test_5(Ouint8* ip)
+{
+	EQareaframeHeader Frame;
+                    Frame.AreaFFlag = 0;
+                    Frame.AreaFDispStyle = 0;
+                    Frame.AreaFDispSpeed = 0;
+                    Frame.AreaFMoveStep = 0;
+                    Frame.AreaFWidth = 0;
+                    Frame.AreaFBackup = 0;
+	EQfontData oFont;
+            oFont.arrMode = eSINGLELINE;
+            oFont.fontSize = 10;
+            oFont.color = eRED;
+            oFont.fontBold = false;
+            oFont.fontItalic = false;
+            oFont.tdirection = pNORMAL;
+            oFont.txtSpace = 0;
+            oFont.Valign = 0;
+            oFont.Halign = 0;
+	Ouint16 uRelateProgID[1];  uRelateProgID[0] = 0;
+	bxDual_dynamicArea_AddAreaWithTxt_5G(ip, 5005, eSCREEN_COLOR_FULLCOLOR, 1, 0, 0, 1, 0, uRelateProgID,
+                            1, 0, 0, 64, 32, Frame, 4, 0, 10, 100, 0, oFont, (Ouint8*)"宋体", (Ouint8*)"一起");
+	printf("err =====bxDual_dynamicArea_AddAreaWithTxt_5G===== %d \n", err);
+}
 //BX-6动态区文本
 void dynamicArea_test_6(Ouint8* ip)
 {

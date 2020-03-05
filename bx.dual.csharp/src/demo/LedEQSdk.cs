@@ -1599,6 +1599,9 @@ strAreaTxtContent - 动态区域内要显示的文本内容
 ******************************************************************/
         [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_picturesAreaAddFrame(ushort areaID,ref  EQareaframeHeader afHeader, byte[] picPath);
+
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_picturesAreaAddFrame_G6(ushort areaID, ref EQscreenframeHeader_G6 afHeader, byte[] picPath);
 /*! ***************************************************************
 * 函数名：       program_addFrame_G6（）
 *	sfHeader：参考结构体EQscreenframeHeader_G6

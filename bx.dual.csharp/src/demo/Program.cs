@@ -693,6 +693,15 @@ namespace LedSDKDemo_CSharp
         }
         public static void AreaAddFrame_6(ushort areaID)
         {
+            bx_sdk_dual.EQscreenframeHeader_G6 sfheader;
+            sfheader.FrameDispStype = 0x01;    //边框显示方式
+            sfheader.FrameDispSpeed = 0x10;    //边框显示速度
+            sfheader.FrameMoveStep = 0x01;     //边框移动步长
+            sfheader.FrameUnitLength = 2;   //边框组元长度
+            sfheader.FrameUnitWidth = 2;    //边框组元宽度
+            sfheader.FrameDirectDispBit = 0;//上下左右边框显示标志位，目前只支持6QX-M卡 
+            byte[] img = Encoding.Default.GetBytes("F:\\黄10.png");
+            bx_sdk_dual.bxDual_program_picturesAreaAddFrame_G6(areaID, ref sfheader, img);
         }
         //添加内容
         public static void Creat_AddStr_5(ushort areaID,string txt)

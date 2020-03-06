@@ -5,11 +5,11 @@
 
 * 代码
 
-  https://github.com/onbonlab/bx.k.delphi/blob/master/src/MainFrm.pas
+  
 
 * 可执行程序
 
-  https://github.com/onbonlab/bx.k.delphi/releases
+  
 
 
 
@@ -56,7 +56,7 @@ bxDual_ReleaseSdk();
 
 ## 使用例程
 
-```
+```C++
 	unsigned char ip[] = "192.168.89.182";
 	unsigned short port = 5005;
 	int ret = 0;
@@ -69,7 +69,7 @@ bxDual_ReleaseSdk();
 	}else{
 		printf("cmd_tcpPing run succeed...");
 		//memset((void*)ip, 0, sizeof(ip));
-		//memcpy((void*)ip, (void*)retdata.ipAdder, strlen((char*)retdata.ipAdder));
+		//memcpy((void*)ip,(void*)retdata.ipAdder, strlen((char*)retdata.ipAdder));
 		printf("retdata.ipAdder =====%s \n", ip);
 		printf("retdata.ControllerType == 0x%x \n", re
 	}
@@ -107,7 +107,7 @@ bxDual_ReleaseSdk();
 		oAreaHeader_G6.stSoundData.SoundVolum = 1;		//1 0x05 音量该值范围是 0~10，共 11 种，0表示静音只有 SoundFlag（是否使能语音播放）为 1 时才发送该字节，否则不发送该值默认为 5
 		oAreaHeader_G6.stSoundData.SoundSpeed = 0x2;	//1 0x05 语速该值范围是 0~10，共 11 种只有 SoundFlag（是否使能语音播放）为 1 时才发送该字节，否则不发送该值默认为 5
 		oAreaHeader_G6.stSoundData.SoundDataMode = 0x00;//1 0x00 SoundData 的编码格式：该值意义如下：0x00 GB2312; 0x01 GBK; 0x02 BIG5; 0x03 UNICODE只有 SoundFlag（是否使能语音播放）为 1 时才发送该字节，否则不发送
-		oAreaHeader_G6.stSoundData.SoundReplayTimes = 0x01;// 0xffffffff;	//4 0x00000000 重播次数该值为 0，表示播放 1 次该值为 1，表示播放 2 次
+			oAreaHeader_G6.stSoundData.SoundReplayTimes = 0x01;// 0xffffffff;	//4 0x00000000 重播次数该值为 0，表示播放 1 次该值为 1，表示播放 2 次
 		//......
 		//该值为 0xffffffff，表示播放无限次只有 SoundFlag（是否使能语播放）为 1 时才发送该字节，否则不发送该值默认为 0
 		oAreaHeader_G6.stSoundData.SoundReplayDelay = 200;	//4 0x00000000 重播时间间隔该值表示两次播放语音的时间间隔，单位为 10ms只有 SoundFlag（是否使能语音播放）为 1 时才发送该字节，否则不发送该值默认为 0

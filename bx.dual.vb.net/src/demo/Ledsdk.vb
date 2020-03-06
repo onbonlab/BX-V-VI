@@ -324,7 +324,7 @@ Public Class Ledsdk
     '添加时间
     Public Declare Auto Function bxDual_program_fontPath_timeAreaAddContent Lib "bx_sdk_dual.dll" (ByVal areaID As UShort, ByRef pheader As EQtimeAreaData_G56) As Integer
     '添加表盘
-    Public Declare Auto Function bxDual_program_timeAreaAddAnalogClock Lib "bx_sdk_dual.dll" (ByVal areaID As UShort, ByRef pheader As EQAnalogClockHeader_G56, ByRef cStyle As E_ClockStyle, ByRef cColor As ClockColor_G56)
+    Public Declare Auto Function bxDual_program_timeAreaAddAnalogClock Lib "bx_sdk_dual.dll" (ByVal areaID As UShort, ByRef pheader As EQAnalogClockHeader_G56, ByRef cStyle As E_ClockStyle, ByRef cColor As ClockColor_G56) As Integer
     <StructLayout(LayoutKind.Sequential, Pack:=1)> _
     Public Structure EQprogram
         '节目参数文件名
@@ -469,7 +469,7 @@ Public Class Ledsdk
     '添加时间
     Public Declare Auto Function bxDual_program_fontPath_timeAreaAddContent_G6 Lib "bx_sdk_dual.dll" (ByVal areaID As UShort, ByRef pheader As EQtimeAreaData_G56) As Integer
     '添加表盘
-    Public Declare Auto Function bxDual_program_timeAreaAddAnalogClock_G6 Lib "bx_sdk_dual.dll" (ByVal areaID As UShort, ByRef pheader As EQAnalogClockHeader_G56, ByRef cStyle As E_ClockStyle, ByRef cColor As ClockColor_G56)
+    Public Declare Auto Function bxDual_program_timeAreaAddAnalogClock_G6 Lib "bx_sdk_dual.dll" (ByVal areaID As UShort, ByRef pheader As EQAnalogClockHeader_G56, ByRef cStyle As E_ClockStyle, ByRef cColor As ClockColor_G56) As Integer
     <StructLayout(LayoutKind.Sequential, Pack:=1)> _
     Public Structure EQprogram_G6
         '节目参数文件名

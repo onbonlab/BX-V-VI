@@ -5,11 +5,11 @@
 
 * 代码
 
-  https://github.com/onbonlab/bx.k.delphi/blob/master/src/MainFrm.pas
+  
 
 * 可执行程序
 
-  https://github.com/onbonlab/bx.k.delphi/releases
+  
 
 
 
@@ -56,7 +56,7 @@ bxDual_ReleaseSdk();
 
 ## 使用例程
 
-```
+```Delphi
 err:=bxDual_InitSdk();
 var
   Header: PEQprogramHeader;

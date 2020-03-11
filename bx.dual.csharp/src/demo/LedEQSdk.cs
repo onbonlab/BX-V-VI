@@ -1874,5 +1874,1157 @@ strAreaTxtContent - 动态区域内要显示的文本内容
 ***************************************************************************************************************************/
         [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_search_Net_6G(ref NetSearchCmdRet retData, byte[] uartPort, byte nBaudRateType);
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_uart_search_Net_6G_Web(ref NetSearchCmdRet retData, byte[] uartPort, byte nBaudRateType);
+
+/*****************************************************************************************************************************************************************************************************/
+        
+/*
+* 功  能：设置目标地址，即设置屏号/设置屏地址/设置控制器的屏号;
+* 参  数：usDstAddr,2个字节长度，默认值0xfffe 为地址通配符;
+* 返回值：0 成功;
+*/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_set_screenNum_G56(ushort usDstAddr);
+
+
+
+
+/*! ***************************************************************
+* 函数名：set_packetLen（）
+* 参数名：packetLen 数据包长度
+* 返回值：0 成功， 其他值为错误
+* 功 能：用于设置控制各种通讯方式每一包最大长度
+* 注：5E，6E，6Q系列最大数据长途64K（建议最大不要超过63*1024）
+*     其他系列最大长度1K（1204）
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_set_packetLen(ushort packetLen);
+
+
+
+/*! ***************************************************************
+* 函数名：       cmd_searchController（）
+* 参数名：retData 请参考结构体Ping_data 所有回读参数都会通过结构体回调
+* 返回值：0 成功， 其他值为错误号
+* 功 能：搜索控制器命令
+* 注：
+* 通过各种通讯方式（AT、UDP、TCP）搜索控制器
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_searchController(ref Ping_data retData);
+
+
+/*! ***************************************************************
+**  串口通讯命令 **
+/*! ***************************************************************/
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_uart_searchController（）
+* 参数名：retData 请参考结构体Ping_data 所有回读参数都会通过结构体回调
+* 返回值：0 成功， 其他值为错误号
+* 功 能：搜索控制器命令
+* 注：
+* 通过串口通讯方式（9600、57600）搜索控制器
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_uart_searchController(ref Ping_data retData, byte[] uartPort);
+
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_uart_ofsFormat（）
+* 参数名：uartPort：串口端口号， baudRate：波特率
+* 返回值：0 成功， 其他值为错误号
+* 功 能：文件系统格式化
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_uart_ofsFormat(byte[] uartPort, byte baudRate);
+
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_uart_ofsDeleteFormatFile（）
+* 参数名：uartPort：串口端口号， baudRate：波特率
+*	fileNub:要删除的文件个数
+*	fileName：要删除的文件名
+* 返回值：0 成功， 其他值为错误号
+* 功 能：删除文件
+* 注：
+* fileName是4个字节 fileNub值为N就要把N个fileName拼接 fileName大小 = fileName（4byte）*N
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_uart_ofsDeleteFormatFile(Oint8* uartPort, Ouint8 baudRate, short fileNub, Ouint8 *fileName);
+
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_uart_confDeleteFormatFile（）
+* 参数名：uartPort：串口端口号， baudRate：波特率
+*	fileNub:要删除的文件个数
+*	fileName：要删除的文件名
+* 返回值：0 成功， 其他值为错误号
+* 功 能：删除文件
+* 注：此函数用于对存储在固定位置的文件进行处理， 例
+如： Firmware 文件、 控制器参数配置文件、 扫描配置文件等。
+* fileName是4个字节 fileNub值为N就要把N个fileName拼接 fileName大小 = fileName（4byte）*N
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_uart_confDeleteFormatFile(Oint8* uartPort, Ouint8 baudRate, short fileNub, Ouint8 *fileName);
+
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_uart_ofsGetMemoryVolume（）
+* 参数名：uartPort：串口端口号， baudRate：波特率
+*	totalMemVolume：全部空间大小
+*	availableMemVolume：剩余空间大小
+* 返回值：0 成功， 其他值为错误号
+* 功 能：获取控制空间大小和剩余空间
+* 注：
+* 发节目前需要查询防止空间不够用
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_uart_ofsGetMemoryVolume(Oint8* uartPort, Ouint8 baudRate, Ouint32 *totalMemVolume, Ouint32 *availableMemVolume);
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_ofsStartReedFile（）
+* 参数名：ip：控制器IP， port：控制器端口
+*	fileName：需要读取的文件名
+*	fileSize：回读文件大小
+*	fileCrc：回读的文件CRC
+* 返回值：0 成功， 其他值为错误号
+* 功 能：开始读文件
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_uart_ofsStartReedFile(Oint8* uartPort, Ouint8 baudRate, Ouint8 *fileName, Ouint32* fileSize, Ouint32 *fileCrc);
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_uart_confStartReedFile（）
+* 参数名：uartPort：串口端口号， baudRate：波特率
+*	fileName：需要读取的文件名
+*	fileSize：回读文件大小
+*	fileCrc：回读的文件CRC
+* 返回值：0 成功， 其他值为错误号
+* 功 能：开始读文件
+* 注：此函数用于对存储在固定位置的文件进行处理， 例
+如： Firmware 文件、 控制器参数配置文件、 扫描配置文件等。
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_uart_confStartReedFile(Oint8* uartPort, Ouint8 baudRate, Ouint8 *fileName, Ouint32* fileSize, Ouint32 *fileCrc);
+
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_uart_ofsReedFileBlock（）
+* 参数名：uartPort：串口端口号， baudRate：波特率
+*	fileName：需要读取的文件名
+*	fileAddre：传入读文件写的位置
+* 返回值：0 成功， 其他值为错误号
+* 功 能：读文件
+* 注：用于对存储在 OFS 中的文件的处理， 例如： 节目文件， 字库文件、 播放列表文件等
+* fileAddre大小根据cmd_ofsStartReedFile函数回调值确定
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_uart_ofsReedFileBlock(Oint8* uartPort, Ouint8 baudRate, Ouint8 *fileName, Ouint8* fileAddre);
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_uart_confReedFileBlock(）
+* 参数名：uartPort：串口端口号， baudRate：波特率
+*	fileName：需要读取的文件名
+*	fileAddre：传入读文件写的位置
+* 返回值：0 成功， 其他值为错误号
+* 功 能：读文件
+* 注：此函数用于对存储在固定位置的文件进行处理， 例
+如： Firmware 文件、 控制器参数配置文件、 扫描配置文件等。
+* fileAddre大小根据cmd_ofsStartReedFile函数回调值确定
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_uart_confReedFileBlock(Oint8* uartPort, Ouint8 baudRate, Ouint8 *fileName, Ouint8* fileAddre);
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_uart_ofsReedDirBlock（）
+* 参数名：uartPort：串口端口号， baudRate：波特率
+*	fileName：需要读取的文件名
+*	fileAddre：传入读文件写的位置
+* 返回值：0 成功， 其他值为错误号
+* 功 能：下面两条命令搭配使用可以获取所有文件名
+* 注：
+* 下面两条命令用法比较复杂请配合协议使用不做嗷述
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_uart_ofsReedDirBlock(Oint8* uartPort, Ouint8 baudRate, GetDirBlock_G56 *dirBlock);
+
+/*! ***************************************************************
+* 函数名：  bxDual_cmd_ofs_freeDirBlock（）
+* 参数名：
+*	dirBlock: 上述两条命令所有使用的结构体
+* 返回值：0 成功， 其他值为错误号
+* 功 能：释放cmd_ofsReedDirBlock所创建的节目列表dirBlock
+* 注：
+* dirBlock 上述两条命令调用完成后dirBlock不再使用时用此函数释放文件列表
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_uart_ofsFreeDirBlock(GetDirBlock_G56 *dirBlock);
+
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_uart_ofsGetTransStatus(Oint8* uartPort, Ouint8 baudRate, Ouint8 *r_w, Ouint8* fileName, Ouint32 *fileCrc, Ouint32 *fileOffset);
+
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_uart_sendConfigFile(）
+* 参数名：uartPort：串口端口号， baudRate：波特率
+configData 请参考结构体ConfigFile
+* 返回值：0 成功， 其他值为错误号
+* 功 能：发送配置文件到控制器
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_uart_sendConfigFile(Oint8* uartPort, Ouint8 baudRate, ConfigFile *configData);
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_uart_programLock（）
+* 参数名：uartPort：串口端口号， baudRate：波特率
+*         nonvolatile： 状态是否掉电保存 0x00 –掉电不保存  0x01 –掉电保存
+*         lock：0x00 –解锁  0x01 –锁定
+*         name： 节目名称4（byte）个字节
+*         lockDuration: 节目锁定时间长度， 单位为 10 毫秒， 例
+*         如当该值为 100 时表示锁定节目 1 秒.注意： 当该值为 0xffffffff 时表示节目锁定无时间长度限制
+* 返回值：0 成功， 其他值为错误号
+* 功 能：节目锁定
+* 注：
+* 具体使用方法参考协议
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_uart_programLock(Oint8* uartPort, Ouint8 baudRate, Ouint8 nonvolatile, Ouint8 lock, Ouint8 *name, Ouint32 lockDuration);
+
+
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_uart_programLock_6G(Oint8* uartPort, Ouint8 baudRate, Ouint8 nonvolatile, Ouint8 lock, Ouint8 *name, Ouint32 lockDuration);
+
+/*! ***************************************************************
+**  串口通讯命令 end **
+/*! ***************************************************************/
+
+
+/*! ***************************************************************
+* 函数名：       cmd_AT_setWifiSsidPwd（）
+* 参数名：ssid：控制器WIFI ssid，pwd：控制WIFI密码
+* 返回值：0 成功， 其他值为错误号
+* 功 能：设置wifi卡的 ssid pwd
+* 注：
+* 通讯方式（UDP
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_AT_setWifiSsidPwd(Ouint8* ssid, Ouint8* pwd);
+
+
+/*! ***************************************************************
+* 函数名：       cmd_AT_getWifiSsidPwd（）
+* 参数名：ssid：控制器WIFI ssid，pwd：控制WIFI密码
+* 返回值：0 成功， 其他值为错误号
+* 功 能：获取WIFI卡ssid pwd
+* 注：
+* 通讯方式（UDP）
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_AT_getWifiSsidPwd(Ouint8* ssid, Ouint8* pwd);
+
+
+
+
+/*! ***************************************************************
+**  UDP通讯命令 **
+/*! ***************************************************************/
+
+/*! ***************************************************************
+* 函数名：       cmd_udpNetworkSearch（）
+* 参数名：retData 请参考结构体heartbeatData 所有回读参数都会通过结构体回调
+* 返回值：0 成功， 其他值为错误号
+* 功 能：
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_udpNetworkSearch(heartbeatData *retData); //网络搜索
+
+
+/*! ********************************************************************************************************************
+* 函数名：cmd_udpNetworkSearch_6G（）
+* 参数名：retData : 存放网络搜索结果; 具体参考结构体:NetSearchCmdRet 声明中的注释；
+* 返回值：0 成功， 其他值为错误号;
+* 功  能： 网络搜索命令，返回：温度传感器，空气，PM2.5等信息，详见 NetSearchCmdRet:参考结构体声明中的注释；
+* 注：    针对 6代卡 的网络搜索命令
+***********************************************************************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_udpNetworkSearch_6G(NetSearchCmdRet *retData);
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_udpNetworkSearch_6G_Web(NetSearchCmdRet_Web *retData);
+
+
+
+/*! ***************************************************************
+* 函数名：       cmd_udpSetMac（）
+* 参数名：mac 传入的MAC地址
+* 返回值：0 成功， 其他值为错误号
+* 功 能：设置 MAC 地址命令
+* 注：
+* 需要修改MAC地址的时候调用
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_udpSetMac(Ouint8 *mac);
+
+/*! ***************************************************************
+* 函数名：       cmd_udpSetIP（）
+* 参数名
+Ouint8 mode; 控制器连接模式：
+0x00 –单机直连（PC 与控制器直接连
+接）
+0x01 –自动获取IP（DHCP）
+0x02 –手动设置IP（Static IP）
+0x03 –服务器模式（动态 IP）
+Ouint8 ip[] ； // 要设置的IP地址//设置IP
+Ouint8 subnetMask[] ; 子网掩码
+Ouint8 gateway[]; 默认网关
+short port; 端口号
+Ouint8 serverMode; 服务器模式
+Ouint8 serverIP[]; 服务IP
+short serverPort; 服务器端口号
+Ouint8 password[]; 服务器访问密码
+short heartbeat; 心跳间隔时间单位秒 默认值20
+Ouint8 netID[12]; 控制器网络ID
+* 返回值：0 成功， 其他值为错误号
+* 功 能：设置 IP 地址相关参数命令
+* 注：
+*  IP 地址 MAC地址都赋字符串 例：Ouint8 ip[] = "192.168.0.199"  具体使用细节请参考协议
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_udpSetIP(Ouint8 mode, Ouint8 *ip, Ouint8 *subnetMask, Ouint8 *gateway, short port, Ouint8 serverMode, Ouint8 *serverIP, short serverPort, Ouint8 *password, short heartbeat, Ouint8 *netID);// 由于传入参数到内部都需要转换没有使用结构体
+
+/*! ***************************************************************
+/**UDP CMD END**/
+/*! ***************************************************************/
+
+
+
+
+
+/*! ***************************************************************
+/** TCP命令 控制器维护命令 **/
+/*! ***************************************************************/
+
+
+/*! ***************************************************************
+* 函数名：       cmd_battieTime（）
+* 参数名：ip：控制器IP， port：控制器端口，
+*	mode：战斗时间控制命令
+*		0x00:启动战斗时间
+*		0x01:暂停战斗时间
+*		0x02:复位战斗时间
+*	battieData： 命令回读参数请参考结构体BattleTime
+* 返回值：0 成功， 其他值为错误号
+* 功 能：战斗时间管理命令
+* 注：
+* 具体细节参考协议
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_battieTime(Ouint8* ip, Ouint16 port, Ouint8 mode, BattleTime *battieData);
+
+/*! ***************************************************************
+* 函数名：       cmd_getStopwatch（）
+* 参数名：ip：控制器IP， port：控制器端口，
+*	mode：秒表控制命令
+*		0x00:启动秒表
+*		0x01:暂停秒表
+*		0x02:复位秒表
+*	timeValue：回读回来的当前秒表时间单位毫秒
+* 返回值：0 成功， 其他值为错误号
+* 功 能：秒表控制并获取秒表时间
+* 注：
+* 具体细节参考协议
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_getStopwatch(Ouint8* ip, Ouint16 port, Ouint8 mode, Ouint32 *timeValue);
+
+/*! ***************************************************************
+* 函数名：       cmd_getSensorBrightnessValue（）
+* 参数名：ip：控制器IP， port：控制器端口
+*		brightnessValue：当前亮度传感器值
+* 返回值：0 成功， 其他值为错误号
+* 功 能：获取亮度读传感器值
+* 注：
+* 具体细节参考协议
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_getSensorBrightnessValue(Ouint8* ip, Ouint16 port, Ouint32 *brightnessValue);
+
+/*! ***************************************************************
+* 函数名：       cmd_setSpeedAdjust（）
+* 参数名：ip：控制器IP， port：控制器端口
+*		speed：速度微调参数值
+该值以 0.1 毫秒为单位， 共 256 级， 上
+位机下发时该值为 0-255， 这样刚好使
+用一个低位字节， 高位字节为 0， 留作
+以后扩展使用。 下位机根据该参数在每
+次循环中延时相应的时间， 以改善 LED
+屏幕的显示效果。 当该参数为 0 时， 下
+位机延时为 0， 该参数为 1 时， 下位机
+延时 0.1 毫秒， 以此类推
+* 返回值：0 成功， 其他值为错误号
+* 功 能：速度微调命令
+* 注：
+* 具体细节参考协议
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_setSpeedAdjust(Ouint8* ip, Ouint16 port, short speed);
+
+/*! ***************************************************************
+* 函数名：       cmd_setScreenAddress（）
+* 参数名：ip：控制器IP， port：控制器端口
+*		address：屏幕号
+* 返回值：0 成功， 其他值为错误号
+* 功 能：设置屏幕号
+* 注：
+* 具体细节参考协议
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_setScreenAddress(Ouint8* ip, Ouint16 port, short address);
+
+/** TCP OFS_CMD**/
+/*! ***************************************************************
+* 函数名：       cmd_ofsFormat（）
+* 参数名：ip：控制器IP， port：控制器端口
+* 返回值：0 成功， 其他值为错误号
+* 功 能：文件系统格式化
+* 注：
+* 具体细节参考协议
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_ofsFormat(Ouint8* ip, Ouint16 port);
+
+
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_confDeleteFormatFile（）
+* 参数名：ip：控制器IP， port：控制器端口
+*	fileNub:要删除的文件个数
+*	fileName：要删除的文件名
+* 返回值：0 成功， 其他值为错误号
+* 功 能：删除文件
+* 注：此函数用于对存储在固定位置的文件进行处理， 例
+如： Firmware 文件、 控制器参数配置文件、 扫描配置文件等。
+* fileName是4个字节 fileNub值为N就要把N个fileName拼接 fileName大小 = fileName（4byte）*N
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_confDeleteFormatFile(Ouint8* ip, Ouint16 port, short fileNub, Ouint8 *fileName);
+
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_ofsGetMemoryVolume（）
+* 参数名：ip：控制器IP， port：控制器端口
+*	totalMemVolume：全部空间大小
+*	availableMemVolume：剩余空间大小
+* 返回值：0 成功， 其他值为错误号
+* 功 能：获取控制空间大小和剩余空间
+* 注：
+* 发节目前需要查询防止空间不够用
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_ofsGetMemoryVolume(Ouint8* ip, Ouint16 port, Ouint32 *totalMemVolume, Ouint32 *availableMemVolume);
+
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_ofsWriteFile（）
+* 参数名：ip：控制器IP， port：控制器端口
+*	fileName：文件名
+*	fileType：文件类型
+*	fileLen：文件长度
+*	fileAddre：文件所在的缓存地址
+*	overwrite：是否覆盖控制上的文件 1覆盖 0不覆盖 建议发1
+* 返回值：0 成功， 其他值为错误号
+* 功 能：写文件到控制
+* 注：此函数用于对存储在固定位置的文件进行处理， 例
+如： Firmware 文件、 控制器参数配置文件、 扫描配置文件等。
+* 内部包含多条命令注意返回状态方便查找问题
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_confWriteFile(Ouint8* ip, Ouint16 port, Ouint8 *fileName, Ouint8 fileType, Ouint32 fileLen, Ouint8 overwrite, Ouint8 *fileAddre);
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_ofsStartReedFile（）
+* 参数名：ip：控制器IP， port：控制器端口
+*	fileName：需要读取的文件名
+*	fileSize：回读文件大小
+*	fileCrc：回读的文件CRC
+* 返回值：0 成功， 其他值为错误号
+* 功 能：开始读文件
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_ofsStartReedFile(Ouint8* ip, Ouint16 port, Ouint8 *fileName, Ouint32* fileSize, Ouint32 *fileCrc);
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_confStartReedFile（）
+* 参数名：ip：控制器IP， port：控制器端口
+*	fileName：需要读取的文件名
+*	fileSize：回读文件大小
+*	fileCrc：回读的文件CRC
+* 返回值：0 成功， 其他值为错误号
+* 功 能：开始读文件
+* 注：此函数用于对存储在固定位置的文件进行处理， 例
+如： Firmware 文件、 控制器参数配置文件、 扫描配置文件等。
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_confStartReedFile(Ouint8* ip, Ouint16 port, Ouint8 *fileName, Ouint32* fileSize, Ouint32 *fileCrc);
+
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_ofsReedFileBlock（）
+* 参数名：ip：控制器IP， port：控制器端口
+*	fileName：需要读取的文件名
+*	fileAddre：传入读文件写的位置
+* 返回值：0 成功， 其他值为错误号
+* 功 能：读文件
+* 注：用于对存储在 OFS 中的文件的处理， 例如： 节目文件， 字库文件、 播放列表文件等
+* fileAddre大小根据bxDual_cmd_ofsStartReedFile函数回调值确定
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_ofsReedFileBlock(Ouint8* ip, Ouint16 port, Ouint8 *fileName, Ouint8* fileAddre);
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_confReedFileBlock(）
+* 参数名：ip：控制器IP， port：控制器端口
+*	fileName：需要读取的文件名
+*	fileAddre：传入读文件写的位置
+* 返回值：0 成功， 其他值为错误号
+* 功 能：读文件
+* 注：此函数用于对存储在固定位置的文件进行处理， 例
+如： Firmware 文件、 控制器参数配置文件、 扫描配置文件等。
+* fileAddre大小根据bxDual_cmd_ofsStartReedFile函数回调值确定
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_confReedFileBlock(Ouint8* ip, Ouint16 port, Ouint8 *fileName, Ouint8* fileAddre);
+
+
+/*! ***************************************************************
+* 函数名：  bxDual_cmd_ofs_freeDirBlock（）
+* 参数名：
+*	dirBlock: 上述两条命令所有使用的结构体
+* 返回值：0 成功， 其他值为错误号
+* 功 能：释放bxDual_cmd_ofsReedDirBlock所创建的节目列表dirBlock
+* 注：
+* dirBlock 上述两条命令调用完成后dirBlock不再使用时用此函数释放文件列表
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_ofs_freeDirBlock(GetDirBlock_G56 *dirBlock);
+
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_ofsGetTransStatus(Ouint8* ip, Ouint16 port, Ouint8 *r_w, Ouint8* fileName, Ouint32 *fileCrc, Ouint32 *fileOffset);
+
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_firmwareActivate（）
+* 参数名：ip：控制器IP， port：控制器端口，firmwareFileName要激活的固件名称
+* 返回值：0 成功， 其他值为错误号
+* 功 能：激活指定固件
+* 注：
+* firmwareFileName 缺省值为4个字节字符串“F001”
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_firmwareActivate(Ouint8* ip, Ouint16 port, Ouint8* firmwareFileName);
+
+
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_sendConfigFile(）
+* 参数名：ip：控制器IP， port：控制器端口
+configData 请参考结构体ConfigFile
+* 返回值：0 成功， 其他值为错误号
+* 功 能：发送5代卡配置文件到控制器
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_sendConfigFile(Ouint8* ip, Ouint16 port, ConfigFile *configData);
+
+/*! ***************************************************************
+* 函数名：       bxDual_cmd_sendConfigFile_G6(）
+* 参数名：ip：控制器IP， port：控制器端口
+configData 请参考结构体ConfigFile
+* 返回值：0 成功， 其他值为错误号
+* 功 能：发送5代卡配置文件到控制器
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_sendConfigFile_G6(Ouint8* ip, Ouint16 port, ConfigFile_G6 *configData);
+
+
+
+
+/*! ***************************************************************
+/** TCP命令 END **/
+/*! ***************************************************************/
+
+
+
+
+
+/*! ***************************************************************
+* 函数名：       get_crc16（）
+* 参数名：
+* 返回值：0 成功， 其他值为错误号
+* 功 能：用来计算CRC16值
+* 注：
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_get_crc16(FileCRC16_G56 *crc16);
+
+/*! ***************************************************************
+* 函数名：       get_crc32（）
+* 参数名：
+* 返回值：0 成功， 其他值为错误号
+* 功 能：用来计算CRC32值
+* 注：
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_get_crc32(FileCRC32_G56 *crc32);
+
+/*! ***************************************************************
+***                  以下是节目相关函数
+*** 注意事项：
+***
+***
+/*! ***************************************************************/
+
+
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_freeBuffer(EQprogram* program);
+
+/*! ***************************************************************
+* 函数名：       bxDual_program_pictureArea（）
+* 参数名：ip：控制器IP， port：控制器端口
+*	programID：节目的ID号
+* 返回值：0 成功， 其他值为错误号
+* 功 能：只是用来测试图文区
+* 注：
+* 屏幕大小为1024X80 输出26个字母
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_pictureArea(Ouint32 programID, Ouint8* ip, Ouint16 port);
+
+/*! ***************************************************************
+* 函数名：       bxDual_program_changeProgramParams（）
+*	programH：参考结构体EQprogramHeader
+* 返回值：0 成功， 其他值为错误
+* 功 能：修改已添加节目的一些参数
+* 注：
+* 一定要参考协议对每一个值都不能理解出错否则发下去的内容显示肯定不是自己想要的
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_changeProgramParams(EQprogramHeader *programH);
+
+/*! ***************************************************************
+* 函数名：       bxDual_program_deleteArea（）
+* 参数名：
+*	areaID：区域的ID号
+* 返回值：0 成功， 其他值为错误号
+* 功 能：用来删除编号为areaID的区域
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_deleteArea(Ouint16 areaID);
+					/*! ***************************************************************
+					* 函数名：       bxDual_program_picturesAreaChangeTxt（）
+					*	areaID：区域的ID号
+					*	str：需要画的字符
+					*	pheader：参考结构体EQpageHeader
+					*
+					* 返回值：0 成功， 其他值为错误号
+					* 功 能：修改图文区域内容
+					* 注：
+					* 只可以修改文字内容和EQpageHeader结构体里面的参数，不可以修改字体，如需修改，需要删除区域后重新添加文本设置字体
+					******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_picturesAreaChangeTxt(Ouint16 areaID, Ouint8* str, EQpageHeader* pheader);
+/*! ***************************************************************
+* 函数名：       bxDual_program_fontPath_picturesAreaAddTxt（）
+*	areaID：区域的ID号
+*	str：需要画的字符
+*	fontPathName：字体绝对路径加字库文件名称
+*	pheader：参考结构体EQpageHeader
+*
+* 返回值：0 成功， 其他值为错误号
+* 功 能：图文区添加字符串--使用字库
+* 注：
+* 一定要参考协议对每一个值都不能理解出错否则发下去的内容显示肯定不是自己想要的
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_fontPath_picturesAreaAddTxt(Ouint16 areaID, Ouint8* str, Ouint8* fontPathName, EQpageHeader* pheader);
+/*! ***************************************************************
+* 函数名：       bxDual_program_fontPath_picturesAreaChangeTxt（）
+*	areaID：区域的ID号
+*	str：需要更换的字符串
+*	pheader：参考结构体EQpageHeader
+* 返回值：0 成功， 其他值为错误号
+* 功 能：图文区修改字符串--使用字库
+* 注：
+* 一定要参考协议对每一个值都不能理解出错否则发下去的内容显示肯定不是自己想要的
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_fontPath_picturesAreaChangeTxt(Ouint16 areaID, Ouint8* str, EQpageHeader* pheader);
+
+/*! ***************************************************************
+* 函数名：       bxDual_program_changeFrame（）
+*	EQscreenframeHeader：参考结构体EQscreenframeHeader
+*	picPath：边框图片路径
+* 返回值：0 成功， 其他值为错误号
+* 功 能：节目修改已添加边框的一些参数
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_changeFrame(EQscreenframeHeader* sfHeader, Ouint8* picPath);
+/*! ***************************************************************
+* 函数名：       bxDual_program_removeFrame（）
+*
+*
+* 返回值：0 成功， 其他值为错误号
+* 功 能：节目去掉边框
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_removeFrame();
+/*! ***************************************************************
+* 函数名：       bxDual_program_pictureAreaRemoveFrame（）
+*	areaID：区域的ID号
+*
+* 返回值：0 成功， 其他值为错误号
+* 功 能：区域去掉边框
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_pictureAreaRemoveFrame(Ouint16 areaID);
+
+/*! ***************************************************************
+* 函数名：       bxDual_program_MoveArea()
+*	areaID：区域的ID号
+*   x:区域left坐标
+*   y:区域top坐标
+*   width:区域宽度
+*   height:区域高度
+*
+* 返回值：0 成功， 其他值为错误号
+* 功 能：改变区域坐标大小
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_MoveArea(Ouint16 areaID, Oint32 x, Oint32 y, Oint32 width, Oint32 height);
+
+/*! ***************************************************************
+* 函数名：       bxDual_program_timeAreaAddContent()
+*	areaID：区域的ID号
+*   timeData:详情请见时间区数据格式结构体EQtimeAreaData_G56
+*
+* 返回值：0 成功， 其他值为错误号
+* 功 能：时间分区添加内容
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_timeAreaAddContent(Ouint16 areaID, EQtimeAreaData_G56* timeData);
+
+
+/*! ***************************************************************
+* 函数名：       bxDual_program_timeAreaChangeContent()
+*	areaID：区域的ID号
+*   timeData:详情请见时间区数据格式结构体EQtimeAreaData_G56
+*
+* 返回值：0 成功， 其他值为错误号
+* 功 能：时间分区修改内容EQtimeAreaData::fontName == 字库的路径加字库文件名（字库地址）
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_timeAreaChangeContent(Ouint16 areaID, EQtimeAreaData_G56* timeData);
+
+/*! ***************************************************************
+* 函数名：       bxDual_program_timeAreaGetOnePage(）
+* 参数名：
+*	areaID：区域ID
+*   pageNum: 第几页，从0开始计算
+* 返回值：0 成功， 其他值为错误号
+* 功 能：返回时间区域第n张图片
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_timeAreaGetOnePage(Ouint16 areaID, getPageData* pageData);
+/*! ***************************************************************
+* 函数名：       bxDual_program_timeAreaChangeAnalogClock(）
+* 参数名：
+*	areaID：区域ID
+*   header: 详情见EQAnalogClockHeader_G56结构体
+*   cStyle: 表盘样式，详情见E_ClockStyle
+*   cColor: 表盘颜色，详情见E_Color_G56通过此枚举值可以直接配置七彩色，如果大于枚举范围使用RGB888模式
+* 返回值：0 成功， 其他值为错误号
+* 功 能：时间分区修改模拟时钟的一些设置参数
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_timeAreaChangeAnalogClock(Ouint16 areaID, EQAnalogClockHeader_G56 *header, E_ClockStyle cStyle, ClockColor_G56* cColor);
+/*! ***************************************************************
+* 函数名：       bxDual_program_timeAreaChangeDialPic(）
+* 参数名：
+*	areaID： 区域ID
+*   picPath: 表盘图片位置
+* 返回值：0 成功， 其他值为错误号
+* 功 能：时间分区从外部添加表盘图片
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_timeAreaChangeDialPic(Ouint16 areaID, Ouint8* picPath);
+
+
+/*! ***************************************************************
+* 函数名：       bxDual_program_timeAreaChangeDialPicAdd_G56(）
+* 参数名：
+*	areaID： 区域ID
+*   picPath: 表盘图片位置
+* 返回值：0 成功， 其他值为错误号
+* 功 能：时间分区从外部添加表盘图片
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_timeAreaChangeDialPicAdd_G56(Ouint16 areaID, Ouint8* picAdd, Ouint32 picLen);
+
+
+/*! ***************************************************************
+* 函数名：       bxDual_program_timeAreaRemoveDialPic(）
+* 参数名：
+*	areaID：区域ID
+* 返回值：0 成功， 其他值为错误号
+* 功 能：时间分区移除外部添加的表盘图片
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_timeAreaRemoveDialPic(Ouint16 areaID);
+
+
+
+
+//6代控制卡动态区功能开始:====================================================================================================================================================================================================================
+
+/*
+功能：设置动态区
+*/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_dynamicArea_SetDualPixel(E_DoubleColorPixel_G56 ePixelRGorGR);
+
+
+//动态区图片关联节目: 
+//RelateProNum = 0 时，关联所有节目，与所有节目一起播放，如果没有节目，则不播放该动态区；
+//			   > 0 时, 指定关联节目，要关联的节目ID存放在RelateProSerial[]中；
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_dynamicAreaS_AddAreaPic_WithProgram_6G(Ouint8* pIP, Ouint32 nPort, E_ScreenColor_G56 color, Ouint8 uAreaCount, DynamicAreaParams* pParams, Ouint16 RelateProNum, Ouint16* RelateProSerial);
+
+
+/*
+功能说明：增加多条信息（文本/图片）到指定的动态区，并可以关联这个动态区到指定的节目；
+*/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_dynamicArea_AddAreaInfos_6G(Ouint8* pIP, Ouint32 nPort, E_ScreenColor_G56 color,
+	Ouint8 uAreaId,
+	Ouint8 RunMode,
+	Ouint16 Timeout,
+	Ouint8 RelateAllPro,
+	Ouint16 RelateProNum,
+	Ouint16* RelateProSerial,
+	Ouint8 ImmePlay,
+	Ouint16 uAreaX, Ouint16 uAreaY, Ouint16 uWidth, Ouint16 uHeight,
+	EQareaframeHeader oFrame,
+
+	Ouint8 nInfoCount,
+	DynamicAreaBaseInfo_5G** pInfo
+);
+
+
+
+/*
+功能：插入独立语音
+参数：
+Ouint8 VoiceFlg;		//1 1 语音属性 0：此条语音从头插入队列，且停止当前正在播放的语音 1：此条语音从头插入队列，不停止当前播报的语音 2：此条语音从尾插入队列
+Ouint8 StoreFlag;		//1 0 该值为 1 表示需要存储到 FLASH 中，掉电信息不丢失该值为 0 表示需要存储到 RAM 中，掉电信息丢失
+*/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_dynamicArea_InsertSoundIndepend(Ouint8* pIP, Ouint32 nPort, EQSoundDepend_6G stSoundData, Ouint8 VoiceFlg, Ouint8 StoreFlag);
+
+/*
+功能：5.4.3 更新独立语音命令
+stSoundData：指向存放EQSoundDepend_6G结构的一段内存首地址指针；
+nSoundDataCount:指示stSoundData指向内存地址空间中存放EQSoundDepend_6G个数；
+StoreFlag:该值为 1 表示需要存储到 FLASH 中，掉电信息不丢失;该值为 0 表示需要存储到 RAM 中，掉电信息丢失
+*/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int  bxDual_dynamicArea_UpdateSoundIndepend(Ouint8* pIP, Ouint32 nPort, EQSoundDepend_6G* stSoundData, Ouint16 nSoundDataCount, Ouint8 StoreFlag);
+
+
+//6代控制卡动态区功能结束.==============================================================================================================================================================================================================================
+
+
+
+//5代控制卡动态区功能开始:====================================================================================================================================================================================================================
+
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_dynamicArea_AddAreaWithTxt_Point_5G(Ouint8* pIP, Ouint32 nPort, E_ScreenColor_G56 color,
+	Ouint8 uAreaId,
+	Ouint8 RunMode,
+	Ouint16 Timeout,
+	Ouint8 RelateAllPro,
+	Ouint16 RelateProNum,
+	Ouint16* RelateProSerial,
+	Ouint8 ImmePlay,
+	Ouint16 uAreaX, Ouint16 uAreaY, Ouint16 uWidth, Ouint16 uHeight,
+	EQareaframeHeader* oFrame,
+	//PageStyle begin--------
+	Ouint8 DisplayMode,
+	Ouint8 ClearMode,
+	Ouint8 Speed,
+	Ouint16 StayTime,
+	Ouint8 RepeatTime,
+	//PageStyle End.
+	//显示内容和字体格式 begin---------
+	EQfontData* oFont,
+	Ouint8* fontName,
+	Ouint8* strAreaTxtContent
+	//end.
+);
+
+
+//5代控制卡动态区功能结束:====================================================================================================================================================================================================================
+
+
+/*****************************以下为六代接口*******************************************/
+/*! ***************************************************************
+* 函数名：       bxDual_program_freeBuffer_G6(）
+* 参数名：
+*
+* 返回值：0 成功， 其他值为错误号
+* 功 能：释放生成节目文件的缓冲区
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_freeBuffer_G6(EQprogram_G6* program);
+
+/*! ***************************************************************
+* 函数名：       bxDual_program_changeProgramParams_G6（）
+*	EQprogramHeader_G6：参考结构体EQprogramHeader_G6
+* 返回值：0 成功， 其他值为错误号
+* 功 能：修改已添加节目的一些参数
+* 注：
+* 一定要参考协议对每一个值都不能理解出错否则发下去的内容显示肯定不是自己想要的
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_changeProgramParams_G6(EQprogramHeader_G6 *programH);
+/*! ***************************************************************
+* 函数名：       bxDual_program_changeFrame_G6（）
+*	sfHeader：参考结构体EQscreenframeHeader_G6
+*	picPath：边框图片路径
+* 返回值：0 成功， -1 不成功
+* 功 能：节目修改已添加边框的一些参数
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_changeFrame_G6(EQscreenframeHeader_G6* sfHeader, Ouint8* picPath);
+/*! ***************************************************************
+* 函数名：       bxDual_program_removeFrame_G6（）
+* 返回值：0 成功
+* 功 能：节目去掉边框
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_removeFrame_G6();
+/*! ***************************************************************
+* 函数名：       bxDual_program_deleteArea_G6（）
+* 参数名：
+*   areaID：区域ID号
+*
+* 返回值：0 成功， 其他值为错误号
+* 功 能：节目删除已添加的区域
+* 注：
+* 一定要参考协议对每一个值都不能理解出错否则发下去的内容显示肯定不是自己想要的
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_deleteArea_G6(Ouint16 areaID);
+
+/*! ***************************************************************
+* 函数名：       bxDual_program_MoveArea_G6()
+*	areaID：区域的ID号
+*   x:区域left坐标
+*   y:区域top坐标
+*   width:区域宽度
+*   height:区域高度
+*
+* 返回值：0 成功， 其他值为错误号
+* 功 能：改变区域坐标大小
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_MoveArea_G6(Ouint16 areaID, Oint32 x, Oint32 y, Oint32 width, Oint32 height);
+/*! ***************************************************************
+* 函数名：       bxDual_program_picturesAreaChangeTxt_G6（）
+*	areaID：区域的ID号
+*	str：需要画的文字
+*	pheader：参考结构体EQpageHeader_G6
+*
+* 返回值：0 成功， 其他值为错误号
+* 功 能：修改图文区域已添加过的文字内容及EQpageHeader_G6结构体中的参数
+* 注：
+* 如需修改字体，需要将区域删除，重新添加区域和文字
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_picturesAreaChangeTxt_G6(Ouint16 areaID, Ouint8* str, EQpageHeader_G6* pheader);
+/*! ***************************************************************
+* 函数名：       bxDual_program_fontPath_picturesAreaChangeTxt_G6（）
+*	areaID：区域的ID号
+*	str：需要画的文字
+*	pheader：参考结构体EQpageHeader_G6
+*
+* 返回值：0 成功， 其他值为错误号
+* 功 能：图文区修改字符串--使用字库
+* 注：
+* 一定要参考协议对每一个值都不能理解出错否则发下去的内容显示肯定不是自己想要的
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_fontPath_picturesAreaChangeTxt_G6(Ouint16 areaID, Ouint8* str, EQpageHeader_G6* pheader);
+/*! ***************************************************************
+* 函数名：       bxDual_program_backGroundPic_G6（）
+*	areaID：区域的ID号
+*   picID：图片编号，从0开始，第一次添加图片为0，第二次添加图片为1，依次累加，每个id对应一张图片
+*	EQpageHeader_G6：参考结构体EQpageHeader_G6
+*	picPath：图片的绝对路径加图片名称
+* 返回值：0 成功， 其他值为错误号
+* 功 能：添加图片到图文区域
+* 注：下位机播放图片的次序与picID一致，即最先播放picID为0的图片，依次播放
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_backGroundPic_G6(Ouint16 areaID, Ouint16 picID, EQpageHeader_G6* pheader, Ouint8* picPath);
+
+/*! ***************************************************************
+* 函数名：       bxDual_program_backGroundColor_G6（）
+*	areaID：区域的ID号
+*   picID：图片编号，从0开始，第一次添加图片为0，第二次添加图片为1，依次累加，每个id对应一张图片
+*	EQpageHeader_G6：参考结构体EQpageHeader_G6
+*	BGColor：区域背景颜色值（RGB888）
+* 返回值：0 成功， 其他值为错误号
+* 功 能：添加图片到图文区域
+* 注：下位机播放图片的次序与picID一致，即最先播放picID为0的图片，依次播放
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_backGroundColor_G6(Ouint16 areaID, EQpageHeader_G6* pheader, Ouint32 BGColor);
+
+/*! **************************************************************** 函数名：       bxDual_program_pictureAreaChangePic_G6（）
+*	areaID：区域的ID号
+*   picID：图片编号，传入需要修改的图片编号
+*	EQpageHeader_G6：参考结构体EQpageHeader_G6
+*	picPath：图片的绝对路径加图片名称
+* 返回值：0 成功， 其他值为错误号
+* 功 能：修改当前picID对应的图片和一些参数
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_pictureAreaChangePic_G6(Ouint16 areaID, Ouint16 picID, EQpageHeader_G6* pheader, Ouint8* picPath);
+/*! ***************************************************************
+* 函数名：       bxDual_program_pictureAreaChangeSoundSettings_G6（）
+*	areaID：区域的ID号
+*	sheader：参考结构体EQPicAreaSoundHeader_G6
+*   soundData:语音数据
+*
+* 返回值：0 成功， 其他值为错误
+* 功 能：图文分区修改语音播放的一些参数或数据
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_pictureAreaChangeSoundSettings_G6(Ouint16 areaID, EQPicAreaSoundHeader_G6 sheader, Ouint8* soundData);
+/*! ***************************************************************
+* 函数名：       bxDual_program_pictureAreaDisableSound_G6（）
+*	areaID：区域的ID号
+*
+*
+*
+* 返回值：0 成功， 其他值为错误
+* 功 能：图文分区取消语音播放
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_pictureAreaDisableSound_G6(Ouint16 areaID);
+/*! ***************************************************************
+* 函数名：       bxDual_program_timeAreaChangeContent_G6（）
+*	areaID：区域的ID号
+*   timeData：参考结构体EQtimeAreaData_G56
+*
+*
+* 返回值：0 成功， 其他值为错误
+* 功 能：时间分区修改时间等内容，详情请参考结构体EQtimeAreaData_G56
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_timeAreaChangeContent_G6(Ouint16 areaID, EQtimeAreaData_G56* timeData);
+/*! ***************************************************************
+* 函数名：       bxDual_program_timeAreaChangeAnalogClock_G6(）
+* 参数名：
+*	areaID：区域ID
+*   header: 详情见EQAnalogClockHeader_G56结构体
+*   cStyle: 表盘样式，详情见E_ClockStyle
+*   cColor: 表盘颜色，详情见E_Color_G56通过此枚举值可以直接配置七彩色，如果大于枚举范围使用RGB888模式
+* 返回值：0 成功， 其他值为错误号
+* 功 能：时间分区修改模拟时钟的一些设置参数
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_timeAreaChangeAnalogClock_G6(Ouint16 areaID, EQAnalogClockHeader_G56 *header, E_ClockStyle cStyle, ClockColor_G56* cColor);
+/*! ***************************************************************
+* 函数名：       bxDual_program_timeAreaChangeDialPic_G6(）
+* 参数名：
+*	areaID： 区域ID
+*   picPath: 表盘图片位置
+* 返回值：0 成功， 其他值为错误号
+* 功 能：时间分区从外部添加表盘图片
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_timeAreaChangeDialPic_G6(Ouint16 areaID, Ouint8* picPath);
+/*! ***************************************************************
+* 函数名：       bxDual_program_timeAreaRemoveDialPic_G6(）
+* 参数名：
+*	areaID： 区域ID
+*
+* 返回值：0 成功， 其他值为错误号
+* 功 能：时间分区移除添加的表盘图片
+* 注：
+*
+******************************************************************/
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_program_timeAreaRemoveDialPic_G6(Ouint16 areaID);
     }
 }

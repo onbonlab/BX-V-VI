@@ -917,6 +917,14 @@ namespace LedSDKDemo_CSharp
             ClockColor.ColorDot = 0xff0000;
             ClockColor.ColorBG = 0xff0000;
             int err = bx_sdk_dual.bxDual_program_timeAreaAddAnalogClock_G6(areaID, cc, bx_sdk_dual.E_ClockStyle.eCIRCLE, ref ClockColor);
+            byte[] img = Encoding.Default.GetBytes("time.png");
+            //添加表盘图片
+            //err = bx_sdk_dual.bxDual_program_timeAreaChangeDialPic_G6(areaID, img);
+            //删除表盘图片
+            //err = bx_sdk_dual.bxDual_program_timeAreaRemoveDialPic_G6(areaID);
+            //修改表盘样式
+            //err = bx_sdk_dual.bxDual_program_timeAreaChangeAnalogClock_G6(areaID, ref acheader, bx_sdk_dual.E_ClockStyle.eCIRCLE, ref ClockColor);
+            
         }
         //发送 节目
         public static void Net_SengProgram_5(byte[] ipAdder)

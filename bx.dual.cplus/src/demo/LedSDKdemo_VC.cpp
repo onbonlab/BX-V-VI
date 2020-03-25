@@ -1606,6 +1606,7 @@ int main(int argc, char* argv[])
 	unsigned short port = 5005;
 	int ret = 0;
 	ret = bxDual_InitSdk();//初始化动态库
+	addAreaPicturePic_G5(1);
 	Ouint16 c_type = 0;
 	Ping_data retdata;
 	ret = bxDual_cmd_tcpPing(ip, port, &retdata);
@@ -1812,7 +1813,8 @@ void addAreaPicturePic_G5(Ouint16 areaID)
     pheader.Valign = 2;
     pheader.Halign = 2;
     Ouint8 str1[] = "32.png";
-    int err = bxDual_program_pictureAreaAddPic(areaID, 0, &pheader, str1);
+	unsigned char str[] = "32.png";
+    int err = bxDual_program_pictureAreaAddPic(areaID, 0, &pheader, str);
 }
 void addAreaPicturePic_G6(Ouint16 areaID)
 {
@@ -1917,109 +1919,109 @@ void tcp_send_program_G6(Ouint8* ip, Ouint16 port)
 	bxDual_program_deleteProgram_G6();
 
 }
-void tcp_com_program_G5(Ouint8* com)
-{
-	Oint8 ret;
-	ret = bxDual_cmd_uart_ofsStartFileTransf(com, 2);
-	printf("tcp_send_program_G5L:cmd_ofsStartFileTransf===== %d \n", ret);
-	if(ret != 0){
-		printf("cmd_ofsStartFileTransf run error...");
-	}else{
-		printf("cmd_ofsStartFileTransf run succeed...");
-	}
-
-	EQprogram program;
-	memset((void*)&program, 0, sizeof(program));
-	bxDual_program_IntegrateProgramFile(&program);
-
-	ret = bxDual_cmd_uart_ofsWriteFile(com, 2, program.fileName, program.fileType, program.fileLen, 1, program.fileAddre);
-	if(ret != 0){
-		printf("cmd_ofsWriteFile run error...");
-	}else{
-		printf("cmd_ofsWriteFile run succeed...");
-	}
-	printf("tcp_send_program_G5:cmd_ofsWriteFile===== %d \n", ret);
-	printf("fileName_G5 == %s \n", program.fileName);
-	printf("fileType_G5 == %d \n", program.fileType);
-	printf("fileLen_G5 == %d \n", program.fileLen);
-	printf("fileCRC32_G5 == %d \n",program.fileCRC32);
-	ret = bxDual_cmd_uart_ofsEndFileTransf(com, 2);
-	if(ret != 0){
-		printf("cmd_ofsEndFileTransf run error...");
-	}else{
-		printf("cmd_ofsEndFileTransf run succeed...");
-	}
-	printf("tcp_send_program_G5:md_ofsWriteFile===== %d \n", ret);
-	
-}
-void tcp_com_program_G6(Ouint8* com)
-{
-	Oint8 ret;
-	EQprogram_G6 program;
-	memset((void*)&program, 0, sizeof(program));
-	bxDual_program_IntegrateProgramFile_G6(&program);
-	
-	ret = bxDual_cmd_uart_ofsStartFileTransf(com, 2);
-	printf("ret =====cmd_ofsStartFileTransf===== %d \n", ret);
-	if(ret != 0){
-		printf("cmd_ofsStartFileTransf run error...");
-	}else{
-		printf("cmd_ofsStartFileTransf run succeed...");
-	}
-
-	ret = bxDual_cmd_uart_ofsWriteFile(com, 2, program.dfileName, program.dfileType, program.dfileLen, 1, program.dfileAddre);
-	if(ret != 0){
-		printf("cmd_ofsWriteFile run error...");
-	}else{
-		printf("cmd_ofsWriteFile run succeed...");
-	}
-	printf("ret =====cmd_ofsWriteFile===== %d \n", ret);
-
-	ret = bxDual_cmd_uart_ofsWriteFile(com, 2, program.fileName, program.fileType, program.fileLen, 1, program.fileAddre);
-	if(ret != 0){
-		printf("cmd_ofsWriteFile run error...");
-	}else{
-		printf("cmd_ofsWriteFile run succeed...");
-	}
-	printf("ret =====cmd_ofsWriteFile===== %d \n", ret);
-
-	ret = bxDual_cmd_uart_ofsEndFileTransf(com, 2);
-	if(ret != 0){
-		printf("cmd_ofsEndFileTransf run error...");
-	}else{
-		printf("cmd_ofsEndFileTransf run succeed...");
-	}
-	printf("ret =====cmd_ofsEndFileTransf===== %d \n", ret);
-
-	//删除本地内存中的节目
-	bxDual_program_deleteProgram_G6();
-
-}
+//void tcp_com_program_G5(Ouint8* com)
+//{
+//	Oint8 ret;
+//	ret = bxDual_cmd_uart_ofsStartFileTransf(com, 2);
+//	printf("tcp_send_program_G5L:cmd_ofsStartFileTransf===== %d \n", ret);
+//	if(ret != 0){
+//		printf("cmd_ofsStartFileTransf run error...");
+//	}else{
+//		printf("cmd_ofsStartFileTransf run succeed...");
+//	}
+//
+//	EQprogram program;
+//	memset((void*)&program, 0, sizeof(program));
+//	bxDual_program_IntegrateProgramFile(&program);
+//
+//	ret = bxDual_cmd_uart_ofsWriteFile(com, 2, program.fileName, program.fileType, program.fileLen, 1, program.fileAddre);
+//	if(ret != 0){
+//		printf("cmd_ofsWriteFile run error...");
+//	}else{
+//		printf("cmd_ofsWriteFile run succeed...");
+//	}
+//	printf("tcp_send_program_G5:cmd_ofsWriteFile===== %d \n", ret);
+//	printf("fileName_G5 == %s \n", program.fileName);
+//	printf("fileType_G5 == %d \n", program.fileType);
+//	printf("fileLen_G5 == %d \n", program.fileLen);
+//	printf("fileCRC32_G5 == %d \n",program.fileCRC32);
+//	ret = bxDual_cmd_uart_ofsEndFileTransf(com, 2);
+//	if(ret != 0){
+//		printf("cmd_ofsEndFileTransf run error...");
+//	}else{
+//		printf("cmd_ofsEndFileTransf run succeed...");
+//	}
+//	printf("tcp_send_program_G5:md_ofsWriteFile===== %d \n", ret);
+//	
+//}
+//void tcp_com_program_G6(Ouint8* com)
+//{
+//	Oint8 ret;
+//	EQprogram_G6 program;
+//	memset((void*)&program, 0, sizeof(program));
+//	bxDual_program_IntegrateProgramFile_G6(&program);
+//	
+//	ret = bxDual_cmd_uart_ofsStartFileTransf(com, 2);
+//	printf("ret =====cmd_ofsStartFileTransf===== %d \n", ret);
+//	if(ret != 0){
+//		printf("cmd_ofsStartFileTransf run error...");
+//	}else{
+//		printf("cmd_ofsStartFileTransf run succeed...");
+//	}
+//
+//	ret = bxDual_cmd_uart_ofsWriteFile(com, 2, program.dfileName, program.dfileType, program.dfileLen, 1, program.dfileAddre);
+//	if(ret != 0){
+//		printf("cmd_ofsWriteFile run error...");
+//	}else{
+//		printf("cmd_ofsWriteFile run succeed...");
+//	}
+//	printf("ret =====cmd_ofsWriteFile===== %d \n", ret);
+//
+//	ret = bxDual_cmd_uart_ofsWriteFile(com, 2, program.fileName, program.fileType, program.fileLen, 1, program.fileAddre);
+//	if(ret != 0){
+//		printf("cmd_ofsWriteFile run error...");
+//	}else{
+//		printf("cmd_ofsWriteFile run succeed...");
+//	}
+//	printf("ret =====cmd_ofsWriteFile===== %d \n", ret);
+//
+//	ret = bxDual_cmd_uart_ofsEndFileTransf(com, 2);
+//	if(ret != 0){
+//		printf("cmd_ofsEndFileTransf run error...");
+//	}else{
+//		printf("cmd_ofsEndFileTransf run succeed...");
+//	}
+//	printf("ret =====cmd_ofsEndFileTransf===== %d \n", ret);
+//
+//	//删除本地内存中的节目
+//	bxDual_program_deleteProgram_G6();
+//
+//}
 //BX-5动态区文本
-void dynamicArea_test_5(Ouint8* ip)
-{
-	EQareaframeHeader Frame;
-                    Frame.AreaFFlag = 0;
-                    Frame.AreaFDispStyle = 0;
-                    Frame.AreaFDispSpeed = 0;
-                    Frame.AreaFMoveStep = 0;
-                    Frame.AreaFWidth = 0;
-                    Frame.AreaFBackup = 0;
-	EQfontData oFont;
-            oFont.arrMode = eSINGLELINE;
-            oFont.fontSize = 10;
-            oFont.color = eRED;
-            oFont.fontBold = false;
-            oFont.fontItalic = false;
-            oFont.tdirection = pNORMAL;
-            oFont.txtSpace = 0;
-            oFont.Valign = 0;
-            oFont.Halign = 0;
-	Ouint16 uRelateProgID[1];  uRelateProgID[0] = 0;
-	bxDual_dynamicArea_AddAreaWithTxt_5G(ip, 5005, eSCREEN_COLOR_FULLCOLOR, 1, 0, 0, 1, 0, uRelateProgID,
-                            1, 0, 0, 64, 32, Frame, 4, 0, 10, 100, 0, oFont, (Ouint8*)"宋体", (Ouint8*)"一起");
-	printf("err =====bxDual_dynamicArea_AddAreaWithTxt_5G===== %d \n", err);
-}
+//void dynamicArea_test_5(Ouint8* ip)
+//{
+//	EQareaframeHeader Frame;
+//                    Frame.AreaFFlag = 0;
+//                    Frame.AreaFDispStyle = 0;
+//                    Frame.AreaFDispSpeed = 0;
+//                    Frame.AreaFMoveStep = 0;
+//                    Frame.AreaFWidth = 0;
+//                    Frame.AreaFBackup = 0;
+//	EQfontData oFont;
+//            oFont.arrMode = eSINGLELINE;
+//            oFont.fontSize = 10;
+//            oFont.color = eRED;
+//            oFont.fontBold = false;
+//            oFont.fontItalic = false;
+//            oFont.tdirection = pNORMAL;
+//            oFont.txtSpace = 0;
+//            oFont.Valign = 0;
+//            oFont.Halign = 0;
+//	Ouint16 uRelateProgID[1];  uRelateProgID[0] = 0;
+//	bxDual_dynamicArea_AddAreaWithTxt_5G(ip, 5005, eSCREEN_COLOR_FULLCOLOR, 1, 0, 0, 1, 0, uRelateProgID,
+//                            1, 0, 0, 64, 32, Frame, 4, 0, 10, 100, 0, oFont, (Ouint8*)"宋体", (Ouint8*)"一起");
+//	printf("err =====bxDual_dynamicArea_AddAreaWithTxt_5G===== %d \n", err);
+//}
 //BX-6动态区文本
 void dynamicArea_test_6(Ouint8* ip)
 {
@@ -2095,109 +2097,109 @@ void dynamicArea_test_6(Ouint8* ip)
 	printf("err =====dynamicArea_AddAreaTxtDetails_WithProgram_6G===== %d \n", err);
 }
         //调整亮度
-void Net_Bright(Ouint8* ipAdder,byte num)
-{
-    Brightness brightness;
-    brightness.BrightnessMode=0;
-    brightness.HalfHourValue0 = num;
-    brightness.HalfHourValue1 = num;
-    brightness.HalfHourValue2 = num;
-    brightness.HalfHourValue3 = num;
-    brightness.HalfHourValue4 = num;
-    brightness.HalfHourValue5 = num;
-    brightness.HalfHourValue6 = num;
-    brightness.HalfHourValue7 = num;
-    brightness.HalfHourValue8 = num;
-    brightness.HalfHourValue9 = num;
-    brightness.HalfHourValue10 = num;
-    brightness.HalfHourValue11 = num;
-    brightness.HalfHourValue12 = num;
-    brightness.HalfHourValue13 = num;
-    brightness.HalfHourValue14 = num;
-    brightness.HalfHourValue15 = num;
-    brightness.HalfHourValue16 = num;
-    brightness.HalfHourValue17 = num;
-    brightness.HalfHourValue18 = num;
-    brightness.HalfHourValue19 = num;
-    brightness.HalfHourValue20 = num;
-    brightness.HalfHourValue21 = num;
-    brightness.HalfHourValue22 = num;
-    brightness.HalfHourValue23 = num;
-    brightness.HalfHourValue24 = num;
-    brightness.HalfHourValue25 = num;
-    brightness.HalfHourValue26 = num;
-    brightness.HalfHourValue27 = num;
-    brightness.HalfHourValue28 = num;
-    brightness.HalfHourValue29 = num;
-    brightness.HalfHourValue30 = num;
-    brightness.HalfHourValue31 = num;
-    brightness.HalfHourValue32 = num;
-    brightness.HalfHourValue33 = num;
-    brightness.HalfHourValue34 = num;
-    brightness.HalfHourValue35 = num;
-    brightness.HalfHourValue36 = num;
-    brightness.HalfHourValue37 = num;
-    brightness.HalfHourValue38 = num;
-    brightness.HalfHourValue39 = num;
-    brightness.HalfHourValue40 = num;
-    brightness.HalfHourValue41 = num;
-    brightness.HalfHourValue42 = num;
-    brightness.HalfHourValue43 = num;
-    brightness.HalfHourValue44 = num;
-    brightness.HalfHourValue45 = num;
-    brightness.HalfHourValue46 = num;
-    brightness.HalfHourValue47 = num;
-
-    int err = bxDual_cmd_setBrightness(ipAdder, 5005, brightness);
-}
+//void Net_Bright(Ouint8* ipAdder,byte num)
+//{
+//    Brightness brightnes;
+//    brightnes.BrightnessMode=0;
+//    brightnes.HalfHourValue0 = num;
+//    brightnes.HalfHourValue1 = num;
+//    brightnes.HalfHourValue2 = num;
+//    brightnes.HalfHourValue3 = num;
+//    brightnes.HalfHourValue4 = num;
+//    brightnes.HalfHourValue5 = num;
+//    brightnes.HalfHourValue6 = num;
+//    brightnes.HalfHourValue7 = num;
+//    brightnes.HalfHourValue8 = num;
+//    brightnes.HalfHourValue9 = num;
+//    brightnes.HalfHourValue10 = num;
+//    brightnes.HalfHourValue11 = num;
+//    brightnes.HalfHourValue12 = num;
+//    brightnes.HalfHourValue13 = num;
+//    brightnes.HalfHourValue14 = num;
+//    brightnes.HalfHourValue15 = num;
+//    brightnes.HalfHourValue16 = num;
+//    brightnes.HalfHourValue17 = num;
+//    brightnes.HalfHourValue18 = num;
+//    brightnes.HalfHourValue19 = num;
+//    brightnes.HalfHourValue20 = num;
+//    brightnes.HalfHourValue21 = num;
+//    brightnes.HalfHourValue22 = num;
+//    brightnes.HalfHourValue23 = num;
+//    brightnes.HalfHourValue24 = num;
+//    brightnes.HalfHourValue25 = num;
+//    brightnes.HalfHourValue26 = num;
+//    brightnes.HalfHourValue27 = num;
+//    brightnes.HalfHourValue28 = num;
+//    brightnes.HalfHourValue29 = num;
+//    brightnes.HalfHourValue30 = num;
+//    brightnes.HalfHourValue31 = num;
+//    brightnes.HalfHourValue32 = num;
+//    brightnes.HalfHourValue33 = num;
+//    brightnes.HalfHourValue34 = num;
+//    brightnes.HalfHourValue35 = num;
+//    brightnes.HalfHourValue36 = num;
+//    brightnes.HalfHourValue37 = num;
+//    brightnes.HalfHourValue38 = num;
+//    brightnes.HalfHourValue39 = num;
+//    brightnes.HalfHourValue40 = num;
+//    brightnes.HalfHourValue41 = num;
+//    brightnes.HalfHourValue42 = num;
+//    brightnes.HalfHourValue43 = num;
+//    brightnes.HalfHourValue44 = num;
+//    brightnes.HalfHourValue45 = num;
+//    brightnes.HalfHourValue46 = num;
+//    brightnes.HalfHourValue47 = num;
+//
+//    int err = bxDual_cmd_setBrightness(ipAdder, 5005, brightnes);
+//}
         //添加语音
-void Creat_sound_6(Ouint16 areaID)
-{
-	EQPicAreaSoundHeader_G6 pheader;
-	pheader.SoundPerson=3;
-	pheader.SoundVolum=5;
-	pheader.SoundSpeed=5;
-	pheader.SoundDataMode=0;
-	pheader.SoundReplayTimes=0;
-	pheader.SoundReplayDelay=1000;
-	pheader.SoundReservedParaLen=3;
-	pheader.Soundnumdeal = 1;
-	pheader.Soundlanguages = 1;
-	pheader.Soundwordstyle = 1;
-	int err = bxDual_program_pictureAreaEnableSound_G6(areaID, pheader, (Ouint8*)"请张三到1号窗口取药");
-}
-//系统复位
-void Reset(Ouint8* ipAdder)
-{
-int err = bxDual_cmd_sysReset(ipAdder, 5005);
-}
-//强制开关机
-void coerceOnOff(Ouint8* ipAdder)
-{
-	int err = bxDual_cmd_coerceOnOff(ipAdder, 5005, 0);//关机
-	//int err = bxDual_cmd_coerceOnOff(ipAdder, 5005, 1);//开机
-}
-//定时开关机
-void timingOnOff(Ouint8* ipAdder) 
-{
-	TimingOnOff[] time;
-	time[0].onHour=0x06;   // 开机小时
-	time[0].onMinute = 0x10; // 开机分钟
-	time[0].offHour = 0x10;  // 关机小时
-	time[0].offMinute = 0x10; // 关机分钟
-	int err = bxDual_cmd_timingOnOff(ipAdder, 5005, 1,time);
-	//取消定时开关机
-	err = bx_sdk_dual.bxDual_cmd_cancelTimingOnOff(ipAdder, 5005);
-}
-//屏幕锁定
-void screenLock(Ouint8* ipAdder)
-{
-	int err = bx_sdk_dual.bxDual_cmd_screenLock(ipAdder, 5005, 1, 1);//屏幕锁定
-	//int err = bx_sdk_dual.bxDual_cmd_screenLock(ipAdder, 5005, 1,0);//屏幕解锁
-}
-//节目锁定
-void programLock(Ouint8* ipAdder)
-{
-	int err = bx_sdk_dual.bxDual_cmd_programLock(ipAdder, 5005, 1, 1, (Ouint8*)"P000", 0xffffffff);//锁定
-	//int err = bx_sdk_dual.bxDual_cmd_programLock(ipAdder, 5005, 1,0, (Ouint8*)"P000", 0xffffffff);//解
-}
+//void Creat_sound_6(Ouint16 areaID)
+//{
+//	EQPicAreaSoundHeader_G6 pheader;
+//	pheader.SoundPerson=3;
+//	pheader.SoundVolum=5;
+//	pheader.SoundSpeed=5;
+//	pheader.SoundDataMode=0;
+//	pheader.SoundReplayTimes=0;
+//	pheader.SoundReplayDelay=1000;
+//	pheader.SoundReservedParaLen=3;
+//	pheader.Soundnumdeal = 1;
+//	pheader.Soundlanguages = 1;
+//	pheader.Soundwordstyle = 1;
+//	int err = bxDual_program_pictureAreaEnableSound_G6(areaID, pheader, (Ouint8*)"请张三到1号窗口取药");
+//}
+////系统复位
+//void Reset(Ouint8* ipAdder)
+//{
+//int err = bxDual_cmd_sysReset(ipAdder, 5005);
+//}
+////强制开关机
+//void coerceOnOff(Ouint8* ipAdder)
+//{
+//	int err = bxDual_cmd_coerceOnOff(ipAdder, 5005, 0);//关机
+//	//int err = bxDual_cmd_coerceOnOff(ipAdder, 5005, 1);//开机
+//}
+////定时开关机
+//void timingOnOff(Ouint8* ipAdder) 
+//{
+//	TimingOnOff[] time;
+//	time[0].onHour=0x06;   // 开机小时
+//	time[0].onMinute = 0x10; // 开机分钟
+//	time[0].offHour = 0x10;  // 关机小时
+//	time[0].offMinute = 0x10; // 关机分钟
+//	int err = bxDual_cmd_timingOnOff(ipAdder, 5005, 1,time);
+//	//取消定时开关机
+//	err = bx_sdk_dual.bxDual_cmd_cancelTimingOnOff(ipAdder, 5005);
+//}
+////屏幕锁定
+//void screenLock(Ouint8* ipAdder)
+//{
+//	int err = bx_sdk_dual.bxDual_cmd_screenLock(ipAdder, 5005, 1, 1);//屏幕锁定
+//	//int err = bx_sdk_dual.bxDual_cmd_screenLock(ipAdder, 5005, 1,0);//屏幕解锁
+//}
+////节目锁定
+//void programLock(Ouint8* ipAdder)
+//{
+//	int err = bx_sdk_dual.bxDual_cmd_programLock(ipAdder, 5005, 1, 1, (Ouint8*)"P000", 0xffffffff);//锁定
+//	//int err = bx_sdk_dual.bxDual_cmd_programLock(ipAdder, 5005, 1,0, (Ouint8*)"P000", 0xffffffff);//解
+//}

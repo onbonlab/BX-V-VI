@@ -1516,21 +1516,22 @@ typedef int(__stdcall *PbxDual_cmd_setBtnFunc)(Ouint8* ip, Ouint16 port, Ouint8 
 ******************************************************************/
 typedef int(__stdcall *PbxDual_cmd_setTimingReset)(Ouint8* ip, Ouint16 port, TimingReset *cmdData);
 	PbxDual_cmd_setTimingReset bxDual_cmd_setTimingReset;
+typedef int(__stdcall *PbxDual_program_pictureAreaEnableSound_G6)(Ouint16 areaID, EQPicAreaSoundHeader_G6 pSoundHeader, Ouint8* strSoundTxt);
+	PbxDual_program_pictureAreaEnableSound_G6 bxDual_program_pictureAreaEnableSound_G6;
 
 
 void addProgram_G5();
-void addArea_G5(Ouint16 AreaID,Ouint8 AreaType,Ouint8 AreaX,Ouint8 AreaY,Ouint8 AreaWidth,Ouint8 AreaHeight);
+void addArea_G5(Ouint16 AreaID,Ouint8 AreaType,Ouint16 AreaX,Ouint16 AreaY,Ouint16 AreaWidth,Ouint16 AreaHeight);
 void addAreaTime_G5(Ouint16 AreaID);
 void addAreaPicture_G5(Ouint16 AreaID,Ouint8 str[]);
 void tcp_send_program_G5(Ouint8* ip, Ouint16 port);
 void addAreaPicturePic_G5(Ouint16 areaID);
 
 void addProgram_G6();
-void addArea_G6(Ouint16 AreaID,Ouint8 AreaType,Ouint8 AreaX,Ouint8 AreaY,Ouint8 AreaWidth,Ouint8 AreaHeight);
+void addArea_G6(Ouint16 AreaID,Ouint8 AreaType,Ouint16 AreaX,Ouint16 AreaY,Ouint16 AreaWidth,Ouint16 AreaHeight);
 void addAreaTime_G6(Ouint16 AreaID);
 void addAreaPicture_G6(Ouint16 AreaID,Ouint8 str[]);
 void tcp_send_program_G6(Ouint8* ip, Ouint16 port);
-static void Creat_sound_6(Ouint16 areaID);
 void addAreaPicturePic_G6(Ouint16 areaID);
 void dynamicArea_test_6(Ouint8* ip);
 void onbonTest_DynamicArea_6G(void);
@@ -1568,6 +1569,7 @@ int main(int argc, char* argv[])
 	bxDual_dynamicArea_DelAreas_6G = (PbxDual_dynamicArea_DelAreas_6G)GetProcAddress(hdll,"bxDual_dynamicArea_DelAreas_6G");
 	bxDual_program_IntegrateProgramFile_G6 = (PbxDual_program_IntegrateProgramFile_G6)GetProcAddress(hdll,"bxDual_program_IntegrateProgramFile_G6");
 	bxDual_program_deleteProgram_G6 = (PbxDual_program_deleteProgram_G6)GetProcAddress(hdll,"bxDual_program_deleteProgram_G6");
+	bxDual_program_addProgram_G6 = (PbxDual_program_addProgram_G6)GetProcAddress(hdll,"bxDual_program_addProgram_G6");
 	bxDual_program_addArea_G6 = (PbxDual_program_addArea_G6)GetProcAddress(hdll,"bxDual_program_addArea_G6");
 	bxDual_program_pictureAreaAddPic_G6 = (PbxDual_program_pictureAreaAddPic_G6)GetProcAddress(hdll,"bxDual_program_pictureAreaAddPic_G6");
 	bxDual_program_picturesAreaAddTxt_G6  = (PbxDual_program_picturesAreaAddTxt_G6)GetProcAddress(hdll,"bxDual_program_picturesAreaAddTxt_G6");
@@ -1598,11 +1600,12 @@ int main(int argc, char* argv[])
 	bxDual_cmd_setBtnFunc = (PbxDual_cmd_setBtnFunc)GetProcAddress(hdll,"bxDual_cmd_setBtnFunc");
 	bxDual_cmd_setDelayTime = (PbxDual_cmd_setDelayTime)GetProcAddress(hdll,"bxDual_cmd_setDelayTime");
 	bxDual_cmd_setTimingReset = (PbxDual_cmd_setTimingReset)GetProcAddress(hdll,"bxDual_cmd_setTimingReset");
+	bxDual_program_pictureAreaEnableSound_G6 = (PbxDual_program_pictureAreaEnableSound_G6)GetProcAddress(hdll,"bxDual_program_pictureAreaEnableSound_G6");
 
 
 
 	
-	unsigned char ip[] = "192.168.89.182";
+	unsigned char ip[] = "192.168.89.123";
 	unsigned short port = 5005;
 	int ret = 0;
 	ret = bxDual_InitSdk();//初始化动态库
@@ -1628,7 +1631,12 @@ int main(int argc, char* argv[])
 	
     ret = bxDual_program_setScreenParams_G56((E_ScreenColor_G56)cmb_ping_Color, retdata.ControllerType, eDOUBLE_COLOR_PIXTYPE_1);
 
-	dynamicArea_test_6(ip);
+	addProgram_G6();
+	addArea_G6(0,0,0,0,64,32);
+	unsigned char str[] = "1256456";
+	addAreaPicturePic_G6(0);
+	Creat_sound_6(0);
+	tcp_send_program_G6(ip, port);
 }
 
 
@@ -1679,7 +1687,7 @@ void addProgram_G6()
 	bxDual_program_addProgram_G6(&pHeader);
 }
 //添加区域
-void addArea_G5(Ouint16 AreaID,Ouint8 AreaType,Ouint8 AreaX,Ouint8 AreaY,Ouint8 AreaWidth,Ouint8 AreaHeight)
+void addArea_G5(Ouint16 AreaID,Ouint8 AreaType,Ouint16 AreaX,Ouint16 AreaY,Ouint16 AreaWidth,Ouint16 AreaHeight)
 {
 	Ouint16 nAreaID = AreaID;
 	EQareaHeader aheader;
@@ -1690,7 +1698,7 @@ void addArea_G5(Ouint16 AreaID,Ouint8 AreaType,Ouint8 AreaX,Ouint8 AreaY,Ouint8 
 	aheader.AreaHeight = AreaHeight;
 	bxDual_program_AddArea(nAreaID, &aheader); 
 }
-void addArea_G6(Ouint16 AreaID,Ouint8 AreaType,Ouint8 AreaX,Ouint8 AreaY,Ouint8 AreaWidth,Ouint8 AreaHeight)
+void addArea_G6(Ouint16 AreaID,Ouint8 AreaType,Ouint16 AreaX,Ouint16 AreaY,Ouint16 AreaWidth,Ouint16 AreaHeight)
 {
 	Ouint16 nAreaID = AreaID;
 	EQareaHeader_G6 aHeader1;
@@ -1750,13 +1758,13 @@ void addAreaPicture_G5(Ouint16 AreaID,Ouint8 str[])
 {;
 	EQpageHeader pheader;
 	pheader.PageStyle = 0x00;
-	pheader.DisplayMode = 0x03;
+	pheader.DisplayMode = 0x04;
 	pheader.ClearMode = 0x01;
-	pheader.Speed = 32;
-	pheader.StayTime = 0;
+	pheader.Speed = 10;
+	pheader.StayTime = 100;
 	pheader.RepeatTime = 1;
 	pheader.ValidLen = 0;
-	pheader.arrMode = eSINGLELINE;
+	pheader.arrMode = eMULTILINE;
 	pheader.fontSize = 10;
 	pheader.color = eYELLOW;
 	pheader.fontBold = false;
@@ -1773,7 +1781,7 @@ void addAreaPicture_G6(Ouint16 AreaID,Ouint8 str[])
 	pheader1.DisplayMode = 0x4;
 	pheader1.ClearMode = 0x01;
 	pheader1.Speed = 1;
-	pheader1.StayTime = 0;
+	pheader1.StayTime = 100;
 	pheader1.RepeatTime = 1;
 	pheader1.ValidLen = 1;
 	pheader1.CartoonFrameRate = 0x00;
@@ -1788,7 +1796,7 @@ void addAreaPicture_G6(Ouint16 AreaID,Ouint8 str[])
 	pheader1.Valign = 0;
 	pheader1.Halign = 0;
 	
-	bxDual_program_picturesAreaAddTxt_G6(AreaID,str1,(Ouint8*)"宋体",&pheader1);
+	bxDual_program_picturesAreaAddTxt_G6(AreaID,str,(Ouint8*)"宋体",&pheader1);
 	//program_fontPath_picturesAreaAddTxt_G6(0,str,(Ouint8*)"C:/Windows/Fonts/simsun.ttc",&pheader1);
 }
 //添加图片
@@ -1818,7 +1826,7 @@ void addAreaPicturePic_G6(Ouint16 areaID)
 {
     EQpageHeader_G6 pheader;
     pheader.PageStyle = 0x00;
-    pheader.DisplayMode = 0x03;
+    pheader.DisplayMode = 0x06;
     pheader.ClearMode = 0x01;
     pheader.Speed = 15;
     pheader.StayTime = 500;
@@ -1833,9 +1841,9 @@ void addAreaPicturePic_G6(Ouint16 areaID)
     pheader.fontItalic = 0;
     pheader.tdirection = E_txtDirection::pNORMAL;
     pheader.txtSpace = 0;
-    pheader.Valign = 2;
-    pheader.Halign = 2;
-    Ouint8* img = (Ouint8*)"K:/onbon/图片测试文件/3232c.png";
+    pheader.Valign = 0;
+    pheader.Halign = 0;
+    Ouint8* img = (Ouint8*)"F:/work github/Debug HUB/BX-V-VI/bx.dual.cplus/src/lib/2Led0_0.png";
     int err = bxDual_program_pictureAreaAddPic_G6(areaID, 0, &pheader, img);
 }
 //发送节目
@@ -1917,84 +1925,6 @@ void tcp_send_program_G6(Ouint8* ip, Ouint16 port)
 	bxDual_program_deleteProgram_G6();
 
 }
-void tcp_com_program_G5(Ouint8* com)
-{
-	Oint8 ret;
-	ret = bxDual_cmd_uart_ofsStartFileTransf(com, 2);
-	printf("tcp_send_program_G5L:cmd_ofsStartFileTransf===== %d \n", ret);
-	if(ret != 0){
-		printf("cmd_ofsStartFileTransf run error...");
-	}else{
-		printf("cmd_ofsStartFileTransf run succeed...");
-	}
-
-	EQprogram program;
-	memset((void*)&program, 0, sizeof(program));
-	bxDual_program_IntegrateProgramFile(&program);
-
-	ret = bxDual_cmd_uart_ofsWriteFile(com, 2, program.fileName, program.fileType, program.fileLen, 1, program.fileAddre);
-	if(ret != 0){
-		printf("cmd_ofsWriteFile run error...");
-	}else{
-		printf("cmd_ofsWriteFile run succeed...");
-	}
-	printf("tcp_send_program_G5:cmd_ofsWriteFile===== %d \n", ret);
-	printf("fileName_G5 == %s \n", program.fileName);
-	printf("fileType_G5 == %d \n", program.fileType);
-	printf("fileLen_G5 == %d \n", program.fileLen);
-	printf("fileCRC32_G5 == %d \n",program.fileCRC32);
-	ret = bxDual_cmd_uart_ofsEndFileTransf(com, 2);
-	if(ret != 0){
-		printf("cmd_ofsEndFileTransf run error...");
-	}else{
-		printf("cmd_ofsEndFileTransf run succeed...");
-	}
-	printf("tcp_send_program_G5:md_ofsWriteFile===== %d \n", ret);
-	
-}
-void tcp_com_program_G6(Ouint8* com)
-{
-	Oint8 ret;
-	EQprogram_G6 program;
-	memset((void*)&program, 0, sizeof(program));
-	bxDual_program_IntegrateProgramFile_G6(&program);
-	
-	ret = bxDual_cmd_uart_ofsStartFileTransf(com, 2);
-	printf("ret =====cmd_ofsStartFileTransf===== %d \n", ret);
-	if(ret != 0){
-		printf("cmd_ofsStartFileTransf run error...");
-	}else{
-		printf("cmd_ofsStartFileTransf run succeed...");
-	}
-
-	ret = bxDual_cmd_uart_ofsWriteFile(com, 2, program.dfileName, program.dfileType, program.dfileLen, 1, program.dfileAddre);
-	if(ret != 0){
-		printf("cmd_ofsWriteFile run error...");
-	}else{
-		printf("cmd_ofsWriteFile run succeed...");
-	}
-	printf("ret =====cmd_ofsWriteFile===== %d \n", ret);
-
-	ret = bxDual_cmd_uart_ofsWriteFile(com, 2, program.fileName, program.fileType, program.fileLen, 1, program.fileAddre);
-	if(ret != 0){
-		printf("cmd_ofsWriteFile run error...");
-	}else{
-		printf("cmd_ofsWriteFile run succeed...");
-	}
-	printf("ret =====cmd_ofsWriteFile===== %d \n", ret);
-
-	ret = bxDual_cmd_uart_ofsEndFileTransf(com, 2);
-	if(ret != 0){
-		printf("cmd_ofsEndFileTransf run error...");
-	}else{
-		printf("cmd_ofsEndFileTransf run succeed...");
-	}
-	printf("ret =====cmd_ofsEndFileTransf===== %d \n", ret);
-
-	//删除本地内存中的节目
-	bxDual_program_deleteProgram_G6();
-
-}
 //BX-5动态区文本
 void dynamicArea_test_5(Ouint8* ip)
 {
@@ -2016,7 +1946,7 @@ void dynamicArea_test_5(Ouint8* ip)
             oFont.Valign = 0;
             oFont.Halign = 0;
 	Ouint16 uRelateProgID[1];  uRelateProgID[0] = 0;
-	bxDual_dynamicArea_AddAreaWithTxt_5G(ip, 5005, eSCREEN_COLOR_FULLCOLOR, 1, 0, 0, 1, 0, uRelateProgID,
+	int err=bxDual_dynamicArea_AddAreaWithTxt_5G(ip, 5005, eSCREEN_COLOR_FULLCOLOR, 1, 0, 0, 1, 0, uRelateProgID,
                             1, 0, 0, 64, 32, Frame, 4, 0, 10, 100, 0, oFont, (Ouint8*)"宋体", (Ouint8*)"一起");
 	printf("err =====bxDual_dynamicArea_AddAreaWithTxt_5G===== %d \n", err);
 }
@@ -2148,7 +2078,7 @@ void Net_Bright(Ouint8* ipAdder,byte num)
     brightness.HalfHourValue46 = num;
     brightness.HalfHourValue47 = num;
 
-    int err = bxDual_cmd_setBrightness(ipAdder, 5005, brightness);
+    int err = bxDual_cmd_setBrightness(ipAdder, 5005, &brightness);
 }
         //添加语音
 void Creat_sound_6(Ouint16 areaID)
@@ -2166,38 +2096,21 @@ void Creat_sound_6(Ouint16 areaID)
 	pheader.Soundwordstyle = 1;
 	int err = bxDual_program_pictureAreaEnableSound_G6(areaID, pheader, (Ouint8*)"请张三到1号窗口取药");
 }
-//系统复位
-void Reset(Ouint8* ipAdder)
-{
-int err = bxDual_cmd_sysReset(ipAdder, 5005);
-}
 //强制开关机
 void coerceOnOff(Ouint8* ipAdder)
 {
 	int err = bxDual_cmd_coerceOnOff(ipAdder, 5005, 0);//关机
 	//int err = bxDual_cmd_coerceOnOff(ipAdder, 5005, 1);//开机
 }
-//定时开关机
-void timingOnOff(Ouint8* ipAdder) 
-{
-	TimingOnOff[] time;
-	time[0].onHour=0x06;   // 开机小时
-	time[0].onMinute = 0x10; // 开机分钟
-	time[0].offHour = 0x10;  // 关机小时
-	time[0].offMinute = 0x10; // 关机分钟
-	int err = bxDual_cmd_timingOnOff(ipAdder, 5005, 1,time);
-	//取消定时开关机
-	err = bx_sdk_dual.bxDual_cmd_cancelTimingOnOff(ipAdder, 5005);
-}
 //屏幕锁定
 void screenLock(Ouint8* ipAdder)
 {
-	int err = bx_sdk_dual.bxDual_cmd_screenLock(ipAdder, 5005, 1, 1);//屏幕锁定
-	//int err = bx_sdk_dual.bxDual_cmd_screenLock(ipAdder, 5005, 1,0);//屏幕解锁
+	int err = bxDual_cmd_screenLock(ipAdder, 5005, 1, 1);//屏幕锁定
+	//int err = bxDual_cmd_screenLock(ipAdder, 5005, 1,0);//屏幕解锁
 }
 //节目锁定
 void programLock(Ouint8* ipAdder)
 {
-	int err = bx_sdk_dual.bxDual_cmd_programLock(ipAdder, 5005, 1, 1, (Ouint8*)"P000", 0xffffffff);//锁定
-	//int err = bx_sdk_dual.bxDual_cmd_programLock(ipAdder, 5005, 1,0, (Ouint8*)"P000", 0xffffffff);//解
+	int err = bxDual_cmd_programLock(ipAdder, 5005, 1, 1, (Ouint8*)"P000", 0xffffffff);//锁定
+	//int err = bxDual_cmd_programLock(ipAdder, 5005, 1,0, (Ouint8*)"P000", 0xffffffff);//解
 }

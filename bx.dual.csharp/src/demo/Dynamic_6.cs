@@ -6,11 +6,20 @@ using System.Runtime.InteropServices;
 
 namespace LedSDKDemo_CSharp
 {
+    /// <summary>
+    /// 动态区相关命令，6E系列，6E1X，6E2X，6Q1，6Q2，6Q3，6QX-YD，6Q2L，6Q3L系列支持
+    /// </summary>
     class Dynamic_6
     {
         public static int err = 0;
-        //区域ID编号 5E系列支持 0-3，6E，6Q系列支持 0-31
+        //5E系列支持 0-3，6E，6Q系列支持 0-31
         public static byte AreaId = 0;
+        public static byte RunMode = 0;
+        public static ushort Timeout = 10;
+        public static byte RelateAllPro = 1;
+        public static ushort RelateProNum = 0;
+        public static ushort[] RelateProSerial = null;
+        public static byte ImmePlay = 1;
         //动态区域左上角在LED显示屏的位置/坐标；
         public static ushort AreaX = 0;
         public static ushort AreaY = 0;
@@ -26,20 +35,186 @@ namespace LedSDKDemo_CSharp
         //要显示的图片 只支持png类型，图片像素大小和区域坐标1：1，一般黑底红字
         byte[] img1 = Encoding.GetEncoding("GBK").GetBytes("0.png");
 
-        //删除动态区
-        public static void delete_dynamicarea(byte[] ip, ushort port)
+        /// <summary>
+        /// 删除动态区，单个操作
+        /// </summary>
+        public static void delete_dynamic()
         {
-            int err = bxdualsdk.bxDual_dynamicArea_DelArea_6G(ip, port, 0xff);
-            Console.WriteLine("dynamicArea_DelArea_6G = " + err);
+            //第三个参数给动态区ID指定删除，给0xff删除所有动态区
+            //网口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_dynamicArea_DelArea_6G(Program.ip, Program.port, 0xff);
+            }
+            //串口
+            if (false)
+            {
+                err = bxdualsdk.bxDual_dynamicArea_DelArea_G6_Serial(Program.com, Program.baudRate, 0xff);
+            }
+            Console.WriteLine("dynamicArea_DelArea = " + err);
         }
-        //设置双色屏点阵类型
-        public static void dynamic_pixel() { }
-        //单区域文本，不能设置特效
-        public static void dynamicArea_str(byte[] ip, ushort port)
+
+        /// <summary>
+        /// 删除动态区，多区域操作
+        /// </summary>
+        public static void delete_dynamic_s()
         {
-            err = bxdualsdk.bxDual_dynamicArea_AddAreaTxt_6G(ip, port, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, AreaId, AreaX, AreaY,
+            byte[] id = new byte[] { 0, 1 };
+            //网口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_dynamicArea_DelAreas_6G(Program.ip, Program.port, (byte)id.Length, id);
+            }
+            //串口
+            if (false)
+            {
+                id = new byte[] { 0 };
+                err = bxdualsdk.bxDual_dynamicArea_DelAreas_G6_Serial(Program.com, Program.baudRate, (byte)id.Length, id);
+            }
+            Console.WriteLine("dynamicArea_DelArea = " + err);
+        }
+
+        /// <summary>
+        /// 设置双色屏点阵类型,双色屏时，如果发送红色显示黄色，就是点阵类型参数不对，该接口5代，6代通用
+        /// </summary>
+        public static void dynamic_pixel()
+        {
+            bxdualsdk.bxDual_dynamicArea_SetDualPixel(bxdualsdk.E_DoubleColorPixel_G56.eDOUBLE_COLOR_PIXTYPE_1);
+        }
+
+        /// <summary>
+        /// 单区域文本，不能设置特效
+        /// </summary>
+        public static void dynamicArea_str_1()
+        {
+            err = bxdualsdk.bxDual_dynamicArea_AddAreaTxt_6G(Program.ip, Program.port, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, AreaId, AreaX, AreaY,
                                                       Width, Height, fontName, FontSize, strAreaTxtContent);
             Console.WriteLine("bxDual_dynamicArea_AddAreaTxt_6G:" + err);
+        }
+        /// <summary>
+        /// 单区域文本，能设置特效
+        /// </summary>
+        public static void dynamicArea_str_2()
+        {
+            bxdualsdk.EQareaHeader_G6 aheader;
+            aheader.AreaType = 0x10;
+            aheader.AreaX = AreaX;
+            aheader.AreaY = AreaY;
+            aheader.AreaWidth = Width;
+            aheader.AreaHeight = Height;
+            aheader.BackGroundFlag = 0x00;
+            aheader.Transparency = 101;
+            aheader.AreaEqual = 0x00;
+            bxdualsdk.EQSound_6G stSoundData = new bxdualsdk.EQSound_6G();
+            byte[] strSoundTxt = Encoding.GetEncoding("GB2312").GetBytes("插入ab34测试语音");
+            stSoundData.SoundFlag = 0x00;
+            stSoundData.SoundPerson = 0x01;
+            stSoundData.SoundVolum = 6;
+            stSoundData.SoundSpeed = 0x2;
+            stSoundData.SoundDataMode = 0x00;
+            stSoundData.SoundReplayTimes = 0x01;
+            stSoundData.SoundReplayDelay = 200;
+            stSoundData.SoundReservedParaLen = 0x03;
+            stSoundData.Soundnumdeal = 0x00;
+            stSoundData.Soundlanguages = 0x00;
+            stSoundData.Soundwordstyle = 0x00;
+            stSoundData.SoundDataLen = strSoundTxt.Length;
+            stSoundData.SoundData = Class1.BytesToIntptr(strSoundTxt);
+            aheader.stSoundData = stSoundData;
+
+            bxdualsdk.EQpageHeader_G6 pheader;
+            pheader.PageStyle = 0x00;
+            pheader.DisplayMode = 4;
+            pheader.ClearMode = 0x00;
+            pheader.Speed = 15;
+            pheader.StayTime = 0;
+            pheader.RepeatTime = 1;
+            pheader.ValidLen = 0;
+            pheader.CartoonFrameRate = 0x00;
+            pheader.BackNotValidFlag = 0x00;
+            pheader.arrMode = bxdualsdk.E_arrMode.eSINGLELINE;
+            pheader.fontSize = 12;
+            pheader.color = (uint)0x01;
+            pheader.fontBold = 0;
+            pheader.fontItalic = 0;
+            pheader.tdirection = bxdualsdk.E_txtDirection.pNORMAL;
+            pheader.txtSpace = 0;
+            pheader.Valign = 1;
+            pheader.Halign = 1;
+            //网口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_dynamicArea_AddAreaTxtDetails_6G(Program.ip, Program.port, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, AreaId, ref aheader, ref pheader, fontName, strAreaTxtContent);
+            }
+            //串口
+            if (false)
+            {
+                err = bxdualsdk.bxDual_dynamicArea_AddAreaTxtDetails_6G_Serial(Program.com, Program.baudRate, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, AreaId, ref aheader, ref pheader, fontName, strAreaTxtContent);
+            }
+            Console.WriteLine("bxDual_dynamicArea_AddAreaTxtDetails_6G:" + err);
+        }
+
+        /// <summary>
+        /// 单区域文本，能设置特效,可选择是否和节目内容一起播放【一起播放时动态区和节目区域不能有重叠】
+        /// </summary>
+        public static void dynamicArea_str_3()
+        {
+            bxdualsdk.EQareaHeader_G6 aheader;
+            aheader.AreaType = 0x10;
+            aheader.AreaX = AreaX;
+            aheader.AreaY = AreaY;
+            aheader.AreaWidth = Width;
+            aheader.AreaHeight = Height;
+            aheader.BackGroundFlag = 0x00;
+            aheader.Transparency = 101;
+            aheader.AreaEqual = 0x00;
+            bxdualsdk.EQSound_6G stSoundData = new bxdualsdk.EQSound_6G();
+            byte[] strSoundTxt = Encoding.GetEncoding("GB2312").GetBytes("插入ab34测试语音");
+            stSoundData.SoundFlag = 0x00;
+            stSoundData.SoundPerson = 0x01;
+            stSoundData.SoundVolum = 6;
+            stSoundData.SoundSpeed = 0x2;
+            stSoundData.SoundDataMode = 0x00;
+            stSoundData.SoundReplayTimes = 0x01;
+            stSoundData.SoundReplayDelay = 200;
+            stSoundData.SoundReservedParaLen = 0x03;
+            stSoundData.Soundnumdeal = 0x00;
+            stSoundData.Soundlanguages = 0x00;
+            stSoundData.Soundwordstyle = 0x00;
+            stSoundData.SoundDataLen = strSoundTxt.Length;
+            stSoundData.SoundData = Class1.BytesToIntptr(strSoundTxt);
+            aheader.stSoundData = stSoundData;
+
+            bxdualsdk.EQpageHeader_G6 pheader;
+            pheader.PageStyle = 0x00;
+            pheader.DisplayMode = 4;
+            pheader.ClearMode = 0x00;
+            pheader.Speed = 15;
+            pheader.StayTime = 0;
+            pheader.RepeatTime = 1;
+            pheader.ValidLen = 0;
+            pheader.CartoonFrameRate = 0x00;
+            pheader.BackNotValidFlag = 0x00;
+            pheader.arrMode = bxdualsdk.E_arrMode.eSINGLELINE;
+            pheader.fontSize = 12;
+            pheader.color = (uint)0x01;
+            pheader.fontBold = 0;
+            pheader.fontItalic = 0;
+            pheader.tdirection = bxdualsdk.E_txtDirection.pNORMAL;
+            pheader.txtSpace = 0;
+            pheader.Valign = 1;
+            pheader.Halign = 1;
+            //网口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_dynamicArea_AddAreaTxtDetails_6G(Program.ip, Program.port, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, AreaId, ref aheader, ref pheader, fontName, strAreaTxtContent);
+            }
+            //串口
+            if (false)
+            {
+                err = bxdualsdk.bxDual_dynamicArea_AddAreaTxtDetails_6G_Serial(Program.com, Program.baudRate, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, AreaId, ref aheader, ref pheader, fontName, strAreaTxtContent);
+            }
+            Console.WriteLine("bxDual_dynamicArea_AddAreaTxtDetails_6G:" + err);
         }
         //单区域图片
         public static void dynamicArea_png(byte[] ip, ushort port)

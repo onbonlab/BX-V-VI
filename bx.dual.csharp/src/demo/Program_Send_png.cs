@@ -189,7 +189,7 @@ namespace LedSDKDemo_CSharp
             Console.WriteLine("bxDual_program_addArea_G6:" + err);
 
             //第四步，添加显示内容，此处为图文分区0添加图片，该步骤可多次调用，添加多张图片，每张图片用不同的编号
-            byte[] img = Encoding.GetEncoding("GBK").GetBytes("1.ong");
+            byte[] img = Encoding.GetEncoding("GBK").GetBytes("0.png");
             bxdualsdk.EQpageHeader_G6 pheader;
             pheader.PageStyle = 0x00;
             pheader.DisplayMode = 0x04;//移动模式
@@ -197,7 +197,7 @@ namespace LedSDKDemo_CSharp
             pheader.Speed = 15;//速度
             pheader.StayTime = 0;//停留时间
             pheader.RepeatTime = 1;
-            pheader.ValidLen = 10;
+            pheader.ValidLen = 0;
             pheader.CartoonFrameRate = 0x00;
             pheader.BackNotValidFlag = 0x00;
             pheader.arrMode = bxdualsdk.E_arrMode.eSINGLELINE;

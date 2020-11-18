@@ -2717,7 +2717,8 @@ GPRS – 30S*/
         删除动态区：删除单个动态区：
         uAreaId = 0xff:删除所有区域
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)] public static extern int bxDual_dynamicArea_DelArea_G6_Serial(byte[] pSerialName, byte nBaudRateIndex, byte uAreaId);
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_dynamicArea_DelArea_G6_Serial(byte[] pSerialName, byte nBaudRateIndex, byte uAreaId);
 
         /*
         功能：串口方式删除多个动态区：
@@ -2977,7 +2978,7 @@ GPRS – 30S*/
         /*
         功能说明：发送多条信息（文本/图片）到指定的动态区，并可以关联这个动态区到指定的节目；
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode, EntryPoint = "bxDual_dynamicArea_AddAreaInfos_5G")]
         public static extern int bxDual_dynamicArea_AddAreaInfos_5G(byte[] pIP, int nPort, E_ScreenColor_G56 color,
             byte uAreaId,
             byte RunMode,
@@ -2990,7 +2991,7 @@ GPRS – 30S*/
             EQareaframeHeader oFrame,
 
             byte nInfoCount,
-            DynamicAreaBaseInfo_5G[] pInfo
+            [In, Out] DynamicAreaBaseInfo_5G[] pInfo
         );
 
 
@@ -3075,7 +3076,8 @@ GPRS – 30S*/
         pAreaID-存放要删除的动态区ID数组；
         uAreaCount-动态区ID数组中的个数；
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)] public static extern int bxDual_dynamicArea_DelAreaS_G5_Serial(byte[] pSerialName, byte nBaudRateIndex, byte uAreaCount, byte[] pAreaID);
+        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_dynamicArea_DelAreaS_G5_Serial(byte[] pSerialName, byte nBaudRateIndex, byte uAreaCount, byte[] pAreaID);
 
 
 

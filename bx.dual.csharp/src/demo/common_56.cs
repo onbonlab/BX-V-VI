@@ -8,18 +8,15 @@ namespace LedSDKDemo_CSharp
     class common_56
     {
         public static int err = 0;
-        public static byte[] uartPort = Encoding.GetEncoding("GBK").GetBytes("\\\\.\\COM17");
-        //串口波特率 1：9600  2：57600
-        public static byte baudRate = 2;
         //常规设置
-        public static void set(byte[] ipAdder, ushort portp)
+        public static void set()
         {
             //设置屏号，不做通讯
             err = bxdualsdk.bxDual_set_screenNum_G56(1);
             //设置控制各种通讯方式每一包最大长度
             err = bxdualsdk.bxDual_set_packetLen(1024);
-            //文件系统格式化
-            err = bxdualsdk.bxDual_cmd_uart_ofsFormat(uartPort, baudRate);
+            //文件系统格式化,不建议使用
+            err = bxdualsdk.bxDual_cmd_uart_ofsFormat(Program.com, Program.baudRate);
         }
         //网口广播搜索
         public static void Net_search()
@@ -49,34 +46,31 @@ namespace LedSDKDemo_CSharp
         //删除节目 网口
         public static void deleteprogram_net()
         {
-            byte[] ip = Encoding.Default.GetBytes("192.168.89.105");
             //获取节目列表
             bxdualsdk.GetDirBlock_G56 driBlock=new bxdualsdk.GetDirBlock_G56();
-            err = bxdualsdk.bxDual_cmd_ofsReedDirBlock(ip, 5005,ref driBlock);
+            err = bxdualsdk.bxDual_cmd_ofsReedDirBlock(Program.ip, Program.port,ref driBlock);
             //获取节目详细信息
             for (int i = 0; i < driBlock.fileNumber; i++)
             {
                 bxdualsdk.FileAttribute_G56 fileAttr=new bxdualsdk.FileAttribute_G56();
                 err = bxdualsdk.bxDual_cmd_getFileAttr(ref driBlock, (ushort)i,ref fileAttr);
                 //删除指定节目
-                err = bxdualsdk.bxDual_cmd_ofsDeleteFormatFile(ip, 5005, 1, fileAttr.fileName);
-                //err = bxdualsdk.bxDual_cmd_uart_ofsDeleteFormatFile(uartPort, baudRate, 1, fileAttr.fileName);
+                err = bxdualsdk.bxDual_cmd_ofsDeleteFormatFile(Program.ip, Program.port, 1, fileAttr.fileName);
             }
         }
         //删除节目 串口
         public static void deleteprogram_com()
         {
-            byte[] ip = Encoding.Default.GetBytes("192.168.89.105");
             //获取节目列表
             bxdualsdk.GetDirBlock_G56 driBlock = new bxdualsdk.GetDirBlock_G56();
-            err = bxdualsdk.bxDual_cmd_uart_ofsReedDirBlock(uartPort, baudRate, ref driBlock);
+            err = bxdualsdk.bxDual_cmd_uart_ofsReedDirBlock(Program.com, Program.baudRate, ref driBlock);
             //获取节目详细信息
             for (int i = 0; i < driBlock.fileNumber; i++)
             {
                 bxdualsdk.FileAttribute_G56 fileAttr = new bxdualsdk.FileAttribute_G56();
                 err = bxdualsdk.bxDual_cmd_getFileAttr(ref driBlock, (ushort)i, ref fileAttr);
                 //删除指定节目
-                err = bxdualsdk.bxDual_cmd_uart_ofsDeleteFormatFile(uartPort, baudRate, 1, fileAttr.fileName);
+                err = bxdualsdk.bxDual_cmd_uart_ofsDeleteFormatFile(Program.com, Program.baudRate, 1, fileAttr.fileName);
             }
         }
         //调整亮度
@@ -185,7 +179,7 @@ namespace LedSDKDemo_CSharp
         {
             int totalMemVolume = 0, availableMemVolume = 0;
             err = bxdualsdk.bxDual_cmd_ofsGetMemoryVolume(ipAdder, 5005,ref totalMemVolume,ref availableMemVolume); 
-             err = bxdualsdk.bxDual_cmd_uart_ofsGetMemoryVolume(uartPort, baudRate, ref totalMemVolume, ref availableMemVolume);
+             err = bxdualsdk.bxDual_cmd_uart_ofsGetMemoryVolume(Program.com, Program.baudRate, ref totalMemVolume, ref availableMemVolume);
         }
         //网络搜索
         public static void search_Net(byte[] ipAdder)

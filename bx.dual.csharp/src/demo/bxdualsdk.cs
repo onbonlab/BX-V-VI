@@ -2475,7 +2475,7 @@ GPRS – 30S*/
         int nBaudRateIndex	: 波特率；取值为1时，代表波特率为9600; 取值为2时，代表波特率为57600;
         */
         [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
-        public static extern int bxDual_dynamicArea_AddAreaPic_6G_Serial(byte[] pSerialName, int nBaudRateIndex, E_ScreenColor_G56 color, byte uAreaId, short AreaX, ushort AreaY,
+        public static extern int bxDual_dynamicArea_AddAreaPic_6G_Serial(byte[] pSerialName, int nBaudRateIndex, E_ScreenColor_G56 color, byte uAreaId, ushort AreaX, ushort AreaY,
             ushort AreaWidth, ushort AreaHeight, ref EQpageHeader_G6 pheader, byte[] picPath);
 
 
@@ -2590,7 +2590,7 @@ GPRS – 30S*/
             EQareaframeHeader oFrame,
 
             byte nInfoCount,
-            DynamicAreaBaseInfo_5G[] pInfo
+            ref DynamicAreaBaseInfo_5G[] pInfo
         );
 
 
@@ -2614,7 +2614,7 @@ GPRS – 30S*/
             EQareaframeHeader oFrame,
 
             byte nInfoCount,
-            DynamicAreaBaseInfo_5G[] pInfo
+            ref DynamicAreaBaseInfo_5G[] pInfo
         );
 
         /*

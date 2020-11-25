@@ -52,7 +52,7 @@ namespace LedSDKDemo_CSharp
             if (true)
             {
                 //Program_Send_clock文本调用示例代码
-                //Program_Send_txt.Send_program_txt_6();
+                Program_Send_txt.Send_program_txt_6();
 
                 //Program_Send_png图片调用示例代码
                 //Program_Send_png.Send_program_png_6();
@@ -68,9 +68,9 @@ namespace LedSDKDemo_CSharp
 
 
                 //动态区调用示例，部分控制卡支持
-                Dynamic_6.dynamicArea_str_2();
+                //Dynamic_6.dynamicArea_pages_1();
                 //删除动态区
-                Dynamic_6.delete_dynamic();
+                //Dynamic_6.delete_dynamic();
             }
 
             //服务器模式调用示例

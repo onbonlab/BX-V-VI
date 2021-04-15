@@ -23,6 +23,7 @@ namespace LedSDKDemo_CSharp
             List<ServerList> server_list = new List<ServerList>();
             count = 0;
             server_list.Clear();
+            
             for (int i = 0; i < 2048; i++) { cards[i] = 0; }
             while (count == 0)
             {
@@ -39,6 +40,7 @@ namespace LedSDKDemo_CSharp
                 port = bxdualsdk.bxDual_Get_Port_Barcode(barcodevalue);
                 ServerList price = new ServerList(barcodevalue, port);
                 server_list.Add(price);
+                string ssss = Encoding.Default.GetString(barcodevalue);
                 Console.WriteLine("barcode:" + i + "：" + System.Text.Encoding.Default.GetString(barcodevalue) + "   port:" + port);
                 server_list.Add(price);
             }
@@ -48,9 +50,9 @@ namespace LedSDKDemo_CSharp
 
             //以第一张上线控制卡做通信示例
             //服务器IP
-            byte[] server_ip = Encoding.GetEncoding("GBK").GetBytes("127.0.0.1");
+            byte[] server_ip = Encoding.GetEncoding("GBK").GetBytes("192.168.89.100");
             //控制卡网络ID
-            byte[] barcode1 = cards.Skip(0 + 20).Take(16).ToArray();
+            byte[] barcode1 = cards.Skip(0).Take(16).ToArray();
             //控制卡通信端口
             int port1 = bxdualsdk.bxDual_Get_Port_Barcode(barcode1);
 
@@ -67,17 +69,23 @@ namespace LedSDKDemo_CSharp
                 Console.WriteLine("ipAdder:" + System.Text.Encoding.Default.GetString(data.ipAdder));
             }
             else { Console.WriteLine("通信失败："+err); }
-
+            while (false)
+            {
+                string[] s = new string[] { "装载中","未装载", "不加装" };
+                for (int i = 0; i < 3; i++) { SendTextMsg(s[i], (ushort)port1);
+                    Thread.Sleep(2000);
+                }
+            }
             
 
             //关闭服务器
             err = bxdualsdk.bxDual_Stop_Server(pServer);
             //结束线程
-            thread.Abort();
-            while (thread.ThreadState != ThreadState.Aborted)
-            {
-                Thread.Sleep(100);
-            }
+            //thread.Abort();
+            //while (thread.ThreadState != ThreadState.Aborted)
+            //{
+            //    Thread.Sleep(100);
+            //}
         }
         public static void get()
         {
@@ -108,6 +116,68 @@ namespace LedSDKDemo_CSharp
                 Console.WriteLine("barcode:" + i + "：" + System.Text.Encoding.Default.GetString(barcodevalue) + "   port:" + port);
                 server_list.Add(price);
             }
+        }
+
+        /// <summary>
+        /// 发送消息
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="client"></param>
+        private static void SendTextMsg(string data, ushort port)
+        {
+            try
+            {
+                var content = Encoding.GetEncoding("GBK").GetBytes(data);
+                var contentIntptr = Class1.BytesToIntptr(content);
+                bxdualsdk.DynamicAreaParams[] Params = new bxdualsdk.DynamicAreaParams[]{
+                    new bxdualsdk.DynamicAreaParams(){
+                        uAreaId = 0,
+                        oAreaHeader_G6 = new bxdualsdk.EQareaHeader_G6()
+                        {
+                            AreaType = 0x10,
+                            AreaX = 64,
+                            AreaY = 0,
+                            AreaWidth = 64,
+                            AreaHeight = 16,
+                            BackGroundFlag = 0x00,
+                            Transparency = 101,
+                            AreaEqual = 0x00
+                        },
+                        stPageHeader = new bxdualsdk.EQpageHeader_G6()
+                        {
+                            PageStyle = 0x00,
+                            DisplayMode = 1,
+                            ClearMode = 1,
+                            Speed = 1,
+                            StayTime = 100,
+                            RepeatTime = 1,
+                            ValidLen = 0,
+                            CartoonFrameRate = 0x00,
+                            BackNotValidFlag = 0x00,
+                            arrMode = bxdualsdk.E_arrMode.eSINGLELINE,
+                            fontSize = 12,
+                            color = (uint)0x02,
+                            fontBold = 0,
+                            fontItalic = 0,
+                            tdirection = bxdualsdk.E_txtDirection.pNORMAL,
+                            txtSpace = 0,
+                            Valign = 1,
+                            Halign = 1
+                        },
+                        fontName = Class1.BytesToIntptr(Encoding.GetEncoding("GBK").GetBytes("宋体")),
+                        strAreaTxtContent = contentIntptr
+                    }
+                };
+                byte[] server_ip = Encoding.GetEncoding("GBK").GetBytes("192.168.89.100");
+                var err = bxdualsdk.bxDual_dynamicAreaS_AddTxtDetails_6G(server_ip, port
+                    , bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, 1, Params);
+                Console.WriteLine("bxDual_dynamicAreaS_AddTxtDetails_6G   err = " + err);
+            }
+            catch (Exception ex)
+            {
+                
+            }
+
         }
     }
 }

@@ -27,13 +27,16 @@ namespace LedSDKDemo_CSharp
         public static ushort Width = 64;
         public static ushort Height = 32;
         //字体名称，如"宋体";
-        public static byte[] fontName = Encoding.GetEncoding("GBK").GetBytes("宋体");
+        public static IntPtr fontName;
+        //public static byte[] fontName = Encoding.GetEncoding("GBK").GetBytes("宋体");
         //字体大小
-        public static byte FontSize = 28;
+        public static byte FontSize = 12;
         //要显示的文本内容
-        public static byte[] strAreaTxtContent = Encoding.GetEncoding("GBK").GetBytes("测试123-测试123");
+        public static IntPtr strAreaTxtContent;
+        //public static byte[] strAreaTxtContent = Encoding.GetEncoding("GBK").GetBytes("12345565648");
         //要显示的图片 只支持png类型，图片像素大小和区域坐标1：1，一般黑底红字
-        public static byte[] img = Encoding.GetEncoding("GBK").GetBytes("0.png");
+        public static IntPtr img;
+        //public static byte[] img = Encoding.GetEncoding("GBK").GetBytes("0.png");
 
         /// <summary>
         /// 删除动态区，单个操作
@@ -87,6 +90,12 @@ namespace LedSDKDemo_CSharp
         /// </summary>
         public static void dynamicArea_str_1()
         {
+            byte[] Font = Encoding.GetEncoding("GBK").GetBytes("宋体");
+            fontName = Marshal.AllocHGlobal(Font.Length);
+            Marshal.Copy(Font, 0, fontName, Font.Length);
+            byte[] str = Encoding.GetEncoding("GBK").GetBytes("111111\0");
+            strAreaTxtContent = Marshal.AllocHGlobal(str.Length);
+            Marshal.Copy(str, 0, strAreaTxtContent, str.Length);
             err = bxdualsdk.bxDual_dynamicArea_AddAreaTxt_6G(Program.ip, Program.port, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, AreaId, AreaX, AreaY,
                                                       Width, Height, fontName, FontSize, strAreaTxtContent);
             Console.WriteLine("bxDual_dynamicArea_AddAreaTxt_6G:" + err);
@@ -124,7 +133,7 @@ namespace LedSDKDemo_CSharp
 
             bxdualsdk.EQpageHeader_G6 pheader;
             pheader.PageStyle = 0x00;
-            pheader.DisplayMode = 4;
+            pheader.DisplayMode = 2;
             pheader.ClearMode = 0x00;
             pheader.Speed = 15;
             pheader.StayTime = 0;
@@ -132,7 +141,7 @@ namespace LedSDKDemo_CSharp
             pheader.ValidLen = 0;
             pheader.CartoonFrameRate = 0x00;
             pheader.BackNotValidFlag = 0x00;
-            pheader.arrMode = bxdualsdk.E_arrMode.eSINGLELINE;
+            pheader.arrMode = bxdualsdk.E_arrMode.eMULTILINE;
             pheader.fontSize = 12;
             pheader.color = (uint)0x01;
             pheader.fontBold = 0;
@@ -141,10 +150,16 @@ namespace LedSDKDemo_CSharp
             pheader.txtSpace = 0;
             pheader.Valign = 1;
             pheader.Halign = 1;
+            byte[] Font = Encoding.GetEncoding("GBK").GetBytes("宋体");
+            fontName = Marshal.AllocHGlobal(Font.Length);
+            Marshal.Copy(Font, 0, fontName, Font.Length);
+            byte[] str = Encoding.GetEncoding("GBK").GetBytes("111111\0");
+            strAreaTxtContent = Marshal.AllocHGlobal(str.Length);
+            Marshal.Copy(str, 0, strAreaTxtContent, str.Length);
             //网口
             if (true)
             {
-                err = bxdualsdk.bxDual_dynamicArea_AddAreaTxtDetails_6G(Program.ip, Program.port, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, AreaId, 
+                err = bxdualsdk.bxDual_dynamicArea_AddAreaTxtDetails_6G(Program.ip, Program.port, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_SINGLE, AreaId, 
                     ref aheader, ref pheader, fontName, strAreaTxtContent);
             }
             //串口
@@ -191,21 +206,27 @@ namespace LedSDKDemo_CSharp
             pheader.PageStyle = 0x00;
             pheader.DisplayMode = 4;
             pheader.ClearMode = 0x00;
-            pheader.Speed = 15;
+            pheader.Speed = 10;
             pheader.StayTime = 0;
             pheader.RepeatTime = 1;
             pheader.ValidLen = 0;
             pheader.CartoonFrameRate = 0x00;
             pheader.BackNotValidFlag = 0x00;
             pheader.arrMode = bxdualsdk.E_arrMode.eSINGLELINE;
-            pheader.fontSize = 12;
-            pheader.color = (uint)0x01;
+            pheader.fontSize = 18;
+            pheader.color = (uint)0xffff00;
             pheader.fontBold = 0;
             pheader.fontItalic = 0;
             pheader.tdirection = bxdualsdk.E_txtDirection.pNORMAL;
             pheader.txtSpace = 0;
             pheader.Valign = 1;
             pheader.Halign = 1;
+            byte[] Font = Encoding.GetEncoding("GBK").GetBytes("宋体");
+            fontName = Marshal.AllocHGlobal(Font.Length);
+            Marshal.Copy(Font, 0, fontName, Font.Length);
+            byte[] str = Encoding.GetEncoding("GBK").GetBytes("111111\0");
+            strAreaTxtContent = Marshal.AllocHGlobal(str.Length);
+            Marshal.Copy(str, 0, strAreaTxtContent, str.Length);
             //网口
             if (true)
             {
@@ -213,7 +234,7 @@ namespace LedSDKDemo_CSharp
                 err = bxdualsdk.bxDual_dynamicArea_AddAreaTxtDetails_6G(Program.ip, Program.port, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, AreaId, 
                     ref aheader, ref pheader, fontName, strAreaTxtContent);
                 //是否关联节目
-                //err = bxdualsdk.bxDual_dynamicArea_AddAreaTxtDetails_WithProgram_6G(Program.ip, Program.port, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, AreaId,
+                //err = bxdualsdk.bxDual_dynamicArea_AddAreaTxtDetails_WithProgram_6G(Program.ip, Program.port, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_SINGLE, AreaId,
                 //ref aheader, ref pheader, fontName, strAreaTxtContent, RelateProNum, RelateProSerial);
             }
             //串口
@@ -278,6 +299,12 @@ namespace LedSDKDemo_CSharp
             pheader.txtSpace = 0;
             pheader.Valign = 1;
             pheader.Halign = 1;
+            byte[] Font = Encoding.GetEncoding("GBK").GetBytes("宋体");
+            fontName = Marshal.AllocHGlobal(Font.Length);
+            Marshal.Copy(Font, 0, fontName, Font.Length);
+            byte[] str = Encoding.GetEncoding("GBK").GetBytes("111111\0");
+            strAreaTxtContent = Marshal.AllocHGlobal(str.Length);
+            Marshal.Copy(str, 0, strAreaTxtContent, str.Length);
             //网口
             if (true)
             {
@@ -324,6 +351,9 @@ namespace LedSDKDemo_CSharp
             pheader.txtSpace = 0;
             pheader.Valign = 1;
             pheader.Halign = 1;
+            byte[] str = Encoding.GetEncoding("GBK").GetBytes("1.png\0");
+            img = Marshal.AllocHGlobal(str.Length);
+            Marshal.Copy(str, 0, img, str.Length);
             //网口
             if (true)
             {
@@ -391,7 +421,7 @@ namespace LedSDKDemo_CSharp
 
             bxdualsdk.EQpageHeader_G6 pheader;
             pheader.PageStyle = 0x00;
-            pheader.DisplayMode = 4;
+            pheader.DisplayMode = 2;
             pheader.ClearMode = 0x00;
             pheader.Speed = 5;
             pheader.StayTime = 100;
@@ -431,22 +461,30 @@ namespace LedSDKDemo_CSharp
             Params[0].uAreaId = 0;
             Params[0].oAreaHeader_G6 = aheader;
             Params[0].stPageHeader = pheader;
-            Params[0].fontName = Class1.BytesToIntptr(fontName);
-            Params[0].strAreaTxtContent = Class1.BytesToIntptr(strAreaTxtContent);
+            byte[] Font = Encoding.GetEncoding("GBK").GetBytes("宋体");
+            Params[0].fontName = Marshal.AllocHGlobal(Font.Length);
+            Marshal.Copy(Font, 0, Params[0].fontName, Font.Length);
+            byte[] str = Encoding.GetEncoding("GBK").GetBytes("111111\0");
+            Params[0].strAreaTxtContent = Marshal.AllocHGlobal(str.Length);
+            Marshal.Copy(str, 0, Params[0].strAreaTxtContent, str.Length);
             Params[1].uAreaId = 1;
             Params[1].oAreaHeader_G6 = aheader1;
             Params[1].stPageHeader = pheader1;
-            Params[1].fontName = Class1.BytesToIntptr(fontName);
-            byte[] see = Encoding.Default.GetBytes("区域2数据");
-            Params[1].strAreaTxtContent = Class1.BytesToIntptr(see);
+            Params[1].fontName = Marshal.AllocHGlobal(Font.Length);
+            Marshal.Copy(Font, 0, Params[1].fontName, Font.Length);
+            byte[] str1 = Encoding.GetEncoding("GBK").GetBytes("22222\0");
+            Params[1].strAreaTxtContent = Marshal.AllocHGlobal(str1.Length);
+            Marshal.Copy(str1, 0, Params[1].strAreaTxtContent, str1.Length);
             //网口
             if (true)
             {
                 //动态区优先播放，节目停止播放
-                err = bxdualsdk.bxDual_dynamicAreaS_AddTxtDetails_6G(Program.ip, Program.port, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, (byte)Params.Length, Params);
+                //err = bxdualsdk.bxDual_dynamicAreaS_AddTxtDetails_6G(Program.ip, Program.port, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, (byte)Params.Length, Params);
                 //是否关联节目
-                //err = bxdualsdk.bxDual_dynamicAreaS_AddTxtDetails_WithProgram_6G(Program.ip, Program.port, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE,
-                //(byte)Params.Length, Params, RelateProNum, RelateProSerial);
+                Console.WriteLine(DateTime.Now.ToString());
+                err = bxdualsdk.bxDual_dynamicAreaS_AddTxtDetails_WithProgram_6G(Program.ip, Program.port, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE,
+                (byte)Params.Length, Params, RelateProNum, RelateProSerial);
+                Console.WriteLine(DateTime.Now.ToString());
 
             }
             //串口
@@ -544,14 +582,20 @@ namespace LedSDKDemo_CSharp
             Params[0].uAreaId = 0;
             Params[0].oAreaHeader_G6 = aheader;
             Params[0].stPageHeader = pheader;
-            Params[0].fontName = Class1.BytesToIntptr(fontName);
-            Params[0].strAreaTxtContent = Class1.BytesToIntptr(img);
+            byte[] Font = Encoding.GetEncoding("GBK").GetBytes("宋体");
+            Params[0].fontName = Marshal.AllocHGlobal(Font.Length);
+            Marshal.Copy(Font, 0, Params[0].fontName, Font.Length);
+            byte[] img = Encoding.GetEncoding("GBK").GetBytes("123.png\0");
+            Params[0].strAreaTxtContent = Marshal.AllocHGlobal(img.Length);
+            Marshal.Copy(img, 0, Params[0].strAreaTxtContent, img.Length);
             Params[1].uAreaId = 1;
             Params[1].oAreaHeader_G6 = aheader1;
             Params[1].stPageHeader = pheader1;
-            Params[1].fontName = Class1.BytesToIntptr(fontName);
-            byte[] see = Encoding.Default.GetBytes("2.png");
-            Params[1].strAreaTxtContent = Class1.BytesToIntptr(see);
+            Params[1].fontName = Marshal.AllocHGlobal(Font.Length);
+            Marshal.Copy(Font, 0, Params[1].fontName, Font.Length);
+            byte[] img1 = Encoding.GetEncoding("GBK").GetBytes("1.png\0");
+            Params[1].strAreaTxtContent = Marshal.AllocHGlobal(img1.Length);
+            Marshal.Copy(img1, 0, Params[1].strAreaTxtContent, img1.Length);
             //网口
             if (true)
             {
@@ -635,12 +679,15 @@ namespace LedSDKDemo_CSharp
             pheader.oFont.txtSpace = txtSpace;
             pheader.oFont.Valign = Valign;
             pheader.oFont.Halign = Halign;
-            pheader.fontName = Class1.BytesToIntptr(fontName);
+            byte[] Font = Encoding.GetEncoding("GBK").GetBytes("宋体");
+            pheader.fontName = Marshal.AllocHGlobal(Font.Length);
+            Marshal.Copy(Font, 0, pheader.fontName, Font.Length);
             byte[] str = Encoding.GetEncoding("GBK").GetBytes("111111\0");
-            pheader.strAreaTxtContent = Class1.BytesToIntptr(str);
+            pheader.strAreaTxtContent = Marshal.AllocHGlobal(str.Length);
+            Marshal.Copy(str, 0, pheader.strAreaTxtContent, str.Length);
             byte[] img = Encoding.GetEncoding("GBK").GetBytes("123.png\0");
-            pheader.filePath = Class1.BytesToIntptr(img);
-            pheader.strAreaTxtContent = Class1.BytesToIntptr(str);
+            pheader.filePath = Marshal.AllocHGlobal(img.Length);
+            Marshal.Copy(img, 0, pheader.filePath, img.Length);
             bxdualsdk.DynamicAreaBaseInfo_5G[] Params = new bxdualsdk.DynamicAreaBaseInfo_5G[1];
             Params[0] = pheader;
             //网口
@@ -669,8 +716,6 @@ namespace LedSDKDemo_CSharp
             byte Speed = 1;
             ushort StayTime = 100;
             byte RepeatTime = 0;
-            ushort ValidLen = 0;
-            byte CartoonFrameRate = 0;
             bxdualsdk.E_arrMode arrMode = 0;
             ushort fontSize = 10;
             uint color = 1;
@@ -723,12 +768,15 @@ namespace LedSDKDemo_CSharp
             pheader.oFont.txtSpace = txtSpace;
             pheader.oFont.Valign = Valign;
             pheader.oFont.Halign = Halign;
-            pheader.fontName = Class1.BytesToIntptr(fontName);
-            byte[] str = Encoding.GetEncoding("GBK").GetBytes("123546\0");
-            pheader.strAreaTxtContent = Class1.BytesToIntptr(str);
+            byte[] Font = Encoding.GetEncoding("GBK").GetBytes("宋体");
+            pheader.fontName = Marshal.AllocHGlobal(Font.Length);
+            Marshal.Copy(Font, 0, pheader.fontName, Font.Length);
+            byte[] str = Encoding.GetEncoding("GBK").GetBytes("111111\0");
+            pheader.strAreaTxtContent = Marshal.AllocHGlobal(str.Length);
+            Marshal.Copy(str, 0, pheader.strAreaTxtContent, str.Length);
             byte[] img = Encoding.GetEncoding("GBK").GetBytes("123.png\0");
-            pheader.filePath = Class1.BytesToIntptr(img);
-            pheader.strAreaTxtContent = Class1.BytesToIntptr(str);
+            pheader.filePath = Marshal.AllocHGlobal(img.Length);
+            Marshal.Copy(img, 0, pheader.filePath, img.Length);
             bxdualsdk.DynamicAreaBaseInfo_5G pheader1 = new bxdualsdk.DynamicAreaBaseInfo_5G();
             pheader1.nType = 0x02;
             pheader1.DisplayMode = DisplayMode;
@@ -745,17 +793,22 @@ namespace LedSDKDemo_CSharp
             pheader1.oFont.txtSpace = txtSpace;
             pheader1.oFont.Valign = Valign;
             pheader1.oFont.Halign = Halign;
-            pheader1.fontName = Class1.BytesToIntptr(fontName);
-            pheader1.filePath = Class1.BytesToIntptr(Encoding.GetEncoding("GBK").GetBytes("2.png"));
-            pheader1.strAreaTxtContent = Class1.BytesToIntptr(Encoding.GetEncoding("GBK").GetBytes("黄.png"));
+            pheader.fontName = Marshal.AllocHGlobal(Font.Length);
+            Marshal.Copy(Font, 0, pheader.fontName, Font.Length);
+            byte[] str1 = Encoding.GetEncoding("GBK").GetBytes("111111\0");
+            pheader.strAreaTxtContent = Marshal.AllocHGlobal(str1.Length);
+            Marshal.Copy(str1, 0, pheader.strAreaTxtContent, str1.Length);
+            byte[] img1 = Encoding.GetEncoding("GBK").GetBytes("123.png\0");
+            pheader.filePath = Marshal.AllocHGlobal(img1.Length);
+            Marshal.Copy(img1, 0, pheader.filePath, img1.Length);
             bxdualsdk.DynamicAreaBaseInfo_5G[] Params = new bxdualsdk.DynamicAreaBaseInfo_5G[2];
             Params[0] = pheader;
             Params[1] = pheader1;
             //网口
             if (true)
             {
-                err = bxdualsdk.bxDual_dynamicArea_AddAreaInfos_6G_V2(Program.ip, Program.port, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, AreaId, RunMode, Timeout, RelateAllPro,
-             RelateProNum, RelateProSerial, ImmePlay, AreaX, AreaY, Width, Height, Frame, (byte)Params.Length, Params, ref stSoundData);
+                err = bxdualsdk.bxDual_dynamicArea_AddAreaInfos_6G_V2(Program.ip, Program.port, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_THREE, AreaId, RunMode, Timeout, RelateAllPro,
+             RelateProNum, RelateProSerial, ImmePlay, AreaX, AreaY, Width, Height, Frame, 1, Params, ref stSoundData);//(byte)Params.Length
             }
             //串口
             if (false)

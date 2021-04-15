@@ -27,7 +27,7 @@ namespace LedSDKDemo_CSharp
             else { cmb_ping_Color = 4; }
 
             //第一步.设置屏幕参数相关  发送节目必要接口，发送动态区可忽略
-            err = bxdualsdk.bxDual_program_setScreenParams_G56((bxdualsdk.E_ScreenColor_G56)cmb_ping_Color, data.ControllerType, bxdualsdk.E_DoubleColorPixel_G56.eDOUBLE_COLOR_PIXTYPE_1);
+            err = bxdualsdk.bxDual_program_setScreenParams_G56((bxdualsdk.E_ScreenColor_G56)cmb_ping_Color, data.ControllerType, bxdualsdk.E_DoubleColorPixel_G56.eDOUBLE_COLOR_PIXTYPE_2);
             Console.WriteLine("bxDual_program_setScreenParams_G56:" + err);
 
             //第二步，创建节目，设置节目属性
@@ -63,14 +63,14 @@ namespace LedSDKDemo_CSharp
             timeData2.linestyle = bxdualsdk.E_arrMode.eMULTILINE;
             timeData2.color = (uint)bxdualsdk.E_Color_G56.eRED;
             timeData2.fontName = "宋体";
-            timeData2.fontSize = 12;
+            timeData2.fontSize = 11;
             timeData2.fontBold = 0;
             timeData2.fontItalic = 0;
             timeData2.fontUnderline = 0;
             timeData2.fontAlign = 0;  //0--左对齐，1-居中，2-右对齐
             timeData2.date_enable = 1;
             timeData2.datestyle = bxdualsdk.E_DateStyle.eYYYY_MM_DD_MINUS;
-            timeData2.time_enable = 1;
+            timeData2.time_enable = 0;
             timeData2.timestyle = bxdualsdk.E_TimeStyle.eHH_MM_AM;
             timeData2.week_enable = 0;
             timeData2.weekstyle = bxdualsdk.E_WeekStyle.eMonday_CHS;
@@ -161,7 +161,7 @@ namespace LedSDKDemo_CSharp
             aheader.AreaType = 2;
             aheader.AreaX = 0;
             aheader.AreaY = 0;
-            aheader.AreaWidth = 64;
+            aheader.AreaWidth = 80;
             aheader.AreaHeight = 32;
             aheader.BackGroundFlag = 0x00;
             aheader.Transparency = 101;
@@ -184,23 +184,36 @@ namespace LedSDKDemo_CSharp
             aheader.stSoundData = stSoundData;
             err = bxdualsdk.bxDual_program_addArea_G6(0, ref aheader); 
             Console.WriteLine("bxDual_program_addArea_G6:" + err);
+            //区域添加边框
+            if (true)
+            {
+                bxdualsdk.EQscreenframeHeader_G6 sfheader;
+                sfheader.FrameDispStype = 0x01;    //边框显示方式0x00 –闪烁 0x01 –顺时针转动 0x02 –逆时针转动 0x03 –闪烁加顺时针转动 0x04 –闪烁加逆时针转动 0x05 –红绿交替闪烁 0x06 –红绿交替转动 0x07 –静止打出
+                sfheader.FrameDispSpeed = 0x10;    //边框显示速度
+                sfheader.FrameMoveStep = 0x01;     //边框移动步长，单位为点，此参 数范围为 1~16 
+                sfheader.FrameUnitLength = 2;   //边框组元长度
+                sfheader.FrameUnitWidth = 2;    //边框组元宽度
+                sfheader.FrameDirectDispBit = 0;//上下左右边框显示标志位，目前只支持6QX-M卡 
+                byte[] img = Encoding.Default.GetBytes("E:\\黄10.png");
+                bxdualsdk.bxDual_program_picturesAreaAddFrame_G6(0, ref sfheader, img);
+            }
 
             //第四步，添加时间显示内容
             bxdualsdk.EQtimeAreaData_G56 timeData2;
-            timeData2.linestyle = bxdualsdk.E_arrMode.eMULTILINE;
+            timeData2.linestyle = bxdualsdk.E_arrMode.eSINGLELINE;
             timeData2.color = (uint)bxdualsdk.E_Color_G56.eRED;
-            timeData2.fontName = "simsun";
-            timeData2.fontSize = 10;
-            timeData2.fontBold = 0;
+            timeData2.fontName = "宋体";
+            timeData2.fontSize = 12;
+            timeData2.fontBold = 1;
             timeData2.fontItalic = 0;
             timeData2.fontUnderline = 0;
-            timeData2.fontAlign = 1;  //0--左对齐，1-居中，2-右对齐
-            timeData2.date_enable = 0;
-            timeData2.datestyle = bxdualsdk.E_DateStyle.eYYYY_MM_DD_MINUS;
-            timeData2.time_enable = 1;
-            timeData2.timestyle = bxdualsdk.E_TimeStyle.eHH_MM_COLON;
+            timeData2.fontAlign = 0;  //0--左对齐，1-居中，2-右对齐
+            timeData2.date_enable = 1;
+            timeData2.datestyle = bxdualsdk.E_DateStyle.eYYYY_MM_DD_CHS;
+            timeData2.time_enable = 0;
+            timeData2.timestyle = bxdualsdk.E_TimeStyle.eHH_MM_SS_COLON;
             timeData2.week_enable = 0;
-            timeData2.weekstyle = bxdualsdk.E_WeekStyle.eMonday;
+            timeData2.weekstyle = bxdualsdk.E_WeekStyle.eMonday_CHS;
             err = bxdualsdk.bxDual_program_timeAreaAddContent_G6(0, ref timeData2);
             Console.WriteLine("bxDual_program_timeAreaAddContent_G6:" + err);
 
@@ -237,6 +250,21 @@ namespace LedSDKDemo_CSharp
 
             err = bxdualsdk.bxDual_program_freeBuffer_G6(ref program);
             Console.WriteLine("bxDual_program_freeBuffer_G6:" + err);
+        }
+        /// <summary>
+        /// 战斗时间
+        /// </summary>
+        public static void battieTime()
+        {
+            bxdualsdk.BattleTime Battle = new bxdualsdk.BattleTime();
+            Battle.BattleRTCYear = 0x2020;
+            Battle.BattleRTCMonth = 0x03;
+            Battle.BattleRTCDate = 0x05;
+            Battle.BattleRTCHour = 0x10;
+            Battle.BattleRTCMinute = 0x10;
+            Battle.BattleRTCSecond = 0x10;
+            Battle.BattleRTCWeek = 255;
+            int err = bxdualsdk.bxDual_cmd_battieTime(Program.ip, Program.port,0, ref Battle);
         }
     }
 }

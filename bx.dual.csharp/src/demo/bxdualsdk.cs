@@ -568,7 +568,7 @@ GPRS – 30S*/
         public struct TimingReset
         {
             public byte rstMode; //复位模式 0x00 –取消定时复位功能 0x01 –周期复位， 此时 RstInterval 字段有效 0x02 –只在指定时间复位
-            uint RstInterval;//复位周期， 单位： 分钟如此字段为 0， 不进行复位操作
+            public uint RstInterval;//复位周期， 单位： 分钟如此字段为 0， 不进行复位操作
             public byte rstHour1; //小时 0Xff–表示此组无效， 下同
             public byte rstMin1;
             public byte rstHour2;
@@ -1025,9 +1025,9 @@ GPRS – 30S*/
         /// windows平台需要初始化SDK（默认如果没有初始化会自动初始化）
         /// </summary>
         /// <returns></returns>
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_InitSdk();
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern void bxDual_ReleaseSdk();
 
         
@@ -1036,7 +1036,7 @@ GPRS – 30S*/
         /// </summary>
         /// <param name="usDstAddr">2个字节长度，默认值0xfffe 为地址通配符</param>
         /// <returns></returns>
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_set_screenNum_G56(ushort usDstAddr);
         
         /// <summary>
@@ -1045,7 +1045,7 @@ GPRS – 30S*/
         /// </summary>
         /// <param name="packetLen">数据包长度</param>
         /// <returns></returns>
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_set_packetLen(ushort packetLen);
 
 
@@ -1055,7 +1055,7 @@ GPRS – 30S*/
         /// </summary>
         /// <param name="retData">请参考结构体Ping_data 所有回读参数都会通过结构体回调</param>
         /// <returns></returns>
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_searchController(ref Ping_data retData);
 
         /// <summary>
@@ -1064,7 +1064,7 @@ GPRS – 30S*/
         /// <param name="retData">请参考结构体Ping_data 所有回读参数都会通过结构体回调</param>
         /// <param name="uartPort">串口号</param>
         /// <returns></returns>
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_searchController(ref Ping_data retData, byte[] uartPort);
 
 
@@ -1087,9 +1087,9 @@ GPRS – 30S*/
         /// <param name="uartPort">串口号,如："COM3"</param>
         /// <param name="nBaudRateType">1：9600;   2：57600;</param>
         /// <returns></returns>
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_search_Net_6G(ref NetSearchCmdRet retData, byte[] uartPort, ushort nBaudRateType);
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_search_Net_6G_Web(ref NetSearchCmdRet_Web retData, byte[] uartPort, ushort nBaudRateType);
 
 
@@ -1100,7 +1100,7 @@ GPRS – 30S*/
         * 返回值：0 成功， 其他值为错误号
         * 功 能：文件系统格式化
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_ofsFormat(byte[] uartPort, byte baudRate);
 
         /*! ***************************************************************
@@ -1111,7 +1111,7 @@ GPRS – 30S*/
         * 注：
         * 发送节目前调用
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_ofsStartFileTransf(byte[] uartPort, byte baudRate);
 
         /*! ***************************************************************
@@ -1122,7 +1122,7 @@ GPRS – 30S*/
         * 注：
         * 发送节目后调用
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_ofsEndFileTransf(byte[] uartPort, byte baudRate);
 
         /*! ***************************************************************
@@ -1135,7 +1135,7 @@ GPRS – 30S*/
         * 注：
         * fileName是4个字节 fileNub值为N就要把N个fileName拼接 fileName大小 = fileName（4byte）*N
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_ofsDeleteFormatFile(byte[] uartPort, byte baudRate, short fileNub, byte[] fileName);
 
 
@@ -1150,7 +1150,7 @@ GPRS – 30S*/
         如： Firmware 文件、 控制器参数配置文件、 扫描配置文件等。
         * fileName是4个字节 fileNub值为N就要把N个fileName拼接 fileName大小 = fileName（4byte）*N
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_confDeleteFormatFile(byte[] uartPort, byte baudRate, short fileNub, byte[] fileName);
 
 
@@ -1164,7 +1164,7 @@ GPRS – 30S*/
         * 注：
         * 发节目前需要查询防止空间不够用
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_ofsGetMemoryVolume(byte[] uartPort, byte baudRate,ref int totalMemVolume,ref int availableMemVolume);
 
         /*! ***************************************************************
@@ -1180,7 +1180,7 @@ GPRS – 30S*/
         * 注：用于对存储在 OFS 中的文件的处理， 例如： 节目文件， 字库文件、 播放列表文件等
         * 内部包含多条命令注意返回状态方便查找问题
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_ofsWriteFile(byte[] uartPort, byte baudRate, byte[] fileName, byte fileType, uint fileLen, byte overwrite, IntPtr fileAddre);
 
         /*! ***************************************************************
@@ -1197,7 +1197,7 @@ GPRS – 30S*/
         如： Firmware 文件、 控制器参数配置文件、 扫描配置文件等。
         * 内部包含多条命令注意返回状态方便查找问题
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_confWriteFile(byte[] uartPort, byte baudRate, byte[] fileName, byte fileType, int fileLen, byte overwrite, byte[] fileAddre);
 
         /*! ***************************************************************
@@ -1211,7 +1211,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_ofsStartReedFile(byte[] uartPort, byte baudRate, byte[] fileName, int[] fileSize, int[] fileCrc);
 
         /*! ***************************************************************
@@ -1226,7 +1226,7 @@ GPRS – 30S*/
         如： Firmware 文件、 控制器参数配置文件、 扫描配置文件等。
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_confStartReedFile(byte[] uartPort, byte baudRate, byte[] fileName, int[] fileSize, int[] fileCrc);
 
 
@@ -1240,7 +1240,7 @@ GPRS – 30S*/
         * 注：用于对存储在 OFS 中的文件的处理， 例如： 节目文件， 字库文件、 播放列表文件等
         * fileAddre大小根据cmd_ofsStartReedFile函数回调值确定
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_ofsReedFileBlock(byte[] uartPort, byte baudRate, byte[] fileName, byte[] fileAddre);
 
         /*! ***************************************************************
@@ -1254,7 +1254,7 @@ GPRS – 30S*/
         如： Firmware 文件、 控制器参数配置文件、 扫描配置文件等。
         * fileAddre大小根据cmd_ofsStartReedFile函数回调值确定
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_confReedFileBlock(byte[] uartPort, byte baudRate, byte[] fileName, byte[] fileAddre);
 
         /*! ***************************************************************
@@ -1267,7 +1267,7 @@ GPRS – 30S*/
         * 注：
         * 下面两条命令用法比较复杂请配合协议使用不做嗷述
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_ofsReedDirBlock(byte[] uartPort, byte baudRate, ref GetDirBlock_G56 dirBlock);
 
         /*! ***************************************************************
@@ -1279,10 +1279,10 @@ GPRS – 30S*/
         * 注：
         * dirBlock 上述两条命令调用完成后dirBlock不再使用时用此函数释放文件列表
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_ofsFreeDirBlock(ref GetDirBlock_G56 dirBlock);
 
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_ofsGetTransStatus(byte[] uartPort, byte baudRate, byte[] r_w, byte[] fileName, int[] fileCrc, int[] fileOffset);
 
 
@@ -1295,7 +1295,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_sendConfigFile(byte[] uartPort, byte baudRate, ref ConfigFile configData);
 
         /*! ***************************************************************
@@ -1311,11 +1311,11 @@ GPRS – 30S*/
         * 注：
         * 具体使用方法参考协议
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_programLock(byte[] uartPort, byte baudRate, byte nonvolatile, byte locked, byte[] name, uint lockDuration);
 
 
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_uart_programLock_6G(byte[] uartPort, byte baudRate, byte nonvolatile, byte locked, byte[] name, int lockDuration);
 
 
@@ -1333,7 +1333,7 @@ GPRS – 30S*/
         * 注：
         * 通讯方式（UDP
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_AT_setWifiSsidPwd(byte[] ssid, byte[] pwd);
 
 
@@ -1345,7 +1345,7 @@ GPRS – 30S*/
         * 注：
         * 通讯方式（UDP）
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_AT_getWifiSsidPwd(byte[] ssid, byte[] pwd);
 
 
@@ -1363,7 +1363,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_udpNetworkSearch(ref heartbeatData retData); //网络搜索
 
 
@@ -1374,9 +1374,9 @@ GPRS – 30S*/
         * 功  能： 网络搜索命令，返回：温度传感器，空气，PM2.5等信息，详见 NetSearchCmdRet:参考结构体声明中的注释；
         * 注：    针对 6代卡 的网络搜索命令
         ***********************************************************************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_udpNetworkSearch_6G(ref NetSearchCmdRet retData);
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_udpNetworkSearch_6G_Web(ref NetSearchCmdRet_Web retData);
 
 
@@ -1389,7 +1389,7 @@ GPRS – 30S*/
         * 注：
         * 此命令用来搜索加屏使用
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_udpPing(ref Ping_data retData); //UDP ping命令并返回IP地址
 
         /*! ***************************************************************
@@ -1400,7 +1400,7 @@ GPRS – 30S*/
         * 注：
         * 需要修改MAC地址的时候调用
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_udpSetMac(byte[] mac);
 
         /*! ***************************************************************
@@ -1427,7 +1427,7 @@ GPRS – 30S*/
         * 注：
         *  IP 地址 MAC地址都赋字符串 例：byte ip[] = "192.168.0.199"  具体使用细节请参考协议
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_udpSetIP(byte mode, byte[] ip, byte[] subnetMask, byte[] gateway, short port, byte serverMode, byte[] serverIP, short serverPort, byte[] password, short heartbeat, byte[] netID);// 由于传入参数到内部都需要转换没有使用结构体
 
         /*! ***************************************************************
@@ -1450,7 +1450,7 @@ GPRS – 30S*/
         * 注：
         * 此命令调用后所有参数全部会丢失
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_sysReset(byte[] ip, ushort port);
 
         /*! ***************************************************************
@@ -1461,7 +1461,7 @@ GPRS – 30S*/
         * 注：
         * 和UDP PING命令获取到的参数相同
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_tcpPing(byte[] ip, ushort port, ref Ping_data retData);
 
 
@@ -1473,7 +1473,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_check_time(byte[] ip, ushort port);
 
         /*! ********************************************************************************************************************
@@ -1484,9 +1484,9 @@ GPRS – 30S*/
         * 功 能： 网络搜索命令，返回：温度传感器，空气，PM2.5等信息，详见 NetSearchCmdRet:参考结构体声明中的注释；
         * 注：   针对 6代卡 的网络搜索命令
         ***********************************************************************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_tcpNetworkSearch_6G(byte[] ip, ushort port, ref NetSearchCmdRet retData);
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_tcpNetworkSearch_6G_Web(byte[] ip, ushort port, ref NetSearchCmdRet_Web retData);
 
 
@@ -1498,7 +1498,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_coerceOnOff(byte[] ip, ushort port, byte onOff);
 
         /*! ***************************************************************
@@ -1509,7 +1509,7 @@ GPRS – 30S*/
         * 注：
         * groupNum值是n组情况,data大小 = n * TimingOnOff
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_timingOnOff(byte[] ip, ushort port, byte groupNum, byte[] data);
 
         /*! ***************************************************************
@@ -1520,7 +1520,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_cancelTimingOnOff(byte[] ip, ushort port);
 
         /*! ***************************************************************
@@ -1531,7 +1531,7 @@ GPRS – 30S*/
         * 注：
         * 参考协议对应每一个表格，注意第一个字节模式的配置
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_setBrightness(byte[] ip, ushort port, ref Brightness brightness);
 
 
@@ -1543,7 +1543,7 @@ GPRS – 30S*/
         * 注：
         * ControllerID是8个字节 请定义char data[8];
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_readControllerID(byte[] ip, ushort port, byte[] ControllerID);
 
 
@@ -1557,7 +1557,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_screenLock(byte[] ip, ushort port, byte nonvolatile, byte locked);
 
 
@@ -1574,7 +1574,7 @@ GPRS – 30S*/
         * 注：
         * 具体使用方法参考协议
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_programLock(byte[] ip, ushort port, byte nonvolatile, byte locked, byte[] name, uint lockDuration);
 
 
@@ -1586,7 +1586,7 @@ GPRS – 30S*/
         * 注：
         * ControllerStatus_G56和协议时对应的可以参考协议的具体用法
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_check_controllerStatus(byte[] ip, ushort port, ref ControllerStatus_G56 controllerStatus);
 
         /*! ***************************************************************
@@ -1597,7 +1597,7 @@ GPRS – 30S*/
         * 注：
         * 设置后一定要记住，设置后就不在能明码通讯
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_setPassword(byte[] ip, ushort port, byte[] oldPassword, byte[] newPassword);
 
         /*! ***************************************************************
@@ -1608,7 +1608,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_deletePassword(byte[] ip, ushort port, byte[] password);
 
         /*! ***************************************************************
@@ -1619,7 +1619,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_setDelayTime(byte[] ip, ushort port, short delayTime);
 
         /*! ***************************************************************
@@ -1630,7 +1630,7 @@ GPRS – 30S*/
         * 注：
         * 具体细节参考协议
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_setBtnFunc(byte[] ip, ushort port, byte btnMode);
 
         /*! ***************************************************************
@@ -1641,7 +1641,7 @@ GPRS – 30S*/
         * 注：
         * 具体细节参考协议
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_setTimingReset(byte[] ip, ushort port, ref TimingReset cmdData);
 
         /*! ***************************************************************
@@ -1655,7 +1655,7 @@ GPRS – 30S*/
         * 注：
         * 具体细节参考协议
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_setDispMode(byte[] ip, ushort port, byte dispMode);
 
         /*! ***************************************************************
@@ -1671,7 +1671,7 @@ GPRS – 30S*/
         * 注：
         * 具体细节参考协议
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_battieTime(byte[] ip, ushort port, byte mode, ref BattleTime battieData);
 
         /*! ***************************************************************
@@ -1687,8 +1687,8 @@ GPRS – 30S*/
         * 注：
         * 具体细节参考协议
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
-        public static extern int bxDual_cmd_getStopwatch(byte[] ip, ushort port, byte mode, int[] timeValue);
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_getStopwatch(byte[] ip, ushort port, byte mode,ref int timeValue);
 
         /*! ***************************************************************
         * 函数名：       cmd_getSensorBrightnessValue（）
@@ -1699,8 +1699,8 @@ GPRS – 30S*/
         * 注：
         * 具体细节参考协议
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
-        public static extern int bxDual_cmd_getSensorBrightnessValue(byte[] ip, ushort port, int[] brightnessValue);
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_getSensorBrightnessValue(byte[] ip, ushort port,ref int brightnessValue);
 
         /*! ***************************************************************
         * 函数名：       cmd_setSpeedAdjust（）
@@ -1719,7 +1719,7 @@ GPRS – 30S*/
         * 注：
         * 具体细节参考协议
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_setSpeedAdjust(byte[] ip, ushort port, short speed);
 
         /*! ***************************************************************
@@ -1731,7 +1731,7 @@ GPRS – 30S*/
         * 注：
         * 具体细节参考协议
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_setScreenAddress(byte[] ip, ushort port, short address);
 
         /** TCP OFS_CMD**/
@@ -1743,7 +1743,7 @@ GPRS – 30S*/
         * 注：
         * 具体细节参考协议
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_ofsFormat(byte[] ip, ushort port);
 
         /*! ***************************************************************
@@ -1754,7 +1754,7 @@ GPRS – 30S*/
         * 注：
         * 发送节目前调用
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_ofsStartFileTransf(byte[] ip, ushort port);
 
         /*! ***************************************************************
@@ -1765,7 +1765,7 @@ GPRS – 30S*/
         * 注：
         * 发送节目后调用
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_ofsEndFileTransf(byte[] ip, ushort port);
 
         /*! ***************************************************************
@@ -1778,7 +1778,7 @@ GPRS – 30S*/
         * 注：
         * fileName是4个字节 fileNub值为N就要把N个fileName拼接 fileName大小 = fileName（4byte）*N
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_ofsDeleteFormatFile(byte[] ip, ushort port, short fileNub, byte[] fileName);
 
 
@@ -1793,7 +1793,7 @@ GPRS – 30S*/
         如： Firmware 文件、 控制器参数配置文件、 扫描配置文件等。
         * fileName是4个字节 fileNub值为N就要把N个fileName拼接 fileName大小 = fileName（4byte）*N
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_confDeleteFormatFile(byte[] ip, ushort port, short fileNub, byte[] fileName);
 
 
@@ -1807,7 +1807,7 @@ GPRS – 30S*/
         * 注：
         * 发节目前需要查询防止空间不够用
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_ofsGetMemoryVolume(byte[] ip, ushort port, ref int totalMemVolume, ref int availableMemVolume);
 
         /*! ***************************************************************
@@ -1823,7 +1823,7 @@ GPRS – 30S*/
         * 注：用于对存储在 OFS 中的文件的处理， 例如： 节目文件， 字库文件、 播放列表文件等
         * 内部包含多条命令注意返回状态方便查找问题
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_ofsWriteFile(byte[] ip, ushort port, byte[] fileName, byte fileType, uint fileLen, byte overwrite, IntPtr fileAddre);
 
         /*! ***************************************************************
@@ -1840,7 +1840,7 @@ GPRS – 30S*/
         如： Firmware 文件、 控制器参数配置文件、 扫描配置文件等。
         * 内部包含多条命令注意返回状态方便查找问题
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_confWriteFile(byte[] ip, ushort port, byte[] fileName, byte fileType, int fileLen, byte overwrite, byte[] fileAddre);
 
         /*! ***************************************************************
@@ -1854,8 +1854,8 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
-        public static extern int bxDual_cmd_ofsStartReedFile(byte[] ip, ushort port, byte[] fileName, int[] fileSize, int[] fileCrc);
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_ofsStartReedFile(byte[] ip, ushort port, byte[] fileName,ref uint fileSize, ref uint fileCrc);
 
         /*! ***************************************************************
         * 函数名：       bxDual_cmd_confStartReedFile（）
@@ -1869,8 +1869,8 @@ GPRS – 30S*/
         如： Firmware 文件、 控制器参数配置文件、 扫描配置文件等。
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
-        public static extern int bxDual_cmd_confStartReedFile(byte[] ip, ushort port, byte[] fileName, int[] fileSize, int[] fileCrc);
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
+        public static extern int bxDual_cmd_confStartReedFile(byte[] ip, ushort port, byte[] fileName,ref uint fileSize,ref uint fileCrc);
 
 
         /*! ***************************************************************
@@ -1883,7 +1883,7 @@ GPRS – 30S*/
         * 注：用于对存储在 OFS 中的文件的处理， 例如： 节目文件， 字库文件、 播放列表文件等
         * fileAddre大小根据bxDual_cmd_ofsStartReedFile函数回调值确定
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_ofsReedFileBlock(byte[] ip, ushort port, byte[] fileName, byte[] fileAddre);
 
         /*! ***************************************************************
@@ -1897,7 +1897,7 @@ GPRS – 30S*/
         如： Firmware 文件、 控制器参数配置文件、 扫描配置文件等。
         * fileAddre大小根据bxDual_cmd_ofsStartReedFile函数回调值确定
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_confReedFileBlock(byte[] ip, ushort port, byte[] fileName, byte[] fileAddre);
 
         /*! ***************************************************************
@@ -1909,7 +1909,7 @@ GPRS – 30S*/
         * 注：
         * 下面几条命令用法比较复杂请配合协议使用不做嗷述
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_ofsReedDirBlock(byte[] ip, ushort port, ref GetDirBlock_G56 dirBlock);
 
         /*! ***************************************************************
@@ -1923,7 +1923,7 @@ GPRS – 30S*/
         * 注：
         * number：此参数值小于fileAttr.fileName 从0开始
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_getFileAttr(ref GetDirBlock_G56 dirBlock, ushort number, ref FileAttribute_G56 fileAttr);
 
         /*! ***************************************************************
@@ -1935,10 +1935,10 @@ GPRS – 30S*/
         * 注：
         * dirBlock 上述两条命令调用完成后dirBlock不再使用时用此函数释放文件列表
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_ofs_freeDirBlock(ref GetDirBlock_G56 dirBlock);
 
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_ofsGetTransStatus(byte[] ip, ushort port, byte[] r_w, byte[] fileName, int[] fileCrc, int[] fileOffset);
 
 
@@ -1950,7 +1950,7 @@ GPRS – 30S*/
         * 注：
         * firmwareFileName 缺省值为4个字节字符串“F001”
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_firmwareActivate(byte[] ip, ushort port, byte[] firmwareFileName);
 
 
@@ -1964,7 +1964,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_sendConfigFile(byte[] ip, ushort port, ref ConfigFile configData);
 
         /*! ***************************************************************
@@ -1976,7 +1976,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_cmd_sendConfigFile_G6(byte[] ip, ushort port, ref ConfigFile_G6 configData);
 
 
@@ -1997,7 +1997,7 @@ GPRS – 30S*/
         * 功 能：用来计算CRC16值
         * 注：
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_get_crc16(ref FileCRC16_G56 crc16);
 
         /*! ***************************************************************
@@ -2007,7 +2007,7 @@ GPRS – 30S*/
         * 功 能：用来计算CRC32值
         * 注：
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_get_crc32(ref FileCRC32_G56 crc32);
 
         /*! ***************************************************************
@@ -2024,10 +2024,10 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_deleteProgram();
 
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_freeBuffer(ref EQprogram program);
 
         /*! ***************************************************************
@@ -2039,7 +2039,7 @@ GPRS – 30S*/
         * 注：
         * 屏幕大小为1024X80 输出26个字母
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_pictureArea(int programID, byte[] ip, ushort port);
 
         /*! ***************************************************************
@@ -2049,10 +2049,10 @@ GPRS – 30S*/
         * 注：
         * 三个参数请参考各自枚举值
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_setScreenParams_G56(E_ScreenColor_G56 color, ushort ControllerType, E_DoubleColorPixel_G56 doubleColor); //设置屏相关属性
 
-        //[DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]public static extern int  bxDual_program_setScreenParams_G6(E_ScreenColor_G56 color, ushort ControllerType, E_DoubleColorPixel_G56 doubleColor);
+        //[DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]public static extern int  bxDual_program_setScreenParams_G6(E_ScreenColor_G56 color, ushort ControllerType, E_DoubleColorPixel_G56 doubleColor);
         /*! ***************************************************************
         * 函数名：       bxDual_program_addProgram（）
         *	programH：参考结构体EQprogramHeader
@@ -2061,7 +2061,7 @@ GPRS – 30S*/
         * 注：
         * 一定要参考协议对每一个值都不能理解出错否则发下去的内容显示肯定不是自己想要的
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_addProgram(ref EQprogramHeader programH); 
         //添加节目句柄
                                                                                           /*! ***************************************************************
@@ -2072,7 +2072,7 @@ GPRS – 30S*/
                                                                                           * 注：
                                                                                           * 一定要参考协议对每一个值都不能理解出错否则发下去的内容显示肯定不是自己想要的
                                                                                           ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_changeProgramParams(ref EQprogramHeader programH);
 
         /*! ***************************************************************
@@ -2082,7 +2082,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_addPlayPeriodGrp(ref EQprogramppGrp_G56 header);
         /*! ***************************************************************
         * 函数名：       bxDual_program_AddArea（）
@@ -2094,7 +2094,7 @@ GPRS – 30S*/
         * 注：
         * 一定要参考协议对每一个值都不能理解出错否则发下去的内容显示肯定不是自己想要的
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_AddArea(ushort areaID, ref EQareaHeader aheader);//添加区域句柄
                                                                                                  /*! ***************************************************************
                                                                                                  * 函数名：       bxDual_program_deleteArea（）
@@ -2105,7 +2105,7 @@ GPRS – 30S*/
                                                                                                  * 注：
                                                                                                  *
                                                                                                  ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_deleteArea(ushort areaID);
         /*! ***************************************************************
         * 函数名：       bxDual_program_picturesAreaAddTxt（）
@@ -2119,7 +2119,7 @@ GPRS – 30S*/
         * 注：
         * 一定要参考协议对每一个值都不能理解出错否则发下去的内容显示肯定不是自己想要的
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_picturesAreaAddTxt(ushort areaID, byte[] str, byte[] fontName, ref EQpageHeader pheader);//画字符到区域
                                                                                                                                          /*! ***************************************************************
                                                                                                                                          * 函数名：       bxDual_program_picturesAreaChangeTxt（）
@@ -2132,7 +2132,7 @@ GPRS – 30S*/
                                                                                                                                          * 注：
                                                                                                                                          * 只可以修改文字内容和EQpageHeader结构体里面的参数，不可以修改字体，如需修改，需要删除区域后重新添加文本设置字体
                                                                                                                                          ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_picturesAreaChangeTxt(ushort areaID, byte[] str, ref EQpageHeader pheader);
         /*! ***************************************************************
         * 函数名：       bxDual_program_fontPath_picturesAreaAddTxt（）
@@ -2146,7 +2146,7 @@ GPRS – 30S*/
         * 注：
         * 一定要参考协议对每一个值都不能理解出错否则发下去的内容显示肯定不是自己想要的
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_fontPath_picturesAreaAddTxt(ushort areaID, byte[] str, byte[] fontPathName, ref EQpageHeader pheader);
         /*! ***************************************************************
         * 函数名：       bxDual_program_fontPath_picturesAreaChangeTxt（）
@@ -2158,7 +2158,7 @@ GPRS – 30S*/
         * 注：
         * 一定要参考协议对每一个值都不能理解出错否则发下去的内容显示肯定不是自己想要的
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_fontPath_picturesAreaChangeTxt(ushort areaID, byte[] str, ref EQpageHeader pheader);
         /*! ***************************************************************
         * 函数名：       bxDual_program_IntegrateProgramFile（）
@@ -2169,7 +2169,7 @@ GPRS – 30S*/
         * 注：
         * EQprogram 结构体是用来回调发送文件所需要参数
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_IntegrateProgramFile(ref EQprogram program);
 
         /*! ***************************************************************
@@ -2182,10 +2182,10 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_picturesAreaAddFrame(ushort areaID, ref EQareaframeHeader afHeader, byte[] picPath);
 
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_picturesAreaAddFrame_G6(ushort areaID, ref EQscreenframeHeader_G6 afHeader, byte[] picPath);
 
         /*! ***************************************************************
@@ -2198,7 +2198,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_pictureAreaGetOnePage(ushort areaID, int pageNum, ref getPageData pageData);
         /*! ***************************************************************
         * 函数名：       bxDual_program_picturesAreaAddPic（）
@@ -2212,7 +2212,7 @@ GPRS – 30S*/
         *
         ******************************************************************/
 
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_pictureAreaAddPic(ushort areaID, ushort picID, ref EQpageHeader pheader, byte[] picPath);
 
         /*! ***************************************************************
@@ -2224,7 +2224,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_addFrame(ref EQscreenframeHeader sfHeader, byte[] picPath);
         /*! ***************************************************************
         * 函数名：       bxDual_program_changeFrame（）
@@ -2235,7 +2235,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_changeFrame(ref EQscreenframeHeader sfHeader, byte[] picPath);
         /*! ***************************************************************
         * 函数名：       bxDual_program_removeFrame（）
@@ -2246,7 +2246,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_removeFrame();
         /*! ***************************************************************
         * 函数名：       bxDual_program_pictureAreaRemoveFrame（）
@@ -2257,7 +2257,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_pictureAreaRemoveFrame(ushort areaID);
 
         /*! ***************************************************************
@@ -2273,7 +2273,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_MoveArea(ushort areaID, int x, int y, int width, int height);
 
         /*! ***************************************************************
@@ -2286,7 +2286,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_timeAreaAddContent(ushort areaID, ref EQtimeAreaData_G56 timeData);
 
         /*! ***************************************************************
@@ -2299,7 +2299,7 @@ GPRS – 30S*/
         * 注：ios下无法使用program_timeAreaAddContent请使用program_fontPath_timeAreaAddContent()
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_fontPath_timeAreaAddContent(ushort areaID, ref EQtimeAreaData_G56 timeData);
 
         /*! ***************************************************************
@@ -2312,7 +2312,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_timeAreaChangeContent(ushort areaID, ref EQtimeAreaData_G56 timeData);
 
         /*! ***************************************************************
@@ -2325,7 +2325,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_timeAreaGetOnePage(ushort areaID, ref getPageData pageData);
         /*! ***************************************************************
         * 函数名：       bxDual_program_timeAreaAddAnalogClock(）
@@ -2339,7 +2339,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_timeAreaAddAnalogClock(ushort areaID, ref EQAnalogClockHeader_G56 header, E_ClockStyle cStyle, ref ClockColor_G56 cColor);
         /*! ***************************************************************
         * 函数名：       bxDual_program_timeAreaChangeAnalogClock(）
@@ -2353,7 +2353,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_timeAreaChangeAnalogClock(ushort areaID, ref EQAnalogClockHeader_G56 header, E_ClockStyle cStyle, ref ClockColor_G56 cColor);
         /*! ***************************************************************
         * 函数名：       bxDual_program_timeAreaChangeDialPic(）
@@ -2365,7 +2365,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_timeAreaChangeDialPic(ushort areaID, byte[] picPath);
 
 
@@ -2379,7 +2379,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_timeAreaChangeDialPicAdd_G56(ushort areaID, byte[] picAdd, int picLen);
 
 
@@ -2392,7 +2392,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_timeAreaRemoveDialPic(ushort areaID);
 
 
@@ -2403,7 +2403,7 @@ GPRS – 30S*/
         /*
         功能：设置动态区颜色像素类型：R+G 或 G+R
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_SetDualPixel(E_DoubleColorPixel_G56 ePixelRGorGR);
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2423,14 +2423,14 @@ GPRS – 30S*/
         fontName	  :字体名称，如"宋体";  nFontSize:字体大小，如12;
         strAreaTxtContent:要显示的文本内容
         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaTxt_6G(byte[] pIP, int nPort, E_ScreenColor_G56 color, byte uAreaId, ushort uAreaX, ushort uAreaY,
-            ushort uWidth, ushort uHeight, byte[] fontName, byte nFontSize, byte[] strAreaTxtContent);
+            ushort uWidth, ushort uHeight, IntPtr fontName, byte nFontSize, IntPtr strAreaTxtContent);
 
         //6代更新动态区详细功能：仅显示动态区; 将要显示的一些特性/属性，封装在 EQareaHeader_G6 和 EQpageHeader_G6 结构体中；
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaTxtDetails_6G(byte[] pIP, int nPort, E_ScreenColor_G56 color, byte uAreaId, ref EQareaHeader_G6 oAreaHeader_G6,
-            ref EQpageHeader_G6 stPageHeader, byte[] fontName, byte[] strAreaTxtContent);
+            ref EQpageHeader_G6 stPageHeader, IntPtr fontName, IntPtr strAreaTxtContent);
 
         /*
         功能说明	：6代更新动态区详细功能：仅显示动态区;
@@ -2439,17 +2439,17 @@ GPRS – 30S*/
         pSerialName		:串口号字符串；如:byte pSerialName[] = "COM3";
         nBaudRateIndex	:波特率；取值为1时，代表波特率为9600; 取值为2时，代表波特率为57600;
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaTxtDetails_6G_Serial(byte[] pSerialName, byte nBaudRateIndex, E_ScreenColor_G56 color, byte uAreaId, ref EQareaHeader_G6 oAreaHeader_G6,
-            ref EQpageHeader_G6 stPageHeader, byte[] fontName, byte[] strAreaTxtContent);
+            ref EQpageHeader_G6 stPageHeader, IntPtr fontName, IntPtr strAreaTxtContent);
 
 
         //动态区文本关联节目: 
         //RelateProNum = 0 时，关联所有节目，与所有节目一起播放，如果没有节目，则不播放该动态区；
         //			   > 0 时, 指定关联节目，要关联的节目ID存放在RelateProSerial[]中；
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaTxtDetails_WithProgram_6G(byte[] pIP, int nPort, E_ScreenColor_G56 color, byte uAreaId, ref EQareaHeader_G6 oAreaHeader_G6,
-            ref EQpageHeader_G6 stPageHeader, byte[] fontName, byte[] strAreaTxtContent, ushort RelateProNum, ushort[] RelateProSerial);
+            ref EQpageHeader_G6 stPageHeader, IntPtr fontName, IntPtr strAreaTxtContent, ushort RelateProNum, ushort[] RelateProSerial);
 
         /*
         功能说明：动态区关联节目
@@ -2457,15 +2457,15 @@ GPRS – 30S*/
         byte[] pSerialName		: 串口名称,如"COM1"；
         int nBaudRateIndex	: 波特率；取值为1时，代表波特率为9600; 取值为2时，代表波特率为57600;
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaTxtDetails_WithProgram_6G_Serial(byte[] pSerialName, int nBaudRateIndex, E_ScreenColor_G56 color, byte uAreaId, ref EQareaHeader_G6 oAreaHeader_G6,
-            ref EQpageHeader_G6 stPageHeader, byte[] fontName, byte[] strAreaTxtContent, ushort RelateProNum, ushort[] RelateProSerial);
+            ref EQpageHeader_G6 stPageHeader, IntPtr fontName, IntPtr strAreaTxtContent, ushort RelateProNum, ushort[] RelateProSerial);
 
 
         //更新动态区图片：仅显示动态区;
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaPic_6G(byte[] pIP, int nPort, E_ScreenColor_G56 color, byte uAreaId, ushort AreaX, ushort AreaY,
-            ushort AreaWidth, ushort AreaHeight, ref EQpageHeader_G6 pheader, byte[] picPath);
+            ushort AreaWidth, ushort AreaHeight, ref EQpageHeader_G6 pheader, IntPtr picPath);
 
 
         /*
@@ -2474,17 +2474,17 @@ GPRS – 30S*/
         byte[] pSerialName		: 串口名称,如"COM1"；
         int nBaudRateIndex	: 波特率；取值为1时，代表波特率为9600; 取值为2时，代表波特率为57600;
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaPic_6G_Serial(byte[] pSerialName, int nBaudRateIndex, E_ScreenColor_G56 color, byte uAreaId, ushort AreaX, ushort AreaY,
-            ushort AreaWidth, ushort AreaHeight, ref EQpageHeader_G6 pheader, byte[] picPath);
+            ushort AreaWidth, ushort AreaHeight, ref EQpageHeader_G6 pheader, IntPtr picPath);
 
 
         //动态区图片关联节目: 
         //RelateProNum = 0 时，关联所有节目，与所有节目一起播放，如果没有节目，则不播放该动态区；
         //			   > 0 时, 指定关联节目，要关联的节目ID存放在RelateProSerial[]中；
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaPic_WithProgram_6G(byte[] pIP, int nPort, E_ScreenColor_G56 color, byte uAreaId, ushort AreaX, ushort AreaY,
-            ushort AreaWidth, ushort AreaHeight, ref EQpageHeader_G6 pheader, byte[] picPath, ushort RelateProNum, ushort[] RelateProSerial);
+            ushort AreaWidth, ushort AreaHeight, ref EQpageHeader_G6 pheader, IntPtr picPath, ushort RelateProNum, ushort[] RelateProSerial);
 
 
         /*
@@ -2495,13 +2495,13 @@ GPRS – 30S*/
         RelateProNum			: RelateProNum == 0 时，关联所有节目，与所有节目一起播放，如果没有节目，则不播放该动态区；
                                   RelateProNum > 0 时, 指定关联节目，要关联的节目ID存放在RelateProSerial[]中；
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaPic_WithProgram_G6_Serial(byte[] pSerialName, int nBaudRateIndex, E_ScreenColor_G56 color, byte uAreaId, ushort AreaX, ushort AreaY,
-            ushort AreaWidth, ushort AreaHeight, ref EQpageHeader_G6 pheader, byte[] picPath, ushort RelateProNum, ushort[] RelateProSerial);
+            ushort AreaWidth, ushort AreaHeight, ref EQpageHeader_G6 pheader, IntPtr picPath, ushort RelateProNum, ushort[] RelateProSerial);
 
 
         //同时更新多个动态区:仅显示动态区，不显示节目
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicAreaS_AddTxtDetails_6G(byte[] pIP, int nPort, E_ScreenColor_G56 color, byte uAreaCount, DynamicAreaParams[] pParams);
 
 
@@ -2511,7 +2511,7 @@ GPRS – 30S*/
         byte[] pSerialName		: 串口名称,如"COM1"；
         int nBaudRateIndex	: 波特率；取值为1时，代表波特率为9600; 取值为2时，代表波特率为57600;
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicAreaS_AddTxtDetails_6G_Serial(byte[] pSerialName, int nBaudRateIndex, E_ScreenColor_G56 color, byte uAreaCount, DynamicAreaParams[] pParams);
 
 
@@ -2519,7 +2519,7 @@ GPRS – 30S*/
         //同时更新多个动态区文本:并与节目关联，即与节目一起显示
         //RelateProNum = 0 时，关联所有节目，与所有节目一起播放，如果没有节目，则不播放该动态区；
         //			   > 0 时, 指定关联节目，要关联的节目ID存放在RelateProSerial[]中；
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicAreaS_AddTxtDetails_WithProgram_6G(byte[] pIP, int nPort, E_ScreenColor_G56 color, byte uAreaCount, DynamicAreaParams[] pParams, ushort RelateProNum, ushort[] RelateProSerial);
 
 
@@ -2531,12 +2531,12 @@ GPRS – 30S*/
         ushort RelateProNum	: = 0 时，关联所有节目，与所有节目一起播放，如果没有节目，则不播放该动态区；
                                   > 0 时, 指定关联节目，要关联的节目ID存放在RelateProSerial[]中；
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicAreaS_AddTxtDetails_WithProgram_G6_Serial(byte[] pSerialName, int nBaudRateIndex, E_ScreenColor_G56 color, byte uAreaCount, DynamicAreaParams[] pParams, ushort RelateProNum, ushort[] RelateProSerial);
 
 
         //同时更新多个动态区图片：仅显示动态区图片;不与节目关联/不与节目一起显示；
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicAreaS_AddAreaPic_6G(byte[] pIP, int nPort, E_ScreenColor_G56 color, byte uAreaCount, DynamicAreaParams[] pParams);
 
 
@@ -2546,7 +2546,7 @@ GPRS – 30S*/
         byte[] pSerialName		: 串口名称,如"COM1"；
         int nBaudRateIndex	: 波特率；取值为1时，代表波特率为9600; 取值为2时，代表波特率为57600;
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicAreaS_AddAreaPic_6G_Serial(byte[] pSerialName, int nBaudRateIndex, E_ScreenColor_G56 color, byte uAreaCount, DynamicAreaParams[] pParams);
 
 
@@ -2554,7 +2554,7 @@ GPRS – 30S*/
         //同时更新多个动态区图片，并与节目关联，即与节目一起显示；
         //RelateProNum = 0 时，关联所有节目，与所有节目一起播放，如果没有节目，则不播放该动态区；
         //			   > 0 时, 指定关联节目，要关联的节目ID存放在RelateProSerial[]中；
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicAreaS_AddAreaPic_WithProgram_6G(byte[] pIP, int nPort, E_ScreenColor_G56 color, byte uAreaCount, DynamicAreaParams[] pParams, ushort RelateProNum, ushort[] RelateProSerial);
 
 
@@ -2566,7 +2566,7 @@ GPRS – 30S*/
         ushort RelateProNum	: = 0 时，关联所有节目，与所有节目一起播放，如果没有节目，则不播放该动态区；
                                   > 0 时, 指定关联节目，要关联的节目ID存放在RelateProSerial[]中；
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicAreaS_AddAreaPic_WithProgram_6G_Serial(byte[] pSerialName, int nBaudRateIndex, E_ScreenColor_G56 color, byte uAreaCount, DynamicAreaParams[] pParams, ushort RelateProNum, ushort[] RelateProSerial);
 
 
@@ -2577,7 +2577,7 @@ GPRS – 30S*/
                 pIP		:控制卡IP地址，如"192.168.1.111";
                 nPort	:控制卡默认TCP方式的端口号为:5005
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaInfos_6G(byte[] pIP, int nPort, E_ScreenColor_G56 color,
             byte uAreaId,
             byte RunMode,
@@ -2601,7 +2601,7 @@ GPRS – 30S*/
         pSerialName		:串口号字符串；如:byte pSerialName[] = "COM3";
         nBaudRateIndex	:波特率；取值为1时，代表波特率为9600; 取值为2时，代表波特率为57600;
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaInfos_G6_Serial(byte[] pSerialName, byte nBaudRateIndex, E_ScreenColor_G56 color,
             byte uAreaId,
             byte RunMode,
@@ -2634,7 +2634,7 @@ GPRS – 30S*/
 
         返回值：0 成功；-1 失败；
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaInfos_6G_V2(byte[] pIP, int nPort, E_ScreenColor_G56 color,
             byte uAreaId,
             byte RunMode,
@@ -2679,7 +2679,7 @@ GPRS – 30S*/
         pSerialName		:串口号字符串；如:byte pSerialName[] = "COM3";
         nBaudRateIndex	:波特率；取值为1时，代表波特率为9600; 取值为2时，代表波特率为57600;
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaInfos_6G_V2_Serial(byte[] pSerialName, byte nBaudRateIndex, E_ScreenColor_G56 color,
             byte uAreaId,
             byte RunMode,
@@ -2701,7 +2701,7 @@ GPRS – 30S*/
         删除动态区：删除单个动态区：
         uAreaId = 0xff:删除所有区域
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_DelArea_6G(byte[] pIP, int nPort, byte uAreaId);
         /*
         功能：TCP方式删除多个动态区：
@@ -2709,7 +2709,7 @@ GPRS – 30S*/
         pAreaID-存放要删除的动态区ID数组；
         uAreaCount-动态区ID数组中的个数；
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_DelAreas_6G(byte[] pIP, int nPort, byte uAreaCount, byte[] pAreaID);
 
         /*
@@ -2717,7 +2717,7 @@ GPRS – 30S*/
         删除动态区：删除单个动态区：
         uAreaId = 0xff:删除所有区域
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_DelArea_G6_Serial(byte[] pSerialName, byte nBaudRateIndex, byte uAreaId);
 
         /*
@@ -2726,7 +2726,7 @@ GPRS – 30S*/
         pAreaID-存放要删除的动态区ID数组；
         uAreaCount-动态区ID数组中的个数；
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_DelAreas_G6_Serial(byte[] pSerialName, byte nBaudRateIndex, byte uAreaCount, byte[] pAreaID);
 
 
@@ -2736,7 +2736,7 @@ GPRS – 30S*/
         byte VoiceFlg;		//1 1 语音属性 0：此条语音从头插入队列，且停止当前正在播放的语音 1：此条语音从头插入队列，不停止当前播报的语音 2：此条语音从尾插入队列
         byte StoreFlag;		//1 0 该值为 1 表示需要存储到 FLASH 中，掉电信息不丢失该值为 0 表示需要存储到 RAM 中，掉电信息丢失
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_InsertSoundIndepend(byte[] pIP, int nPort, ref EQSoundDepend_6G stSoundData, byte VoiceFlg, byte StoreFlag);
 
         /*
@@ -2745,7 +2745,7 @@ GPRS – 30S*/
         nSoundDataCount:指示stSoundData指向内存地址空间中存放EQSoundDepend_6G个数；
         StoreFlag:该值为 1 表示需要存储到 FLASH 中，掉电信息不丢失;该值为 0 表示需要存储到 RAM 中，掉电信息丢失
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_UpdateSoundIndepend(byte[] pIP, int nPort, ref EQSoundDepend_6G stSoundData, ushort nSoundDataCount, byte StoreFlag);
 
 
@@ -2759,7 +2759,7 @@ GPRS – 30S*/
         参数说明：
         strAreaTxtContent - 动态区域内要显示的文本内容
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaWithTxt_5G(byte[] pIP, int nPort, E_ScreenColor_G56 color,
             byte uAreaId,
             byte RunMode,
@@ -2792,7 +2792,7 @@ GPRS – 30S*/
         pSerialName		:串口号字符串；如:byte pSerialName[] = "COM3";
         nBaudRateIndex	:波特率；取值为1时，代表波特率为9600; 取值为2时，代表波特率为57600;
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaWithTxt_5G_Serial(byte[] pSerialName, int nBaudRateIndex, E_ScreenColor_G56 color,
             byte uAreaId,
             byte RunMode,
@@ -2819,7 +2819,7 @@ GPRS – 30S*/
 
 
 
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaWithTxt_Point_5G(byte[] pIP, int nPort, E_ScreenColor_G56 color,
             byte uAreaId,
             byte RunMode,
@@ -2852,7 +2852,7 @@ GPRS – 30S*/
         pSerialName		:串口号字符串；如:byte pSerialName[] = "COM3";
         nBaudRateIndex	:波特率；取值为1时，代表波特率为9600; 取值为2时，代表波特率为57600;
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaWithTxt_Point_5G_Serial(byte[] pSerialName, int nBaundRateIndex, E_ScreenColor_G56 color,
             byte uAreaId,
             byte RunMode,
@@ -2880,7 +2880,7 @@ GPRS – 30S*/
         /*
         功能说明：发送一个图片到指定的动态区，并可以关联这个动态区到指定的节目；
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaWithPic_5G(byte[] pIP, int nPort, E_ScreenColor_G56 color,
             byte uAreaId,
             byte RunMode,
@@ -2914,7 +2914,7 @@ GPRS – 30S*/
             0	：成功；
             -1	：失败；
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaWithPic_5G_Serial(byte[] pSerialName, int nBaudRateIndex, E_ScreenColor_G56 color,
             byte uAreaId,
             byte RunMode,
@@ -2978,7 +2978,7 @@ GPRS – 30S*/
         /*
         功能说明：发送多条信息（文本/图片）到指定的动态区，并可以关联这个动态区到指定的节目；
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode, EntryPoint = "bxDual_dynamicArea_AddAreaInfos_5G")]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode, EntryPoint = "bxDual_dynamicArea_AddAreaInfos_5G")]
         public static extern int bxDual_dynamicArea_AddAreaInfos_5G(byte[] pIP, int nPort, E_ScreenColor_G56 color,
             byte uAreaId,
             byte RunMode,
@@ -2998,7 +2998,7 @@ GPRS – 30S*/
         /*
         功能说明：增加多条信息（文本/图片）到指定的动态区，并可以关联这个动态区到指定的节目；
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaInfos_5G_Point(byte[] pIP, int nPort, E_ScreenColor_G56 color,
             byte uAreaId,
             byte RunMode,
@@ -3028,7 +3028,7 @@ GPRS – 30S*/
             0	：成功；
             -1	：失败；
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_AddAreaInfos_5G_Serial(byte[] pSerialName, int nBaudRateIndex, E_ScreenColor_G56 color,
             byte uAreaId,
             byte RunMode,
@@ -3052,13 +3052,13 @@ GPRS – 30S*/
         功能：删除单个动态区：
         参数：uAreaId = 0xff:删除所有区域
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_DelArea_5G(byte[] pIP, int nPort, byte uAreaId);
 
         /*
         功能：删除多个动态区：
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_DelAreaS_5G(byte[] pIP, int nPort, byte uAreaCount, byte[] pAreaID);
 
 
@@ -3067,7 +3067,7 @@ GPRS – 30S*/
         删除动态区：删除单个动态区：
         uAreaId = 0xff:删除所有区域
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_DelArea_G5_Serial(byte[] pSerialName, byte nBaudRateIndex, byte uAreaId);
 
         /*
@@ -3076,7 +3076,7 @@ GPRS – 30S*/
         pAreaID-存放要删除的动态区ID数组；
         uAreaCount-动态区ID数组中的个数；
         */
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_dynamicArea_DelAreaS_G5_Serial(byte[] pSerialName, byte nBaudRateIndex, byte uAreaCount, byte[] pAreaID);
 
 
@@ -3095,7 +3095,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_addProgram_G6(ref EQprogramHeader_G6 programH);
 
         /*! ***************************************************************
@@ -3105,7 +3105,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_addPlayPeriodGrp_G6(ref EQprogramppGrp_G56 header);
 
         /*! ***************************************************************
@@ -3117,7 +3117,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_deleteProgram_G6();
         /*! ***************************************************************
         * 函数名：       bxDual_program_freeBuffer_G6(）
@@ -3128,7 +3128,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_freeBuffer_G6(ref EQprogram_G6 program);
 
         /*! ***************************************************************
@@ -3139,7 +3139,7 @@ GPRS – 30S*/
         * 注：
         * 一定要参考协议对每一个值都不能理解出错否则发下去的内容显示肯定不是自己想要的
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_changeProgramParams_G6(ref EQprogramHeader_G6 programH);
 
         /*! ***************************************************************
@@ -3151,7 +3151,7 @@ GPRS – 30S*/
         * 注：节目添加边框后，区域的坐标随即发生变化，添加区域的时候需注意
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_addFrame_G6(ref EQscreenframeHeader_G6 sfHeader, byte[] picPath);
         /*! ***************************************************************
         * 函数名：       bxDual_program_changeFrame_G6（）
@@ -3162,7 +3162,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_changeFrame_G6(ref EQscreenframeHeader_G6 sfHeader, byte[] picPath);
         /*! ***************************************************************
         * 函数名：       bxDual_program_removeFrame_G6（）
@@ -3171,7 +3171,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_removeFrame_G6();
         /*! ***************************************************************
         * 函数名：       bxDual_program_addArea_G6（）
@@ -3183,7 +3183,7 @@ GPRS – 30S*/
         * 注：
         * 一定要参考协议对每一个值都不能理解出错否则发下去的内容显示肯定不是自己想要的
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_addArea_G6(ushort areaID, ref EQareaHeader_G6 aheader);
         /*! ***************************************************************
         * 函数名：       bxDual_program_deleteArea_G6（）
@@ -3195,7 +3195,7 @@ GPRS – 30S*/
         * 注：
         * 一定要参考协议对每一个值都不能理解出错否则发下去的内容显示肯定不是自己想要的
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_deleteArea_G6(ushort areaID);
 
         /*! ***************************************************************
@@ -3211,7 +3211,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_MoveArea_G6(ushort areaID, int x, int y, int width, int height);
 
         /*! ***************************************************************
@@ -3226,7 +3226,7 @@ GPRS – 30S*/
         * 注：
         * 一定要参考协议对每一个值都不能理解出错否则发下去的内容显示肯定不是自己想要的
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_picturesAreaAddTxt_G6(ushort areaID, byte[] str, byte[] fontName, ref EQpageHeader_G6 pheader);
         /*! ***************************************************************
         * 函数名：       bxDual_program_picturesAreaChangeTxt_G6（）
@@ -3239,7 +3239,7 @@ GPRS – 30S*/
         * 注：
         * 如需修改字体，需要将区域删除，重新添加区域和文字
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_picturesAreaChangeTxt_G6(ushort areaID, byte[] str, ref EQpageHeader_G6 pheader);
         /*! ***************************************************************
         * 函数名：       bxDual_program_fontPath_picturesAreaAddTxt_G6（）
@@ -3252,7 +3252,7 @@ GPRS – 30S*/
         * 注：
         * 一定要参考协议对每一个值都不能理解出错否则发下去的内容显示肯定不是自己想要的
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_fontPath_picturesAreaAddTxt_G6(ushort areaID, byte[] str, byte[] fontPathName, ref EQpageHeader_G6 pheader);
         /*! ***************************************************************
         * 函数名：       bxDual_program_fontPath_picturesAreaChangeTxt_G6（）
@@ -3265,7 +3265,7 @@ GPRS – 30S*/
         * 注：
         * 一定要参考协议对每一个值都不能理解出错否则发下去的内容显示肯定不是自己想要的
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_fontPath_picturesAreaChangeTxt_G6(ushort areaID, byte[] str, ref EQpageHeader_G6 pheader);
         /*! ***************************************************************
         * 函数名：       bxDual_program_pictureAreaAddPic_G6（）
@@ -3278,7 +3278,7 @@ GPRS – 30S*/
         * 注：下位机播放图片的次序与picID一致，即最先播放picID为0的图片，依次播放
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_pictureAreaAddPic_G6(ushort areaID, ushort picID, ref EQpageHeader_G6 pheader, byte[] picPath);
         /*! ***************************************************************
         * 函数名：       bxDual_program_backGroundPic_G6（）
@@ -3291,7 +3291,7 @@ GPRS – 30S*/
         * 注：下位机播放图片的次序与picID一致，即最先播放picID为0的图片，依次播放
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_backGroundPic_G6(ushort areaID, ushort picID, ref EQpageHeader_G6 pheader, byte[] picPath);
 
         /*! ***************************************************************
@@ -3305,7 +3305,7 @@ GPRS – 30S*/
         * 注：下位机播放图片的次序与picID一致，即最先播放picID为0的图片，依次播放
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_backGroundColor_G6(ushort areaID, ref EQpageHeader_G6 pheader, int BGColor);
 
         /*! **************************************************************** 函数名：       bxDual_program_pictureAreaChangePic_G6（）
@@ -3318,7 +3318,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_pictureAreaChangePic_G6(ushort areaID, ushort picID, ref EQpageHeader_G6 pheader, byte[] picPath);
         /*! ***************************************************************
         * 函数名：       bxDual_program_pictureAreaEnableSound_G6（）
@@ -3331,7 +3331,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_pictureAreaEnableSound_G6(ushort areaID, EQPicAreaSoundHeader_G6 sheader, byte[] soundData);
         /*! ***************************************************************
         * 函数名：       bxDual_program_pictureAreaChangeSoundSettings_G6（）
@@ -3344,7 +3344,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_pictureAreaChangeSoundSettings_G6(ushort areaID, EQPicAreaSoundHeader_G6 sheader, byte[] soundData);
         /*! ***************************************************************
         * 函数名：       bxDual_program_pictureAreaDisableSound_G6（）
@@ -3357,7 +3357,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_pictureAreaDisableSound_G6(ushort areaID);
         /*! ***************************************************************
         * 函数名：       bxDual_program_timeAreaSetBattleTime_G6（）
@@ -3370,7 +3370,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_timeAreaSetBattleTime_G6(ushort areaID, ref EQTimeAreaBattle_G6 header);
         /*! ***************************************************************
         * 函数名：       bxDual_program_timeAreaCancleBattleTime_G6（）
@@ -3383,7 +3383,7 @@ GPRS – 30S*/
         * 注：取消后的时间分区将作为普通时间
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_timeAreaCancleBattleTime_G6(ushort areaID);
         /*! ***************************************************************
         * 函数名：       bxDual_program_timeAreaAddContent_G6（）
@@ -3396,7 +3396,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_timeAreaAddContent_G6(ushort areaID, ref EQtimeAreaData_G56 timeData);
         /*! ***************************************************************
         * 函数名：       bxDual_program_timeAreaChangeContent_G6（）
@@ -3409,7 +3409,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_timeAreaChangeContent_G6(ushort areaID, ref EQtimeAreaData_G56 timeData);
         /*! ***************************************************************
         * 函数名：       bxDual_program_fontPath_timeAreaAddContent_G6()
@@ -3421,7 +3421,7 @@ GPRS – 30S*/
         * 注：ios下无法使用program_timeAreaAddContent_G6请使用program_fontPath_timeAreaAddContent_G6()
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_fontPath_timeAreaAddContent_G6(ushort areaID, ref EQtimeAreaData_G56 timeData);
         /*! ***************************************************************
         * 函数名：       bxDual_program_timeAreaAddAnalogClock_G6(）
@@ -3435,7 +3435,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_timeAreaAddAnalogClock_G6(ushort areaID, ref EQAnalogClockHeader_G56 header, E_ClockStyle cStyle, ref ClockColor_G56 cColor);
         /*! ***************************************************************
         * 函数名：       bxDual_program_timeAreaChangeAnalogClock_G6(）
@@ -3449,7 +3449,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_timeAreaChangeAnalogClock_G6(ushort areaID, ref EQAnalogClockHeader_G56 header, E_ClockStyle cStyle, ref ClockColor_G56 cColor);
         /*! ***************************************************************
         * 函数名：       bxDual_program_timeAreaChangeDialPic_G6(）
@@ -3461,7 +3461,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_timeAreaChangeDialPic_G6(ushort areaID, byte[] picPath);
         /*! ***************************************************************
         * 函数名：       bxDual_program_timeAreaRemoveDialPic_G6(）
@@ -3473,7 +3473,7 @@ GPRS – 30S*/
         * 注：
         *
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_timeAreaRemoveDialPic_G6(ushort areaID);
         /*! ***************************************************************
         * 函数名：       bxDual_program_IntegrateProgramFile_G6（）
@@ -3484,19 +3484,19 @@ GPRS – 30S*/
         * 注：
         * EQprogram 结构体是用来回调发送文件所需要参数
         ******************************************************************/
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_program_IntegrateProgramFile_G6(ref EQprogram_G6 program);
 
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_Start_Server(int port);
 
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_Stop_Server(int pServer);
 
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_Get_Port_Barcode(byte[] barcode);
 
-        [DllImport("bx_sdk_dual.dll", CharSet = CharSet.Unicode)]
+        [DllImport("bx_sdk_dual_server.dll", CharSet = CharSet.Unicode)]
         public static extern int bxDual_Get_CardList(byte[] cards);
     }
 }

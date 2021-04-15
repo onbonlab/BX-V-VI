@@ -55,7 +55,7 @@ namespace LedSDKDemo_CSharp
             aheader.AreaX = 0;
             aheader.AreaY = 0;
             aheader.AreaWidth = 64;
-            aheader.AreaHeight = 32;
+            aheader.AreaHeight = 16;
             err = bxdualsdk.bxDual_program_AddArea(0, ref aheader);
             Console.WriteLine("bxDual_program_AddArea:" + err);
 
@@ -86,9 +86,9 @@ namespace LedSDKDemo_CSharp
             bxdualsdk.EQareaHeader aheader1;
             aheader1.AreaType = 2;
             aheader1.AreaX = 0;
-            aheader1.AreaY = 64;
+            aheader1.AreaY = 16;
             aheader1.AreaWidth = 64;
-            aheader1.AreaHeight = 32;
+            aheader1.AreaHeight = 16;
             err = bxdualsdk.bxDual_program_AddArea(1, ref aheader1);
             Console.WriteLine("bxDual_program_AddArea:" + err);
 
@@ -102,7 +102,7 @@ namespace LedSDKDemo_CSharp
             timeData2.fontItalic = 0;
             timeData2.fontUnderline = 0;
             timeData2.fontAlign = 0;  //0--左对齐，1-居中，2-右对齐
-            timeData2.date_enable = 1;
+            timeData2.date_enable = 0;
             timeData2.datestyle = bxdualsdk.E_DateStyle.eYYYY_MM_DD_MINUS;
             timeData2.time_enable = 1;
             timeData2.timestyle = bxdualsdk.E_TimeStyle.eHH_MM_AM;
@@ -196,7 +196,7 @@ namespace LedSDKDemo_CSharp
             aheader.AreaX = 0;
             aheader.AreaY = 0;
             aheader.AreaWidth = 64;
-            aheader.AreaHeight = 32;
+            aheader.AreaHeight = 16;
             aheader.BackGroundFlag = 0x00;
             aheader.Transparency = 101;
             aheader.AreaEqual = 0x00;
@@ -248,9 +248,9 @@ namespace LedSDKDemo_CSharp
             bxdualsdk.EQareaHeader_G6 aheader1;
             aheader1.AreaType = 2;
             aheader1.AreaX = 0;
-            aheader1.AreaY = 0;
+            aheader1.AreaY = 16;
             aheader1.AreaWidth = 64;
-            aheader1.AreaHeight = 32;
+            aheader1.AreaHeight = 16;
             aheader1.BackGroundFlag = 0x00;
             aheader1.Transparency = 101;
             aheader1.AreaEqual = 0x00;

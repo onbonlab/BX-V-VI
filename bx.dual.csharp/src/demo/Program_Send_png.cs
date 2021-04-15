@@ -15,6 +15,7 @@ namespace LedSDKDemo_CSharp
         /// </summary>
         public static void Send_program_png_5()
         {
+            Console.WriteLine(DateTime.Now.ToString());
             //指定IP ping控制卡获取控制卡数据，屏参相关参数已知的情况可省略该步骤
             bxdualsdk.Ping_data data = new bxdualsdk.Ping_data();
             int err = bxdualsdk.bxDual_cmd_tcpPing(Program.ip, Program.port, ref data);
@@ -53,13 +54,13 @@ namespace LedSDKDemo_CSharp
             aheader.AreaType = 0;
             aheader.AreaX = 0;
             aheader.AreaY = 0;
-            aheader.AreaWidth = 64;
-            aheader.AreaHeight = 32;
+            aheader.AreaWidth = 256;
+            aheader.AreaHeight = 64;
             err = bxdualsdk.bxDual_program_AddArea(0, ref aheader);
             Console.WriteLine("bxDual_program_AddArea:" + err);
 
             //第四步，添加显示内容，此处为图文分区0添加图片，该步骤可多次调用，添加多张图片，每张图片用不同的编号
-            byte[] img = Encoding.GetEncoding("GBK").GetBytes("1.ong");
+            byte[] img = Encoding.GetEncoding("GBK").GetBytes("KB2001.png");
             bxdualsdk.EQpageHeader pheader;
             pheader.PageStyle = 0x00;
             pheader.DisplayMode = 0x02;
@@ -111,6 +112,7 @@ namespace LedSDKDemo_CSharp
 
             err = bxdualsdk.bxDual_program_freeBuffer(ref program);
             Console.WriteLine("bxDual_program_freeBuffer:" + err);
+            Console.WriteLine(DateTime.Now.ToString());
         }
 
         /// <summary>
@@ -164,8 +166,8 @@ namespace LedSDKDemo_CSharp
             aheader.AreaType = 0;
             aheader.AreaX = 0;
             aheader.AreaY = 0;
-            aheader.AreaWidth = 64;
-            aheader.AreaHeight = 32;
+            aheader.AreaWidth = data.ScreenWidth;
+            aheader.AreaHeight = data.ScreenHeight;
             aheader.BackGroundFlag = 0x00;
             aheader.Transparency = 101;
             aheader.AreaEqual = 0x00;
@@ -189,10 +191,10 @@ namespace LedSDKDemo_CSharp
             Console.WriteLine("bxDual_program_addArea_G6:" + err);
 
             //第四步，添加显示内容，此处为图文分区0添加图片，该步骤可多次调用，添加多张图片，每张图片用不同的编号
-            byte[] img = Encoding.GetEncoding("GBK").GetBytes("0.png");
+            byte[] img = Encoding.GetEncoding("GBK").GetBytes("Led3.png");
             bxdualsdk.EQpageHeader_G6 pheader;
             pheader.PageStyle = 0x00;
-            pheader.DisplayMode = 0x04;//移动模式
+            pheader.DisplayMode = 0x01;//移动模式
             pheader.ClearMode = 0x01;
             pheader.Speed = 15;//速度
             pheader.StayTime = 0;//停留时间

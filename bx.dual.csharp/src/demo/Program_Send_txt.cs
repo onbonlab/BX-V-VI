@@ -17,7 +17,15 @@ namespace LedSDKDemo_CSharp
         {
             //指定IP ping控制卡获取控制卡数据，屏参相关参数已知的情况可省略该步骤
             bxdualsdk.Ping_data data = new bxdualsdk.Ping_data();
-            int err = bxdualsdk.bxDual_cmd_tcpPing(Program.ip, Program.port, ref data);
+            int err = 0;
+            if (true)
+            {
+                err = bxdualsdk.bxDual_cmd_tcpPing(Program.ip, Program.port, ref data);
+            }
+            else
+            {
+                err = bxdualsdk.bxDual_cmd_uart_searchController(ref data, Program.com);
+            }
 
             //显示屏屏基色
             byte cmb_ping_Color = 1;
@@ -102,7 +110,7 @@ namespace LedSDKDemo_CSharp
             err = bxdualsdk.bxDual_program_AddArea(0, ref aheader);
             Console.WriteLine("bxDual_program_AddArea:" + err);
             //区域添加边框
-            if(false)
+            if (false)
             {
                 bxdualsdk.EQareaframeHeader afheader;
                 afheader.AreaFFlag = 0x01;
@@ -116,18 +124,18 @@ namespace LedSDKDemo_CSharp
             }
 
             //第四步，添加显示内容，此处为图文分区0添加字符串
-            byte[] str = Encoding.GetEncoding("GBK").GetBytes("显示数据");
+            byte[] str = Encoding.GetEncoding("GBK").GetBytes("显示内容");
             byte[] font = Encoding.GetEncoding("GBK").GetBytes("宋体");
             bxdualsdk.EQpageHeader pheader;
             pheader.PageStyle = 0x00;
-            pheader.DisplayMode = 0x02;
+            pheader.DisplayMode = 0x04;
             pheader.ClearMode = 0x01;
             pheader.Speed = 10;
             pheader.StayTime = 0;
             pheader.RepeatTime = 1;
             pheader.ValidLen = 0;
             pheader.arrMode = bxdualsdk.E_arrMode.eMULTILINE;
-            pheader.fontSize = 12;
+            pheader.fontSize = 16;
             pheader.color = (uint)0x01;
             pheader.fontBold = 0;
             pheader.fontItalic = 0;
@@ -178,7 +186,22 @@ namespace LedSDKDemo_CSharp
         {
             //指定IP ping控制卡获取控制卡数据，屏参相关参数已知的情况可省略该步骤
             bxdualsdk.Ping_data data = new bxdualsdk.Ping_data();
-            int err = bxdualsdk.bxDual_cmd_tcpPing(Program.ip, Program.port, ref data);
+            int err = 0;
+            if (true)
+            {
+                err = bxdualsdk.bxDual_cmd_tcpPing(Program.ip, Program.port, ref data);
+            }
+            else
+            {
+                err = bxdualsdk.bxDual_cmd_uart_searchController(ref data, Program.com);
+            }
+            Console.WriteLine("ControllerType:0x" + data.ControllerType.ToString("X2"));
+            Console.WriteLine("FirmwareVersion:V" + System.Text.Encoding.Default.GetString(data.FirmwareVersion));
+            Console.WriteLine("ipAdder:" + System.Text.Encoding.Default.GetString(data.ipAdder));
+            Console.WriteLine("ScreenWidth:" + data.ScreenWidth.ToString());
+            Console.WriteLine("ScreenHeight:" + data.ScreenHeight.ToString());
+            Console.WriteLine("cmb_ping_Color:" + data.Color.ToString());
+            Console.WriteLine("\r\n");
 
             //显示屏屏基色
             byte cmb_ping_Color = 1;
@@ -259,8 +282,8 @@ namespace LedSDKDemo_CSharp
             aheader.AreaType = 0;
             aheader.AreaX = 0;
             aheader.AreaY = 0;
-            aheader.AreaWidth = 64;
-            aheader.AreaHeight = 32;
+            aheader.AreaWidth = data.ScreenWidth;
+            aheader.AreaHeight = data.ScreenHeight;
             aheader.BackGroundFlag = 0x00;
             aheader.Transparency = 101;
             aheader.AreaEqual = 0x00;
@@ -292,25 +315,25 @@ namespace LedSDKDemo_CSharp
                 sfheader.FrameUnitLength = 2;   //边框组元长度
                 sfheader.FrameUnitWidth = 2;    //边框组元宽度
                 sfheader.FrameDirectDispBit = 0;//上下左右边框显示标志位，目前只支持6QX-M卡 
-                byte[] img = Encoding.Default.GetBytes("F:\\黄10.png");
+                byte[] img = Encoding.Default.GetBytes("E:\\黄10.png");
                 bxdualsdk.bxDual_program_picturesAreaAddFrame_G6(0, ref sfheader, img);
             }
 
             //第四步，添加显示内容，此处为图文分区0添加字符串
-            byte[] str = Encoding.GetEncoding("GBK").GetBytes("显示数据");
+            byte[] str = Encoding.GetEncoding("GBK").GetBytes("\\FKB00خۇش كەپسىز");
             byte[] font = Encoding.GetEncoding("GBK").GetBytes("宋体");
             bxdualsdk.EQpageHeader_G6 pheader;
             pheader.PageStyle = 0x00;
             pheader.DisplayMode = 0x04;//移动模式
             pheader.ClearMode = 0x01;
-            pheader.Speed = 15;//速度
-            pheader.StayTime = 0;//停留时间
+            pheader.Speed = 2;//速度
+            pheader.StayTime = 100;//停留时间
             pheader.RepeatTime = 1;
-            pheader.ValidLen = 10;
+            pheader.ValidLen = 0;
             pheader.CartoonFrameRate = 0x00;
             pheader.BackNotValidFlag = 0x00;
             pheader.arrMode = bxdualsdk.E_arrMode.eSINGLELINE;
-            pheader.fontSize = 10;
+            pheader.fontSize = 20;
             pheader.color = (uint)0x01;
             pheader.fontBold = 0;
             pheader.fontItalic = 0;

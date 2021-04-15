@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace LedSDKDemo_CSharp
@@ -179,7 +180,7 @@ namespace LedSDKDemo_CSharp
             ushort RelateProNum = 0;
             ushort[] RelateProSerial = null;
             byte ImmePlay = 1;
-            ushort uAreaX = 0;
+            ushort uAreaX = 64;
             ushort uAreaY = 0;
             ushort uWidth = 64;
             ushort uHeight = 32;
@@ -207,11 +208,14 @@ namespace LedSDKDemo_CSharp
             pheader.oFont.Halign = 1;
             pheader.oFont.Valign = 2;
             byte[] Font = Encoding.GetEncoding("GBK").GetBytes("宋体");
-            pheader.fontName = Class1.BytesToIntptr(Font);
+            pheader.fontName = Marshal.AllocHGlobal(Font.Length);
+            Marshal.Copy(Font, 0, pheader.fontName, Font.Length);
             byte[] str = Encoding.GetEncoding("GBK").GetBytes("111111\0");
-            pheader.strAreaTxtContent = Class1.BytesToIntptr(str);
+            pheader.strAreaTxtContent = Marshal.AllocHGlobal(str.Length);
+            Marshal.Copy(str, 0, pheader.strAreaTxtContent, str.Length);
             byte[] img = Encoding.GetEncoding("GBK").GetBytes("123.png\0");
-            pheader.filePath = Class1.BytesToIntptr(img);
+            pheader.filePath = Marshal.AllocHGlobal(img.Length);
+            Marshal.Copy(img, 0, pheader.filePath, img.Length);
             bxdualsdk.DynamicAreaBaseInfo_5G pheader1 = new bxdualsdk.DynamicAreaBaseInfo_5G();
             pheader1.nType = 0x01;
             pheader1.DisplayMode = 4;
@@ -228,8 +232,9 @@ namespace LedSDKDemo_CSharp
             pheader1.oFont.txtSpace = 0;
             pheader1.oFont.Halign = 1;
             pheader1.oFont.Valign = 2;
+            string nnn = "123";
             pheader1.fontName = Class1.BytesToIntptr(Encoding.GetEncoding("GBK").GetBytes("宋体"));
-            pheader1.strAreaTxtContent = Class1.BytesToIntptr(Encoding.GetEncoding("GBK").GetBytes("222222\0"));
+            pheader1.strAreaTxtContent = Class1.BytesToIntptr(Encoding.GetEncoding("GBK").GetBytes($"{nnn}\0"));
             pheader1.filePath = Class1.BytesToIntptr(Encoding.GetEncoding("GBK").GetBytes("123.png\0"));
             bxdualsdk.DynamicAreaBaseInfo_5G[] Params = new bxdualsdk.DynamicAreaBaseInfo_5G[2];
             Params[0] = pheader;
@@ -252,6 +257,60 @@ namespace LedSDKDemo_CSharp
                 err = bxdualsdk.bxDual_dynamicArea_AddAreaInfos_5G_Serial(Program.com, Program.baudRate, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, uAreaId, RunMode, Timeout, RelateAllPro, RelateProNum, RelateProSerial,
                                 ImmePlay, uAreaX, uAreaY, uWidth, uHeight, oFrame, (byte)Params.Length, Params);
             }
+            Console.WriteLine("bxDual_dynamicArea_AddAreaInfos_5G_Point = " + err);
+        }
+        public static void updata_tests(int id,int x,int y,int w,int h,string text)
+        {
+            int err = 0;
+            byte uAreaId = (byte)id;
+            byte RunMode = 0;
+            ushort Timeout = 10;
+            byte RelateAllPro = 1;
+            ushort RelateProNum = 0;
+            ushort[] RelateProSerial = null;
+            byte ImmePlay = 1;
+            ushort uAreaX = (ushort)x;
+            ushort uAreaY = (ushort)y;
+            ushort uWidth = (ushort)w;
+            ushort uHeight = (ushort)h;
+            bxdualsdk.EQareaframeHeader oFrame;
+            oFrame.AreaFFlag = 0;
+            oFrame.AreaFDispStyle = 0;
+            oFrame.AreaFDispSpeed = 0;
+            oFrame.AreaFMoveStep = 0;
+            oFrame.AreaFWidth = 0;
+            oFrame.AreaFBackup = 0;
+            bxdualsdk.DynamicAreaBaseInfo_5G pheader = new bxdualsdk.DynamicAreaBaseInfo_5G();
+            pheader.nType = 0x01;
+            pheader.DisplayMode = 4;
+            pheader.ClearMode = 0x00;
+            pheader.Speed = 10;
+            pheader.StayTime = 100;
+            pheader.RepeatTime = 0;
+            pheader.oFont.arrMode = bxdualsdk.E_arrMode.eMULTILINE;
+            pheader.oFont.fontSize = 10;
+            pheader.oFont.color = 1;
+            pheader.oFont.fontBold = 0;
+            pheader.oFont.fontItalic = 0;
+            pheader.oFont.tdirection = bxdualsdk.E_txtDirection.pNORMAL;
+            pheader.oFont.txtSpace = 0;
+            pheader.oFont.Halign = 1;
+            pheader.oFont.Valign = 2;
+            byte[] Font = Encoding.GetEncoding("GBK").GetBytes("宋体");
+            pheader.fontName = Class1.BytesToIntptr(Font);
+            byte[] str = Encoding.GetEncoding("GBK").GetBytes($"{text}\0");
+            pheader.strAreaTxtContent = Class1.BytesToIntptr(str);
+            //byte[] img = Encoding.GetEncoding("GBK").GetBytes("123.png\0");
+            //pheader.filePath = Class1.BytesToIntptr(img);
+            List<bxdualsdk.DynamicAreaBaseInfo_5G> Params = new List<bxdualsdk.DynamicAreaBaseInfo_5G>();
+            Params.Add(pheader);
+            bxdualsdk.DynamicAreaBaseInfo_5G[] Pas = new bxdualsdk.DynamicAreaBaseInfo_5G[1];
+            Pas[0] = pheader;
+
+            bxdualsdk.bxDual_dynamicArea_SetDualPixel(bxdualsdk.E_DoubleColorPixel_G56.eDOUBLE_COLOR_PIXTYPE_2);
+            err = bxdualsdk.bxDual_dynamicArea_AddAreaInfos_5G_Point(Program.ip, Program.port, bxdualsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, uAreaId, 0, 10, 1, 0, RelateProSerial,
+                0, uAreaX, uAreaY, uWidth, uHeight, oFrame, 1, Pas);
+            
             Console.WriteLine("bxDual_dynamicArea_AddAreaInfos_5G_Point = " + err);
         }
     }

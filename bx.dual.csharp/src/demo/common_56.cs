@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace LedSDKDemo_CSharp
@@ -8,69 +9,87 @@ namespace LedSDKDemo_CSharp
     class common_56
     {
         public static int err = 0;
-        //常规设置
+        /// <summary>
+        /// 常规设置,非必要
+        /// </summary>
         public static void set()
         {
             //设置屏号，不做通讯
             err = bxdualsdk.bxDual_set_screenNum_G56(1);
             //设置控制各种通讯方式每一包最大长度
             err = bxdualsdk.bxDual_set_packetLen(1024);
-            //文件系统格式化,不建议使用
-            err = bxdualsdk.bxDual_cmd_uart_ofsFormat(Program.com, Program.baudRate);
         }
-        //网口广播搜索
+        /// <summary>
+        /// 文件系统格式化,不建议使用
+        /// </summary>
+        public static void Format()
+        {
+            //串口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_cmd_uart_ofsFormat(Program.com, Program.baudRate);
+            }
+            //网口
+            else
+            {
+                err = bxdualsdk.bxDual_cmd_ofsFormat(Program.ip, Program.port);
+            }
+        }
+        //广播搜索
         public static void Net_search()
         {
             bxdualsdk.Ping_data data = new bxdualsdk.Ping_data();
+            //网口搜索
             err = bxdualsdk.bxDual_cmd_udpPing(ref data);
-            Console.WriteLine("ControllerType:0x" + data.ControllerType.ToString("X2"));
-            Console.WriteLine("FirmwareVersion:V" + System.Text.Encoding.Default.GetString(data.FirmwareVersion));
-            Console.WriteLine("ipAdder:" + System.Text.Encoding.Default.GetString(data.ipAdder));
-            Console.WriteLine("\r\n");
-        }
-
-        //串口搜索
-        public static void COM_search()
-        {
-            byte[] COMPort = Encoding.Default.GetBytes("COM7");
-            bxdualsdk.Ping_data data=new bxdualsdk.Ping_data();
             //全搜索，udp-tcp-com
-            err = bxdualsdk.bxDual_cmd_searchController(ref data);
+            if (false)
+            {
+                err = bxdualsdk.bxDual_cmd_searchController(ref data);
+            }
             //根据串口搜索
-            int ret = bxdualsdk.bxDual_cmd_uart_searchController(ref data, COMPort);
+            else
+            {
+                err = bxdualsdk.bxDual_cmd_uart_searchController(ref data, Program.com);
+            }
             Console.WriteLine("ControllerType:0x" + data.ControllerType.ToString("X2"));
             Console.WriteLine("FirmwareVersion:V" + System.Text.Encoding.Default.GetString(data.FirmwareVersion));
             Console.WriteLine("ipAdder:" + System.Text.Encoding.Default.GetString(data.ipAdder));
             Console.WriteLine("\r\n");
         }
-        //删除节目 网口
-        public static void deleteprogram_net()
+        //删除节目
+        public static void deleteprogram()
         {
-            //获取节目列表
-            bxdualsdk.GetDirBlock_G56 driBlock=new bxdualsdk.GetDirBlock_G56();
-            err = bxdualsdk.bxDual_cmd_ofsReedDirBlock(Program.ip, Program.port,ref driBlock);
-            //获取节目详细信息
-            for (int i = 0; i < driBlock.fileNumber; i++)
+            //网口
+            if (true)
             {
-                bxdualsdk.FileAttribute_G56 fileAttr=new bxdualsdk.FileAttribute_G56();
-                err = bxdualsdk.bxDual_cmd_getFileAttr(ref driBlock, (ushort)i,ref fileAttr);
-                //删除指定节目
-                err = bxdualsdk.bxDual_cmd_ofsDeleteFormatFile(Program.ip, Program.port, 1, fileAttr.fileName);
+                //获取节目列表
+                bxdualsdk.GetDirBlock_G56 driBlock = new bxdualsdk.GetDirBlock_G56();
+                err = bxdualsdk.bxDual_cmd_ofsReedDirBlock(Program.ip, Program.port, ref driBlock);
+                //获取节目详细信息
+                for (int i = 0; i < driBlock.fileNumber; i++)
+                {
+                    bxdualsdk.FileAttribute_G56 fileAttr = new bxdualsdk.FileAttribute_G56();
+                    err = bxdualsdk.bxDual_cmd_getFileAttr(ref driBlock, (ushort)i, ref fileAttr);
+                    //删除指定节目
+                    err = bxdualsdk.bxDual_cmd_ofsDeleteFormatFile(Program.ip, Program.port, 1, fileAttr.fileName);
+                }
+                err = bxdualsdk.bxDual_cmd_ofs_freeDirBlock(ref driBlock);
             }
-        }
-        //删除节目 串口
-        public static void deleteprogram_com()
-        {
-            //获取节目列表
-            bxdualsdk.GetDirBlock_G56 driBlock = new bxdualsdk.GetDirBlock_G56();
-            err = bxdualsdk.bxDual_cmd_uart_ofsReedDirBlock(Program.com, Program.baudRate, ref driBlock);
-            //获取节目详细信息
-            for (int i = 0; i < driBlock.fileNumber; i++)
+            //串口
+            else
             {
-                bxdualsdk.FileAttribute_G56 fileAttr = new bxdualsdk.FileAttribute_G56();
-                err = bxdualsdk.bxDual_cmd_getFileAttr(ref driBlock, (ushort)i, ref fileAttr);
-                //删除指定节目
-                err = bxdualsdk.bxDual_cmd_uart_ofsDeleteFormatFile(Program.com, Program.baudRate, 1, fileAttr.fileName);
+                //获取节目列表
+                bxdualsdk.GetDirBlock_G56 driBlock = new bxdualsdk.GetDirBlock_G56();
+                err = bxdualsdk.bxDual_cmd_uart_ofsReedDirBlock(Program.com, Program.baudRate, ref driBlock);
+                //获取节目详细信息
+                for (int i = 0; i < driBlock.fileNumber; i++)
+                {
+                    bxdualsdk.FileAttribute_G56 fileAttr = new bxdualsdk.FileAttribute_G56();
+                    err = bxdualsdk.bxDual_cmd_getFileAttr(ref driBlock, (ushort)i, ref fileAttr);
+                    //删除指定节目
+                    err = bxdualsdk.bxDual_cmd_uart_ofsDeleteFormatFile(Program.com, Program.baudRate, 1, fileAttr.fileName);
+                }
+                err = bxdualsdk.bxDual_cmd_ofs_freeDirBlock(ref driBlock);
             }
         }
         //调整亮度
@@ -127,21 +146,47 @@ namespace LedSDKDemo_CSharp
             brightness.HalfHourValue46 = num;
             brightness.HalfHourValue47 = num;
 
-            err = bxdualsdk.bxDual_cmd_setBrightness(ipAdder, 5005, ref brightness);
+            if (true)
+            {
+                err = bxdualsdk.bxDual_cmd_setBrightness(Program.ip, Program.port, ref brightness);//网口
+            }
+            //串口
+            else
+            {
+                //Program.com, Program.baudRate
+            }
             Console.WriteLine("cmd_setBrightness:" + err);
         }
-        //系统复位
-        public static void Reset(byte[] ipAdder)
-        {
-            err = bxdualsdk.bxDual_cmd_sysReset(ipAdder, 5005);
+        /// <summary>
+        /// 系统复位,不建议使用，调用后所有参数全部会丢失
+        /// </summary>
+        public static void Reset()
+        { 
+            //网口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_cmd_sysReset(Program.ip, Program.port);
+            }
+            //串口
+            else
+            {
+                //Program.com, Program.baudRate
+            }
             Console.WriteLine("bxDual_cmd_sysReset:" + err);
         }
         //强制开关机
         public static void coerceOnOff(byte[] ipAdder)
-        {
-            //err = bxdualsdk.bxDual_cmd_coerceOnOff(ipAdder, 5005, 0);//关机
-            err = bxdualsdk.bxDual_cmd_coerceOnOff(ipAdder, 5005, 1);//开机
-            Console.WriteLine("bxDual_cmd_coerceOnOff:" + err);
+        { 
+            //网口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_cmd_coerceOnOff(Program.ip, Program.port, 0);//关机
+                err = bxdualsdk.bxDual_cmd_coerceOnOff(Program.ip, Program.port, 1);//开机
+            }
+            //串口
+            else
+            {//Program.com, Program.baudRate
+            }
         }
         //定时开关机
         public static void timingOnOff(byte[] ipAdder)
@@ -152,16 +197,34 @@ namespace LedSDKDemo_CSharp
             time[0].offHour = 11;  // 关机小时
             time[0].offMinute = 40; // 关机分钟
             byte[] Time = Class1.StructToBytes(time[0]);
-            err = bxdualsdk.bxDual_cmd_timingOnOff(ipAdder, 5005, 1, Time);
-            //取消定时开关机
-            //err = bxdualsdk.bxDual_cmd_cancelTimingOnOff(ipAdder, 5005);
+            //网口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_cmd_timingOnOff(Program.ip, Program.port, 1, Time);
+                //取消定时开关机
+                err = bxdualsdk.bxDual_cmd_cancelTimingOnOff(Program.ip, Program.port);
+            }
+            //串口
+            else
+            {//Program.com, Program.baudRate
+            }
             Console.WriteLine("bxDual_cmd_timingOnOff:" + err);
         }
-        //屏幕锁定
-        public static void screenLock(byte[] ipAdder)
+        /// <summary>
+        /// 屏幕锁定
+        /// </summary>
+        public static void screenLock()
         {
-            err = bxdualsdk.bxDual_cmd_screenLock(ipAdder, 5005, 1, 1);//屏幕锁定
-            //err = bxdualsdk.bxDual_cmd_screenLock(ipAdder, 5005, 1,0);//屏幕解锁
+            //网口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_cmd_screenLock(Program.ip, Program.port, 1, 1);//屏幕锁定
+                err = bxdualsdk.bxDual_cmd_screenLock(Program.ip, Program.port, 1,0);//屏幕解锁
+            }
+            //串口
+            else
+            {//Program.com, Program.baudRate
+            }
             Console.WriteLine("bxDual_cmd_screenLock:" + err);
         }
         //节目锁定
@@ -169,17 +232,32 @@ namespace LedSDKDemo_CSharp
         {
             //节目名格式类型为P***，如P000，P001
             byte[] name = Encoding.GetEncoding("GBK").GetBytes("P000");
-            err = bxdualsdk.bxDual_cmd_programLock(ipAdder, 5005, 1, 1, name, 0xffffffff);//锁定
-            //err = bxdualsdk.bxDual_cmd_uart_programLock(Program.com, 2, 1, 1, name, 0xffffffff);//锁定-串口
-            //err = bxdualsdk.bxDual_cmd_programLock(ipAdder, 5005, 1,0, name, 0xffffffff);//解锁
-            Console.WriteLine("bxDual_cmd_programLock:" + err);
+            //网口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_cmd_programLock(Program.ip, Program.port, 1, 1, name, 0xffffffff);//锁定
+                err = bxdualsdk.bxDual_cmd_programLock(Program.ip, Program.port, 1, 0, name, 0xffffffff);//解锁
+            }
+            //串口
+            else
+            {
+                err = bxdualsdk.bxDual_cmd_uart_programLock(Program.com, Program.baudRate, 1, 1, name, 0xffffffff);//锁定-串口}
+            }
         }
         //获取控制空间大小和剩余空间
         public static void GetMemoryVolume(byte[] ipAdder)
         {
             int totalMemVolume = 0, availableMemVolume = 0;
-            err = bxdualsdk.bxDual_cmd_ofsGetMemoryVolume(ipAdder, 5005,ref totalMemVolume,ref availableMemVolume); 
-             err = bxdualsdk.bxDual_cmd_uart_ofsGetMemoryVolume(Program.com, Program.baudRate, ref totalMemVolume, ref availableMemVolume);
+            //网口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_cmd_ofsGetMemoryVolume(Program.ip, Program.port, ref totalMemVolume, ref availableMemVolume);
+            }
+            //串口
+            else
+            {
+                err = bxdualsdk.bxDual_cmd_uart_ofsGetMemoryVolume(Program.com, Program.baudRate, ref totalMemVolume, ref availableMemVolume);
+            }
         }
         //网络搜索
         public static void search_Net(byte[] ipAdder)
@@ -191,12 +269,15 @@ namespace LedSDKDemo_CSharp
             bxdualsdk.NetSearchCmdRet_Web data = new bxdualsdk.NetSearchCmdRet_Web();
              err = bxdualsdk.bxDual_cmd_uart_search_Net_6G_Web(ref data, uartPort, nBaudRateType);
         }
-        //网络搜索-传感器
-        private static void btn_NetworkSearch_Click(byte[] ipAdder)
+        /// <summary>
+        /// 网络搜索-传感器,6代控制卡使用
+        /// </summary>
+        /// <param name="ipAdder"></param>
+        private static void btn_NetworkSearch_6_Click()
         {
             bxdualsdk.NetSearchCmdRet CmdRet = new bxdualsdk.NetSearchCmdRet();
-            err = bxdualsdk.bxDual_cmd_tcpNetworkSearch_6G(ipAdder, 5005, ref CmdRet);
             err = bxdualsdk.bxDual_cmd_udpNetworkSearch_6G(ref CmdRet);
+            err = bxdualsdk.bxDual_cmd_tcpNetworkSearch_6G(Program.ip, Program.port, ref CmdRet);
             string str = "";
             if (err == 0)
             {
@@ -549,7 +630,7 @@ namespace LedSDKDemo_CSharp
             }
         }
         //IP设置
-        public static void udpSetI()
+        public static void udpSetIP()
         {
             byte mode = 2;
             byte[] ip1 = Encoding.GetEncoding("GBK").GetBytes("192.168.89.178");
@@ -564,6 +645,270 @@ namespace LedSDKDemo_CSharp
             byte[] netID = Encoding.GetEncoding("GBK").GetBytes("BX-NET000001");
 
             err = bxdualsdk.bxDual_cmd_udpSetIP(mode, ip1, subnetMask, gateway, port1, serverMode, serverIP, serverPort, password, heartbeat, netID);
+        }
+        string strdual = "作用不明 bxDual_cmd_uart_confDeleteFormatFile";
+        /// <summary>
+        /// 设置WIFI密码
+        /// </summary>
+        public static void SetWifi_pwd()
+        {
+            byte[] ssid = Encoding.GetEncoding("GBK").GetBytes("bx-wifi_fantx");
+            byte[] pwd = Encoding.GetEncoding("GBK").GetBytes("12345678");
+            err = bxdualsdk.bxDual_cmd_AT_setWifiSsidPwd(ssid, pwd);
+        }
+        /// <summary>
+        /// 取得WIFI密码
+        /// </summary>
+        public static void GetWifi_pwd()
+        {
+            byte[] ssid = new byte[16];
+            byte[] pwd = new byte[16];
+            for (int i = 0; i < 16; i++) { ssid[i] = 0; pwd[i] = 0; }
+            err = bxdualsdk.bxDual_cmd_AT_getWifiSsidPwd(ssid, pwd);
+        }
+        /// <summary>
+        /// 网络搜索-网络参数，5代卡使用
+        /// </summary>
+        private static void btn_NetworkSearch_5_Click()
+        {
+            bxdualsdk.heartbeatData CmdRet = new bxdualsdk.heartbeatData();
+            err = bxdualsdk.bxDual_cmd_udpNetworkSearch(ref CmdRet);
+        }
+        /// <summary>
+        /// 广播设置MAC地址
+        /// </summary>
+        private static void udp_setMAC()
+        {
+            byte[] mac = Encoding.GetEncoding("GBK").GetBytes("aa-bb-cc-12-a8-8a");
+            err = bxdualsdk.bxDual_cmd_udpSetMac(mac);
+        }
+        /// <summary>
+        /// 校时，同步控制卡时间
+        /// </summary>
+        private static void checktime()
+        {           
+            //网口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_cmd_check_time(Program.ip, Program.port);
+            }
+            //串口
+            else
+            {//Program.com, Program.baudRate
+            }
+        }
+        /// <summary>
+        /// 读控制器ID
+        /// </summary>
+        private static void readControllerID()
+        {
+            byte[] ControllerID = new byte[8];
+            for (int i = 0; i < 8; i++) { ControllerID[i] = 0; }
+            //网口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_cmd_readControllerID(Program.ip, Program.port, ControllerID);
+            }
+            //串口
+            else
+            {//Program.com, Program.baudRate
+            }
+        }
+        /// <summary>
+        /// 读控制器状态
+        /// </summary>
+        private static void controllerStatus()
+        {
+            bxdualsdk.ControllerStatus_G56 Status = new bxdualsdk.ControllerStatus_G56();
+            //网口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_cmd_check_controllerStatus(Program.ip, Program.port, ref Status);
+            }
+            //串口
+            else
+            {//Program.com, Program.baudRate
+            }
+        }
+        /// <summary>
+        /// 设置控制器密码
+        /// </summary>
+        private static void setPassword()
+        {
+            byte[] oldpassword = Encoding.GetEncoding("GBK").GetBytes("123456");
+            byte[] newpassword = Encoding.GetEncoding("GBK").GetBytes("456789"); 
+            //网口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_cmd_setPassword(Program.ip, Program.port, oldpassword, newpassword);
+            }
+            //串口
+            else
+            {//Program.com, Program.baudRate
+            }
+        }
+        /// <summary>
+        /// 删除当前控制器密码
+        /// </summary>
+        private static void deletePassword()
+        {
+            byte[] password = Encoding.GetEncoding("GBK").GetBytes("123456");
+            //网口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_cmd_deletePassword(Program.ip, Program.port, password);
+            }
+            //串口
+            else
+            {//Program.com, Program.baudRate
+            }
+        }
+        /// <summary>
+        /// 设置控制开机延时时间，单位秒
+        /// </summary>
+        private static void setDelayTime()
+        {
+            //网口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_cmd_setDelayTime(Program.ip, Program.port, 5);
+            }
+            //串口
+            else
+            {//Program.com, Program.baudRate
+            }
+        }
+        /// <summary>
+        /// 设置控制测试按钮功能 按钮模式 0x00–测试按钮 0x01–沿触发切换节目 0x02–电平触发切换节目
+        /// </summary>
+        private static void setBtnFunc()
+        {
+            //网口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_cmd_setBtnFunc(Program.ip, Program.port, 0);
+            }
+            //串口
+            else
+            {//Program.com, Program.baudRate
+            }
+        }
+        /// <summary>
+        /// 设置控制重启重启时间
+        /// </summary>
+        private static void setTimingReset()
+        {
+            bxdualsdk.TimingReset time = new bxdualsdk.TimingReset();
+            time.rstMode = 2;
+            time.RstInterval = 1;
+            time.rstHour1 = 8;
+            time.rstMin1 = 8;
+            time.rstHour2 = 8;
+            time.rstMin2 = 8;
+            time.rstHour3 = 8;
+            time.rstMin3 = 8;
+            //网口
+            if (true)
+            {
+                err = bxdualsdk.bxDual_cmd_setTimingReset(Program.ip, Program.port, ref time);
+            }
+            //串口
+            else
+            {//Program.com, Program.baudRate
+            }
+        }
+        /// <summary>
+        /// 设置控制器的显示模式
+        /// </summary>
+        private static void setDispMode()
+        {
+            err = bxdualsdk.bxDual_cmd_setDispMode(Program.ip, Program.port,0);
+        }
+        /// <summary>
+        /// 秒表控制并获取秒表时间
+        /// </summary>
+        private static void getStopwatch()
+        {
+            byte mode = 0; int timeValue = 0;
+            err = bxdualsdk.bxDual_cmd_getStopwatch(Program.ip, Program.port, mode,ref timeValue);
+        }
+        /// <summary>
+        /// 获取亮度读传感器值
+        /// </summary>
+        private static void getSensorBrightnessValue()
+        {
+            int brightnessValue = 0;
+            err = bxdualsdk.bxDual_cmd_getSensorBrightnessValue(Program.ip, Program.port, ref brightnessValue);
+        }
+        /// <summary>
+        /// 速度微调命令
+        /// </summary>
+        private static void setSpeedAdjust()
+        {
+            short speed = 0;
+            err = bxdualsdk.bxDual_cmd_setSpeedAdjust(Program.ip, Program.port, speed);
+        }
+        /// <summary>
+        /// 设置屏幕号
+        /// </summary>
+        private static void setScreenAddress()
+        {
+            short address = 1;
+            err = bxdualsdk.bxDual_cmd_setScreenAddress(Program.ip, Program.port, address);
+        }
+        /// <summary>
+        /// 开始读文件
+        /// </summary>
+        private static void ofsStartReedFile()
+        {
+            byte[] fileName = Encoding.GetEncoding("GBK").GetBytes("P000");
+            uint fileSize = 0;
+            uint fileCrc = 0;
+            err = bxdualsdk.bxDual_cmd_ofsStartReedFile(Program.ip, Program.port, fileName, ref fileSize, ref fileCrc);
+
+            byte[] data = new byte[1024];
+            for (int i = 0; i < 1024; i++) { data[i] = 0; }
+            err = bxdualsdk.bxDual_cmd_ofsReedFileBlock(Program.ip, Program.port, fileName, data);
+        }
+        /// <summary>
+        /// 开始读文件
+        /// </summary>
+        private static void confStartReedFile()
+        {
+            byte[] fileName = Encoding.GetEncoding("GBK").GetBytes("C000");
+            uint fileSize = 0;
+            uint fileCrc = 0;
+            err = bxdualsdk.bxDual_cmd_confStartReedFile(Program.ip, Program.port, fileName, ref fileSize, ref fileCrc);
+
+            byte[] data = new byte[fileSize];
+            for (int i = 0; i < fileSize; i++) { data[i] = 0; }
+            err = bxdualsdk.bxDual_cmd_confReedFileBlock(Program.ip, Program.port, fileName, data);
+            //5代
+            if (true)
+            {
+                IntPtr dec = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(bxdualsdk.ConfigFile)));
+                Marshal.Copy(data, Marshal.SizeOf(typeof(bxdualsdk.ConfigFile)), dec, Marshal.SizeOf(typeof(bxdualsdk.ConfigFile)));
+                bxdualsdk.ConfigFile configData = (bxdualsdk.ConfigFile)Marshal.PtrToStructure(dec, typeof(bxdualsdk.ConfigFile));
+                Marshal.FreeHGlobal(dec);
+                err = bxdualsdk.bxDual_cmd_sendConfigFile(Program.ip, Program.port, ref configData);
+            }
+            //6代
+            else
+            {
+                IntPtr dec = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(bxdualsdk.ConfigFile_G6)));
+                Marshal.Copy(data, Marshal.SizeOf(typeof(bxdualsdk.ConfigFile_G6)), dec, Marshal.SizeOf(typeof(bxdualsdk.ConfigFile_G6)));
+                bxdualsdk.ConfigFile_G6 configData = (bxdualsdk.ConfigFile_G6)Marshal.PtrToStructure(dec, typeof(bxdualsdk.ConfigFile_G6));
+                Marshal.FreeHGlobal(dec);
+                err = bxdualsdk.bxDual_cmd_sendConfigFile_G6(Program.ip, Program.port, ref configData);
+            }
+        }
+        /// <summary>
+        /// 读文件接口测试
+        /// </summary>
+        private static void cmd_ofsReedDirBlock()
+        {
+            byte[] fileName = Encoding.GetEncoding("GBK").GetBytes("F001");
+            err = bxdualsdk.bxDual_cmd_firmwareActivate(Program.ip, Program.port, fileName);
         }
 
     }

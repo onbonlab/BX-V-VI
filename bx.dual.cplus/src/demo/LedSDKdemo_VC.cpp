@@ -1207,6 +1207,8 @@ typedef int(__stdcall *PbxDual_program_IntegrateProgramFile_G6)(EQprogram_G6* pr
 ******************************************************************/
 typedef int(__stdcall *PbxDual_program_deleteProgram_G6)();
 	PbxDual_program_deleteProgram_G6 bxDual_program_deleteProgram_G6;
+typedef int(__stdcall *PbxDual_program_freeBuffer_G6)(EQprogram_G6* program);
+	PbxDual_program_freeBuffer_G6 bxDual_program_freeBuffer_G6;
 
 //同时更新多个动态区:仅显示动态区，不显示节目
 typedef int(__stdcall *PbxDual_dynamicAreaS_AddTxtDetails_6G)(Ouint8* pIP, Ouint32 nPort, E_ScreenColor_G56 color, Ouint8 uAreaCount, DynamicAreaParams* pParams);
@@ -1525,14 +1527,14 @@ void addArea_G5(Ouint16 AreaID,Ouint8 AreaType,Ouint16 AreaX,Ouint16 AreaY,Ouint
 void addAreaTime_G5(Ouint16 AreaID);
 void addAreaPicture_G5(Ouint16 AreaID,Ouint8 str[]);
 void tcp_send_program_G5(Ouint8* ip, Ouint16 port);
-void addAreaPicturePic_G5(Ouint16 areaID);
+void addAreaPicturePic_G5(Ouint16 areaID,Ouint16 picID,Ouint8* str);
 
 void addProgram_G6();
 void addArea_G6(Ouint16 AreaID,Ouint8 AreaType,Ouint16 AreaX,Ouint16 AreaY,Ouint16 AreaWidth,Ouint16 AreaHeight);
 void addAreaTime_G6(Ouint16 AreaID);
 void addAreaPicture_G6(Ouint16 AreaID,Ouint8 str[]);
 void tcp_send_program_G6(Ouint8* ip, Ouint16 port);
-void addAreaPicturePic_G6(Ouint16 areaID);
+void addAreaPicturePic_G6(Ouint16 areaID,Ouint16 picID,Ouint8* img);
 void dynamicArea_test_6(Ouint8* ip);
 void onbonTest_DynamicArea_6G(void);
 void Net_Bright(Ouint8* ipAdder,byte num);
@@ -1605,7 +1607,7 @@ int main(int argc, char* argv[])
 
 
 	
-	unsigned char ip[] = "192.168.89.123";
+	unsigned char ip[] = "192.168.89.109";
 	unsigned short port = 5005;
 	int ret = 0;
 	ret = bxDual_InitSdk();//初始化动态库
@@ -1632,10 +1634,13 @@ int main(int argc, char* argv[])
     ret = bxDual_program_setScreenParams_G56((E_ScreenColor_G56)cmb_ping_Color, retdata.ControllerType, eDOUBLE_COLOR_PIXTYPE_1);
 
 	addProgram_G6();
-	addArea_G6(0,0,0,0,64,32);
+	addArea_G6(0,0,0,0,288,192);
 	unsigned char str[] = "1256456";
-	addAreaPicturePic_G6(0);
-	Creat_sound_6(0);
+	for(int i=0;i<2;i++){
+		char path[30];
+sprintf(path, "E:/WorkGit/BX-V-VI/bx.dual.cplus/src/lib/Led%d.png", i);
+		Ouint8* img = (Ouint8*)path;
+		addAreaPicturePic_G6(0,i,img);}
 	tcp_send_program_G6(ip, port);
 }
 
@@ -1800,13 +1805,13 @@ void addAreaPicture_G6(Ouint16 AreaID,Ouint8 str[])
 	//program_fontPath_picturesAreaAddTxt_G6(0,str,(Ouint8*)"C:/Windows/Fonts/simsun.ttc",&pheader1);
 }
 //添加图片
-void addAreaPicturePic_G5(Ouint16 areaID)
+void addAreaPicturePic_G5(Ouint16 areaID,Ouint16 picID,Ouint8* str)
 {
     EQpageHeader pheader;
     pheader.PageStyle = 0x00;
-    pheader.DisplayMode = 0x01;
+    pheader.DisplayMode = 0x06;
     pheader.ClearMode = 0x01;
-    pheader.Speed = 30;
+    pheader.Speed = 5;
     pheader.StayTime = 0;
     pheader.RepeatTime = 1;
     pheader.ValidLen = 0;
@@ -1819,17 +1824,16 @@ void addAreaPicturePic_G5(Ouint16 areaID)
     pheader.txtSpace = 0;
     pheader.Valign = 2;
     pheader.Halign = 2;
-    Ouint8 str1[] = "32.png";
-    int err = bxDual_program_pictureAreaAddPic(areaID, 0, &pheader, str1);
+    int err = bxDual_program_pictureAreaAddPic(areaID, picID, &pheader, str);
 }
-void addAreaPicturePic_G6(Ouint16 areaID)
+void addAreaPicturePic_G6(Ouint16 areaID,Ouint16 picID,Ouint8* img)
 {
     EQpageHeader_G6 pheader;
     pheader.PageStyle = 0x00;
-    pheader.DisplayMode = 0x06;
+    pheader.DisplayMode = 0x04;
     pheader.ClearMode = 0x01;
-    pheader.Speed = 15;
-    pheader.StayTime = 500;
+    pheader.Speed = 5;
+    pheader.StayTime = 100;
     pheader.RepeatTime = 1;
     pheader.ValidLen = 0;
     pheader.CartoonFrameRate = 0x00;
@@ -1843,8 +1847,7 @@ void addAreaPicturePic_G6(Ouint16 areaID)
     pheader.txtSpace = 0;
     pheader.Valign = 0;
     pheader.Halign = 0;
-    Ouint8* img = (Ouint8*)"F:/work github/Debug HUB/BX-V-VI/bx.dual.cplus/src/lib/2Led0_0.png";
-    int err = bxDual_program_pictureAreaAddPic_G6(areaID, 0, &pheader, img);
+    int err = bxDual_program_pictureAreaAddPic_G6(areaID, picID, &pheader, img);
 }
 //发送节目
 void tcp_send_program_G5(Ouint8* ip, Ouint16 port)
@@ -1888,6 +1891,8 @@ void tcp_send_program_G6(Ouint8* ip, Ouint16 port)
 	EQprogram_G6 program;
 	memset((void*)&program, 0, sizeof(program));
 	bxDual_program_IntegrateProgramFile_G6(&program);
+	//删除本地内存中的节目
+	bxDual_program_deleteProgram_G6();
 	
 	ret = bxDual_cmd_ofsStartFileTransf(ip, port);
 	printf("ret =====cmd_ofsStartFileTransf===== %d \n", ret);
@@ -1921,8 +1926,7 @@ void tcp_send_program_G6(Ouint8* ip, Ouint16 port)
 	}
 	printf("ret =====cmd_ofsEndFileTransf===== %d \n", ret);
 
-	//删除本地内存中的节目
-	bxDual_program_deleteProgram_G6();
+    ret = bxDual_program_freeBuffer_G6(&program);
 
 }
 //BX-5动态区文本

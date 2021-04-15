@@ -7,7 +7,7 @@ Module Module1
     Sub Main()
         err = Ledsdk.bxDual_InitSdk()
         Console.WriteLine("InitSdk：" + err.ToString())
-
+        dynamic_6()
         Dim arr As Ledsdk.Ping_data
         arr.ControllerType = 0
         arr.FirmwareVersion = {0, 0, 0, 0, 0, 0, 0, 0}
@@ -414,5 +414,97 @@ Module Module1
         psound.Soundwordstyle = 0
         err = Ledsdk.bxDual_program_pictureAreaEnableSound_G6(0, psound, str)
         Console.WriteLine("program_pictureAreaEnableSound_G6:" + err.ToString())
+    End Sub
+    Public Sub dynamic_6()
+        Dim AreaText As String
+        Dim code As Encoding = Encoding.GetEncoding("gb2312")
+        Dim ip() As Byte
+        AreaText = "192.168.89.120"
+        ip = code.GetBytes(AreaText)
+        Dim psound As Ledsdk.EQPicAreaSoundHeader_G6
+        psound.SoundPerson = 3
+        psound.SoundVolum = 5
+        psound.SoundSpeed = 5
+        psound.SoundDataMode = 0
+        psound.SoundReplayTimes = 0
+        psound.SoundReplayDelay = 1000
+        psound.SoundReservedParaLen = 3
+        psound.Soundnumdeal = 0
+        psound.Soundlanguages = 0
+        psound.Soundwordstyle = 0
+        Dim RelateProSerial() As UShort
+        RelateProSerial = {0, 0}
+        Dim oFrame As Ledsdk.BxAreaFrmae_Dynamic_G6
+        Dim pInfo As Ledsdk.DynamicAreaBaseInfo_5G
+        Dim pSoundData As Ledsdk.EQSound_6G
+        pSoundData.SoundFlag = 0
+        pSoundData.SoundPerson = 0
+        pSoundData.SoundVolum = 0
+        pSoundData.SoundSpeed = 0
+        pSoundData.SoundDataMode = 0
+        pSoundData.SoundReplayTimes = 0
+        pSoundData.SoundReplayDelay = 0
+        pSoundData.SoundReservedParaLen = 0
+        pSoundData.Soundnumdeal = 0
+        pSoundData.Soundlanguages = 0
+        pSoundData.Soundwordstyle = 0
+        pSoundData.SoundDataLen = 0
+        pSoundData.SoundData = {0}
+
+        oFrame.AreaFFlag = 0
+        oFrame.oAreaFrame.FrameDispStype = 3
+        oFrame.oAreaFrame.FrameDispSpeed = 10
+        oFrame.oAreaFrame.FrameMoveStep = 1
+        oFrame.oAreaFrame.FrameUnitLength = 2
+        oFrame.oAreaFrame.FrameUnitWidth = 2
+        oFrame.oAreaFrame.FrameDirectDispBit = 0
+        oFrame.pStrFramePathFile = {0}
+
+        pInfo.nType = 1
+        pInfo.DisplayMode = 2
+        pInfo.ClearMode = 1
+        pInfo.Speed = 5
+        pInfo.StayTime = 100
+        pInfo.RepeatTime = 0
+        pInfo.oFont.arrMode = 1
+        pInfo.oFont.fontSize = 12
+        pInfo.oFont.color = 1
+        pInfo.oFont.fontBold = 0
+        pInfo.oFont.fontItalic = 0
+        pInfo.oFont.tdirection = 0
+        pInfo.oFont.txtSpace = 0
+        pInfo.oFont.Valign = 0
+        pInfo.oFont.Halign = 0
+        AreaText = "宋体"
+        pInfo.fontName = code.GetBytes(AreaText)
+        AreaText = "123456789"
+        pInfo.strAreaTxtContent = code.GetBytes(AreaText)
+        AreaText = "123.png"
+        pInfo.filePath = code.GetBytes(AreaText)
+        err = Ledsdk.bxDual_dynamicArea_AddAreaInfos_6G_V2(ip, 5005, Ledsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, 0, 0, 10, 1, 0, RelateProSerial, 1,
+                                                         0, 0, 64, 32, oFrame, 1, pInfo, pSoundData)
+        Dim pheader As Ledsdk.EQpageHeader_G6
+        pheader.PageStyle = &H0
+        pheader.DisplayMode = &H3
+        pheader.ClearMode = &H1
+        pheader.Speed = 15
+        pheader.StayTime = 500
+        pheader.RepeatTime = 1
+        pheader.ValidLen = 0
+        pheader.CartoonFrameRate = &H0
+        pheader.BackNotValidFlag = &H0
+        pheader.arrMode = Ledsdk.E_arrMode.eSINGLELINE
+        pheader.fontSize = 18
+        pheader.color = Ledsdk.E_Color.eRED
+        pheader.fontBold = False
+        pheader.fontItalic = False
+        pheader.tdirection = Ledsdk.E_txtDirection.pNORMAL
+        pheader.txtSpace = 0
+        pheader.Valign = 2
+        pheader.Halign = 2
+        'err = Ledsdk.bxDual_dynamicArea_AddAreaPic_6G(ip, 5005, Ledsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, 0, 0, 0, 64, 32, pheader, code.GetBytes("123.png"))
+        'err = Ledsdk.bxDual_dynamicArea_AddAreaPic_WithProgram_6G(ip, 5005, Ledsdk.E_ScreenColor_G56.eSCREEN_COLOR_DOUBLE, 0, 0, 0, 64, 32, pheader, code.GetBytes("123.png"), 0, RelateProSerial)
+        Console.WriteLine("program_pictureAreaEnableSound_G6:" + err.ToString())
+
     End Sub
 End Module

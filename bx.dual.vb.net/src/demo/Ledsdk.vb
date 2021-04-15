@@ -523,4 +523,78 @@ Public Class Ledsdk
     End Structure
     Public Declare Auto Function bxDual_program_pictureAreaEnableSound_G6 Lib "bx_sdk_dual.dll" (ByVal areaID As UShort, ByVal pheader As EQPicAreaSoundHeader_G6, ByVal soundData() As Byte) As Integer
 
+
+
+    <StructLayout(LayoutKind.Sequential, Pack:=1)> _
+    Public Structure EQscreenframeHeader_G6
+        Dim FrameDispStype As Byte
+        Dim FrameDispSpeed As Byte
+        Dim FrameMoveStep As Byte
+        Dim FrameUnitLength As Byte
+        Dim FrameUnitWidth As Byte
+        Dim FrameDirectDispBit As Byte
+    End Structure
+    <StructLayout(LayoutKind.Sequential, Pack:=1)> _
+    Public Structure BxAreaFrmae_Dynamic_G6
+        Dim AreaFFlag As Byte
+        Dim oAreaFrame As EQscreenframeHeader_G6
+        Dim pStrFramePathFile() As Byte
+    End Structure
+    <StructLayout(LayoutKind.Sequential, Pack:=1)> _
+    Public Structure DynamicAreaBaseInfo_5G
+        Dim nType As Byte
+        Dim DisplayMode As Byte
+        Dim ClearMode As Byte
+        Dim Speed As Byte
+        Dim StayTime As UShort
+        Dim RepeatTime As Byte
+        Dim oFont As EQfontData
+        Dim fontName() As Byte
+        Dim strAreaTxtContent() As Byte
+        Dim filePath() As Byte
+    End Structure
+    <StructLayout(LayoutKind.Sequential, Pack:=1)> _
+    Public Structure EQfontData
+        Dim arrMode As E_arrMode
+        Dim fontSize As UShort
+        Dim color As Integer
+        Dim fontBold As Byte
+        Dim fontItalic As Byte
+        Dim tdirection As E_txtDirection
+        Dim txtSpace As UShort
+        Dim Halign As Byte
+        Dim Valign As Byte
+    End Structure
+    Public Declare Auto Function bxDual_dynamicArea_AddAreaInfos_6G_V2 Lib "bx_sdk_dual.dll" (ByVal ip() As Byte, ByVal port As UShort, ByVal color As E_ScreenColor_G56,
+            ByVal uAreaId As Byte,
+            ByVal RunMode As Byte,
+            ByVal Timeout As UShort,
+            ByVal RelateAllPro As Byte,
+            ByVal RelateProNum As Byte,
+            ByVal RelateProSerial() As UShort,
+            ByVal ImmePlay As Byte,
+            ByVal uAreaX As UShort,
+            ByVal uAreaY As UShort,
+            ByVal uWidth As UShort,
+            ByVal uHeight As UShort,
+            ByVal oFrame As BxAreaFrmae_Dynamic_G6,
+            ByVal nInfoCount As Byte, ByRef pInfo As DynamicAreaBaseInfo_5G, ByRef pSoundData As EQSound_6G
+        ) As Integer
+
+
+    Public Declare Auto Function bxDual_dynamicArea_AddAreaPic_6G Lib "bx_sdk_dual.dll" (ByVal ip() As Byte, ByVal port As UShort, ByVal color As E_ScreenColor_G56,
+            ByVal uAreaId As Byte,
+            ByVal uAreaX As UShort,
+            ByVal uAreaY As UShort,
+            ByVal uWidth As UShort,
+            ByVal uHeight As UShort, ByRef pheader As EQpageHeader_G6, ByVal strAreaTxtContent() As Byte) As Integer
+
+    Public Declare Auto Function bxDual_dynamicArea_AddAreaPic_WithProgram_6G Lib "bx_sdk_dual.dll" (ByVal ip() As Byte, ByVal port As UShort, ByVal color As E_ScreenColor_G56,
+            ByVal uAreaId As Byte,
+            ByVal uAreaX As UShort,
+            ByVal uAreaY As UShort,
+            ByVal uWidth As UShort,
+            ByVal uHeight As UShort, ByRef pheader As EQpageHeader_G6, ByVal strAreaTxtContent() As Byte,
+            ByVal RelateProNum As Byte,
+            ByVal RelateProSerial() As UShort) As Integer
 End Class

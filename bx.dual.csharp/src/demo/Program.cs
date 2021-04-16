@@ -11,7 +11,7 @@ namespace LedSDKDemo_CSharp
     class Program
     {
         //控制卡IP
-        public static byte[] ip = Encoding.GetEncoding("GBK").GetBytes("192.168.89.66");
+        public static byte[] ip = Encoding.GetEncoding("GBK").GetBytes("192.168.89.121");
         //控制卡端口
         public static ushort port = 5005;
         //串口号 "COM1",大于9以上做特殊处理，如"\\\\.\\COM17"
@@ -62,7 +62,7 @@ namespace LedSDKDemo_CSharp
             if (true)
             {
                 //Program_Send_txt文本调用示例代码
-                //Program_Send_txt.Send_program_txt_6();
+                Program_Send_txt.Send_program_txt_6();
                 //common_56.deleteprogram();
                 //Program_Send_png图片调用示例代码
                 //Program_Send_png.Send_program_png_6();
@@ -79,7 +79,7 @@ namespace LedSDKDemo_CSharp
 
                 //动态区调用示例，部分控制卡支持
                 //Dynamic_6.dynamicArea_pages_1();
-                Dynamic_6.dynamicArea_str_3();
+                //Dynamic_6.dynamicArea_str_3();
 
                 //删除动态区
                 //Dynamic_6.delete_dynamic();
